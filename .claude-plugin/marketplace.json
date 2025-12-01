@@ -16,7 +16,8 @@
       "strict": false,
       "skills": [
         "./mcp-builder",
-        "./skill-creator"
+        "./skill-creator",
+        "./backend-development"
       ]
     }
   ]
