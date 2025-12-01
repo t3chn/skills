@@ -14,7 +14,11 @@
       "description": "Collection of custom skills",
       "source": "./",
       "strict": false,
-      "skills": ["./template-skill"]
+      "skills": [
+        "./template-skill",
+        "./mcp-builder",
+        "./skill-creator"
+      ]
     }
   ]
 }
