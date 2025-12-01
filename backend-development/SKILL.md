@@ -22,7 +22,6 @@ description: Production-ready backend development with Node.js/Python/Go/Rust, A
 | **Observability** | `references/backend-observability.md` |
 | **AI/LLM Integration** | `references/backend-ai-integration.md` |
 | **Debugging** | `references/debugging/` |
-| **Code Quality** | `references/backend-code-quality.md` |
 
 ## Modern Tooling Standards (2025)
 
