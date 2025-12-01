@@ -15,7 +15,6 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./template-skill",
         "./mcp-builder",
         "./skill-creator"
       ]
