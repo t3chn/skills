@@ -1,47 +1,141 @@
 ---
 name: frontend-design
-description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.
+description: Create distinctive, production-grade frontend interfaces. Use when building web components, pages, or applications. Provides ready design systems, font pairings, color palettes, and animation patterns to avoid generic AI aesthetics.
 ---
 
 # Frontend Design
 
-Create distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics.
+Build distinctive frontends without reinventing design each time.
 
 ## References
 
 | Topic | Reference |
 |-------|-----------|
-| **Anime.js v4** | `references/animejs.md` - Animation library (v4 syntax) |
+| **Ready Design Systems** | `references/design-systems.md` - Pick one and go |
+| **Typography** | `references/typography.md` - Font pairings |
+| **Animations** | `references/animations.md` - CSS patterns |
+| **Modern CSS** | `references/modern-css.md` - New features |
 
-## Design Thinking
+## Quick Start
 
-Before coding, understand the context and commit to a BOLD aesthetic direction:
-- **Purpose**: What problem does this interface solve? Who uses it?
-- **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
-- **Constraints**: Technical requirements (framework, performance, accessibility).
-- **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
+1. **Pick a design system** from `references/design-systems.md`
+2. **Copy the CSS variables** into your project
+3. **Use the font pairing** from that system
+4. **Add animations** from `references/animations.md`
 
-**CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+## Stack Decision
 
-Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
-- Production-grade and functional
-- Visually striking and memorable
-- Cohesive with a clear aesthetic point-of-view
-- Meticulously refined in every detail
+```
+PROJECT TYPE?
+│
+├─ Marketing/Landing → HTML + Tailwind + vanilla JS
+├─ Dashboard/App → React/Vue + Tailwind + shadcn/ui
+├─ Simple interactive → HTML + CSS + Alpine.js
+└─ Complex SPA → Next.js/Nuxt + Tailwind
+```
 
-## Frontend Aesthetics Guidelines
+## Anti-Slop Checklist
 
-Focus on:
-- **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font with a refined body font.
-- **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes.
-- **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React, or Anime.js v4 (see references). Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
-- **Spatial Composition**: Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density.
-- **Backgrounds & Visual Details**: Create atmosphere and depth rather than defaulting to solid colors. Add contextual effects and textures that match the overall aesthetic. Apply creative forms like gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, custom cursors, and grain overlays.
+Before delivering, verify:
 
-NEVER use generic AI-generated aesthetics like overused font families (Inter, Roboto, Arial, system fonts), cliched color schemes (particularly purple gradients on white backgrounds), predictable layouts and component patterns, and cookie-cutter design that lacks context-specific character.
+- [ ] NOT using: Inter, Roboto, Arial, system-ui as primary font
+- [ ] NOT using: purple/blue gradient on white (the AI cliché)
+- [ ] NOT using: rounded-xl on everything
+- [ ] NOT using: generic card grid layout
+- [ ] HAS: one distinctive visual element (unusual font, bold color, asymmetry)
+- [ ] HAS: intentional whitespace (not everything cramped)
+- [ ] HAS: hover/focus states that feel crafted
+- [ ] HAS: consistent spacing system (4px/8px base)
 
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. NEVER converge on common choices (Space Grotesk, for example) across generations.
+## Design Principles
 
-**IMPORTANT**: Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
+**Pick ONE direction and commit:**
 
-Remember: Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.
+| Direction | Characteristics |
+|-----------|-----------------|
+| **Brutalist** | Raw, monospace, harsh contrast, no decoration |
+| **Editorial** | Large serif headlines, generous whitespace, magazine feel |
+| **Playful** | Rounded shapes, bright colors, bouncy animations |
+| **Luxury** | Thin sans-serif, muted colors, lots of space |
+| **Technical** | Monospace accents, data-dense, dark mode |
+| **Organic** | Soft gradients, natural colors, flowing shapes |
+
+## Quick Patterns
+
+### Hero Section (not generic)
+```css
+/* Asymmetric hero with overlapping elements */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 90vh;
+  overflow: hidden;
+}
+.hero-content {
+  padding: clamp(2rem, 8vw, 8rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-visual {
+  position: relative;
+  margin-left: -10%;  /* overlap */
+}
+```
+
+### Typography Scale
+```css
+:root {
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --text-lg: clamp(1.25rem, 1rem + 1vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  --text-2xl: clamp(2rem, 1rem + 4vw, 4rem);
+  --text-hero: clamp(3rem, 1rem + 8vw, 8rem);
+}
+```
+
+### Spacing System
+```css
+:root {
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-24: 6rem;    /* 96px */
+}
+```
+
+## Tailwind Recommendations
+
+```js
+// tailwind.config.js - distinctive setup
+module.exports = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
+      },
+      // Use design system colors from references/design-systems.md
+    }
+  }
+}
+```
+
+**Avoid these Tailwind patterns:**
+- `rounded-xl` everywhere (use `rounded-none` or `rounded-sm` for variation)
+- `shadow-lg` on every card
+- `bg-gradient-to-r from-purple-500 to-pink-500`
+- Generic `max-w-7xl mx-auto px-4`
+
+**Prefer:**
+- Asymmetric padding (`pl-8 pr-16`)
+- Mix of rounded and sharp corners
+- Custom shadows with color (`shadow-[0_4px_20px_rgba(0,0,0,0.1)]`)
+- Full-bleed sections with contained content
