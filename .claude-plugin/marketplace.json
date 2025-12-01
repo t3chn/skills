@@ -17,6 +17,7 @@
       "skills": [
         "./mcp-builder",
         "./skill-creator",
+        "./subagent-creator",
         "./backend-development",
         "./code-review"
       ]
