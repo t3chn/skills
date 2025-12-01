@@ -19,6 +19,9 @@
         "./skill-creator",
         "./backend-development",
         "./code-review"
+      ],
+      "agents": [
+        "./agents/code-reviewer.md"
       ]
     }
   ]
