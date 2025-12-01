@@ -19,7 +19,6 @@ description: Use when receiving code review feedback (especially if unclear or t
 
 | Tool | Purpose |
 |------|---------|
-| `templates/code-reviewer-prompt.md` | Ready-to-use prompt for code-reviewer subagent |
 | `scripts/prepare-review.sh` | Get git SHAs for review (`./prepare-review.sh [base]`) |
 
 ## Decision Tree
