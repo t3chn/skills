@@ -2,7 +2,7 @@
 name: code-reviewer
 description: Use after completing a task or feature to review code changes. Provide BASE_SHA, HEAD_SHA, what was implemented, and requirements. Returns issues categorized by severity (Critical/Important/Minor) with file:line references.
 tools: Bash, Glob, Grep, Read
-model: sonnet
+model: opus
 ---
 
 # Code Reviewer
