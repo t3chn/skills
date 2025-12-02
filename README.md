@@ -1,8 +1,8 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-10-blue?style=flat-square)](#skills)
-[![Agents](https://img.shields.io/badge/Agents-3-green?style=flat-square)](#agents)
+[![Skills](https://img.shields.io/badge/Skills-11-blue?style=flat-square)](#skills)
+[![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
 Production-ready skills and agents for Claude Code. Optimized for practical use, not theory.
@@ -28,6 +28,7 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 | **[daily-planner](./daily-planner)** | Daily planning workflow. Fetch ready tasks, prioritize, track progress. | ~150 |
 | **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks, detect-secrets. | ~400 |
 | **[python-testing](./python-testing)** | Pytest best practices, fixtures, async testing, mocking. Includes test-writer agent. | ~800 |
+| **[tasks-auditor](./tasks-auditor)** | End-of-day audit of beads tasks. Health checks, stale tasks, duplicates. | ~100 |
 
 ## Agents
 
@@ -35,7 +36,6 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 |-------|-------|-------------|
 | **[code-reviewer](./agents/code-reviewer.md)** | opus | Review code changes between commits. Returns issues with file:line references. |
 | **[python-test-writer](./python-testing/agents/python-test-writer.md)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
-| **[tasks-auditor](./agents/tasks-auditor.md)** | sonnet | End-of-day audit of beads tasks. Finds duplicates, stale issues, orphaned deps. |
 
 ## Highlights
 
@@ -64,8 +64,7 @@ vi-skills/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── agents/
-│   ├── code-reviewer.md
-│   └── tasks-auditor.md
+│   └── code-reviewer.md
 ├── backend-development/
 │   ├── SKILL.md
 │   ├── references/
@@ -99,10 +98,12 @@ vi-skills/
 │   ├── SKILL.md
 │   ├── assets/
 │   └── references/
-└── python-testing/
-    ├── SKILL.md
-    ├── agents/
-    └── references/
+├── python-testing/
+│   ├── SKILL.md
+│   ├── agents/
+│   └── references/
+└── tasks-auditor/
+    └── SKILL.md
 ```
 
 ## Philosophy

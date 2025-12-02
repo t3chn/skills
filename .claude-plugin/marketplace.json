@@ -24,11 +24,11 @@
         "./beads-workflow",
         "./daily-planner",
         "./secrets-guardian",
-        "./python-testing"
+        "./python-testing",
+        "./tasks-auditor"
       ],
       "agents": [
-        "./python-testing/agents/python-test-writer.md",
-        "./agents/tasks-auditor.md"
+        "./python-testing/agents/python-test-writer.md"
       ]
     }
   ]
