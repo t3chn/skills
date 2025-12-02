@@ -2,7 +2,7 @@
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
 [![Skills](https://img.shields.io/badge/Skills-10-blue?style=flat-square)](#skills)
-[![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
+[![Agents](https://img.shields.io/badge/Agents-3-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
 Production-ready skills and agents for Claude Code. Optimized for practical use, not theory.
@@ -35,6 +35,7 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 |-------|-------|-------------|
 | **[code-reviewer](./agents/code-reviewer.md)** | opus | Review code changes between commits. Returns issues with file:line references. |
 | **[python-test-writer](./python-testing/agents/python-test-writer.md)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
+| **[tasks-auditor](./agents/tasks-auditor.md)** | sonnet | End-of-day audit of beads tasks. Finds duplicates, stale issues, orphaned deps. |
 
 ## Highlights
 
@@ -63,7 +64,8 @@ vi-skills/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── agents/
-│   └── code-reviewer.md
+│   ├── code-reviewer.md
+│   └── tasks-auditor.md
 ├── backend-development/
 │   ├── SKILL.md
 │   ├── references/

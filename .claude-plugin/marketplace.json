@@ -27,7 +27,8 @@
         "./python-testing"
       ],
       "agents": [
-        "./python-testing/agents/python-test-writer.md"
+        "./python-testing/agents/python-test-writer.md",
+        "./agents/tasks-auditor.md"
       ]
     }
   ]
