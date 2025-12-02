@@ -4,7 +4,7 @@ description: |
   Proactive workflow for projects using beads issue tracker.
   ACTIVATE AUTOMATICALLY when session starts in directory with .beads/.
   Use when: starting work session, selecting tasks, completing tasks, creating subtasks.
-  Triggers: "какие задачи", "что делать", "готово", "done", "следующая задача", "создай задачу", "tasks", "next task", "pick task".
+  Triggers: "какие задачи", "что делать", "готово", "done", "следующая задача", "создай задачу", "tasks", "next task", "pick task", "обнови задачи", "refresh", "sync".
 ---
 
 # Beads Workflow
@@ -126,6 +126,33 @@ For subtasks, link to parent:
 ```bash
 bd dep add <child-id> <parent-id> --type parent-child
 ```
+
+## Refresh Tasks
+
+When user says "обнови задачи", "refresh", "sync":
+
+```bash
+bd sync
+bd ready --json
+```
+
+Show what changed:
+- New tasks added
+- Tasks closed by others
+- Priority changes
+
+If current in_progress task was modified, warn user.
+
+## Switching Tasks
+
+Before showing ready list for next task selection, ALWAYS sync first:
+
+```bash
+bd sync
+bd ready --json
+```
+
+This ensures task list is current before user picks.
 
 ## Session End
 
