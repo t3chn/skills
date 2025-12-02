@@ -1,8 +1,8 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-9-blue?style=flat-square)](#skills)
-[![Agents](https://img.shields.io/badge/Agents-1-green?style=flat-square)](#agents)
+[![Skills](https://img.shields.io/badge/Skills-10-blue?style=flat-square)](#skills)
+[![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
 Production-ready skills and agents for Claude Code. Optimized for practical use, not theory.
@@ -27,12 +27,14 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 | **[beads-workflow](./beads-workflow)** | Session management with beads issue tracker. Auto-init, task lifecycle, sync. | ~300 |
 | **[daily-planner](./daily-planner)** | Daily planning workflow. Fetch ready tasks, prioritize, track progress. | ~150 |
 | **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks, detect-secrets. | ~400 |
+| **[python-testing](./python-testing)** | Pytest best practices, fixtures, async testing, mocking. Includes test-writer agent. | ~800 |
 
 ## Agents
 
 | Agent | Model | Description |
 |-------|-------|-------------|
 | **[code-reviewer](./agents/code-reviewer.md)** | opus | Review code changes between commits. Returns issues with file:line references. |
+| **[python-test-writer](./python-testing/agents/python-test-writer.md)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
 
 ## Highlights
 
@@ -91,9 +93,13 @@ vi-skills/
 │   └── references/
 ├── daily-planner/
 │   └── SKILL.md
-└── secrets-guardian/
+├── secrets-guardian/
+│   ├── SKILL.md
+│   ├── assets/
+│   └── references/
+└── python-testing/
     ├── SKILL.md
-    ├── assets/
+    ├── agents/
     └── references/
 ```
 

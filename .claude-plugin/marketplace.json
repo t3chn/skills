@@ -23,7 +23,11 @@
         "./code-review",
         "./beads-workflow",
         "./daily-planner",
-        "./secrets-guardian"
+        "./secrets-guardian",
+        "./python-testing"
+      ],
+      "agents": [
+        "./python-testing/agents/python-test-writer.md"
       ]
     }
   ]
