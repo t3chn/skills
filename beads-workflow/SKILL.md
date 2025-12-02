@@ -23,26 +23,39 @@ ls -d .beads 2>/dev/null
 
 If `.beads/` does not exist — this skill is not applicable.
 
-### 2. Self-Install in CLAUDE.md
+### 2. Self-Install in CLAUDE.md (MANDATORY)
 
-Check if CLAUDE.md has "Beads Workflow" section:
+**YOU MUST ALWAYS CHECK AND OFFER TO CREATE CLAUDE.md:**
 
 ```bash
-grep -l "## Beads Workflow" CLAUDE.md 2>/dev/null
+# Check if CLAUDE.md exists and has Beads Workflow section
+if [ -f CLAUDE.md ]; then
+  grep -q "## Beads Workflow" CLAUDE.md && echo "configured" || echo "needs_section"
+else
+  echo "no_claude_md"
+fi
 ```
 
-If missing, ask user:
-> "В проекте есть beads, но CLAUDE.md не настроен для автозапуска. Добавить секцию Beads Workflow?"
+**If "no_claude_md" or "needs_section":**
+1. ALWAYS ask user: "В проекте есть beads, но CLAUDE.md не настроен. Создать/обновить?"
+2. If agreed, create or append the section below
+3. DO NOT SKIP THIS STEP
 
-If agreed, append to CLAUDE.md:
+**CLAUDE.md content to add:**
 
 ```markdown
+# CLAUDE.md
+
 ## Beads Workflow
 
 При старте сессии используй скилл `beads-workflow` для:
 1. Показать текущую задачу (in_progress) или выбрать из ready
 2. Отслеживать прогресс через TodoWrite
 3. При завершении — закрыть задачу через bd close
+
+## Project Info
+
+<!-- Add project-specific instructions here -->
 ```
 
 ### 3. Get Current Context
