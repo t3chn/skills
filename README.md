@@ -1,7 +1,7 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-6-blue?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/Skills-9-blue?style=flat-square)](#skills)
 [![Agents](https://img.shields.io/badge/Agents-1-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
@@ -24,6 +24,9 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 | **[mcp-builder](./mcp-builder)** | MCP server development with FastMCP (Python) and MCP SDK (TypeScript). | ~2k |
 | **[skill-creator](./skill-creator)** | Guide for creating effective Claude Code skills. | ~360 |
 | **[subagent-creator](./subagent-creator)** | Guide for creating custom subagents. | ~570 |
+| **[beads-workflow](./beads-workflow)** | Session management with beads issue tracker. Auto-init, task lifecycle, sync. | ~300 |
+| **[daily-planner](./daily-planner)** | Daily planning workflow. Fetch ready tasks, prioritize, track progress. | ~150 |
+| **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks, detect-secrets. | ~400 |
 
 ## Agents
 
@@ -79,10 +82,19 @@ vi-skills/
 │   ├── SKILL.md
 │   ├── references/
 │   └── scripts/
-└── subagent-creator/
+├── subagent-creator/
+│   ├── SKILL.md
+│   ├── references/
+│   └── scripts/
+├── beads-workflow/
+│   ├── SKILL.md
+│   └── references/
+├── daily-planner/
+│   └── SKILL.md
+└── secrets-guardian/
     ├── SKILL.md
-    ├── references/
-    └── scripts/
+    ├── assets/
+    └── references/
 ```
 
 ## Philosophy
