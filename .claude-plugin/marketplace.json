@@ -20,7 +20,9 @@
         "./subagent-creator",
         "./backend-development",
         "./frontend-design",
-        "./code-review"
+        "./code-review",
+        "./beads-workflow",
+        "./daily-planner"
       ]
     }
   ]
