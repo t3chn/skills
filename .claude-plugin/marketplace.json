@@ -22,7 +22,8 @@
         "./frontend-design",
         "./code-review",
         "./beads-workflow",
-        "./daily-planner"
+        "./daily-planner",
+        "./secrets-guardian"
       ]
     }
   ]

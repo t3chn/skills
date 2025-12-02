@@ -1,0 +1,53 @@
+# GitHub Actions workflow for secret scanning
+# Copy to .github/workflows/security.yaml
+
+name: Security Scan
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Gitleaks - fast secret scanner
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # TruffleHog - verified secrets only
+      - name: TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+      # detect-secrets with baseline
+      - name: detect-secrets
+        run: |
+          pip install detect-secrets
+          detect-secrets scan --all-files --exclude-files '\.lock$' --exclude-files '\.sum$' > .secrets.json
+          if grep -q '"is_secret": true' .secrets.json; then
+            echo "::error::Secrets detected!"
+            cat .secrets.json
+            exit 1
+          fi
+
+  # Optional: Add more security checks below
+  # sast:
+  #   name: SAST
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Semgrep
+  #       uses: semgrep/semgrep-action@v1
+  #       with:
+  #         config: auto

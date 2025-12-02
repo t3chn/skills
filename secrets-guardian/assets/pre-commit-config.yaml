@@ -1,0 +1,40 @@
+# Pre-commit hooks for secret protection
+# Copy to project root as .pre-commit-config.yaml
+# Install: pre-commit install && pre-commit install --hook-type pre-push
+
+repos:
+  # Secret scanning - gitleaks
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
+  # Secret scanning - detect-secrets with baseline
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+
+  # Detect private keys
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+
+  # Optional: Python security (uncomment if Python project)
+  # - repo: https://github.com/PyCQA/bandit
+  #   rev: 1.7.10
+  #   hooks:
+  #     - id: bandit
+  #       args: ['-c', 'pyproject.toml']
+  #       additional_dependencies: ['bandit[toml]']
+
+  # Optional: General SAST (uncomment for comprehensive scanning)
+  # - repo: https://github.com/semgrep/semgrep
+  #   rev: v1.99.0
+  #   hooks:
+  #     - id: semgrep
+  #       args: ['--config', 'auto']
