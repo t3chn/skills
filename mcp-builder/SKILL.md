@@ -50,20 +50,22 @@ Key pages to review:
 #### 1.3 Study Framework Documentation
 
 **Recommended stack:**
-- **Language**: TypeScript (high-quality SDK support and good compatibility in many execution environments e.g. MCPB. Plus AI models are good at generating TypeScript code, benefiting from its broad usage, static typing and good linting tools)
-- **Transport**: Streamable HTTP for remote servers, using stateless JSON (simpler to scale and maintain, as opposed to stateful sessions and streaming responses). stdio for local servers.
+- **Python + FastMCP 2.0**: Simplest path with Annotated types, Context injection, and one-click deployment to FastMCP Cloud
+- **TypeScript**: High-quality SDK support, good for complex servers
+- **Transport**: Streamable HTTP for remote servers, stdio for local servers
 
 **Load framework documentation:**
 
 - **MCP Best Practices**: [📋 View Best Practices](./reference/mcp_best_practices.md) - Core guidelines
 
-**For TypeScript (recommended):**
+**For Python (recommended for quick deployment):**
+- [🐍 Python Guide](./reference/python_mcp_server.md) - FastMCP 2.0 patterns and examples
+- [☁️ FastMCP Cloud](./reference/fastmcp_cloud.md) - One-click deployment guide
+- **FastMCP Docs**: https://gofastmcp.com
+
+**For TypeScript:**
 - **TypeScript SDK**: Use WebFetch to load `https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/main/README.md`
 - [⚡ TypeScript Guide](./reference/node_mcp_server.md) - TypeScript patterns and examples
-
-**For Python:**
-- **Python SDK**: Use WebFetch to load `https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/main/README.md`
-- [🐍 Python Guide](./reference/python_mcp_server.md) - Python patterns and examples
 
 #### 1.4 Plan Your Implementation
 
@@ -209,13 +211,13 @@ Load these resources as needed during development:
   - Security and error handling standards
 
 ### SDK Documentation (Load During Phase 1/2)
-- **Python SDK**: Fetch from `https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/main/README.md`
+- **FastMCP 2.0 Docs**: https://gofastmcp.com
 - **TypeScript SDK**: Fetch from `https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/main/README.md`
 
 ### Language-Specific Implementation Guides (Load During Phase 2)
-- [🐍 Python Implementation Guide](./reference/python_mcp_server.md) - Complete Python/FastMCP guide with:
-  - Server initialization patterns
-  - Pydantic model examples
+- [🐍 Python Implementation Guide](./reference/python_mcp_server.md) - Complete FastMCP 2.0 guide with:
+  - Annotated type parameters (simpler than Pydantic models)
+  - Context injection for logging, progress, sampling
   - Tool registration with `@mcp.tool`
   - Complete working examples
   - Quality checklist
@@ -226,6 +228,14 @@ Load these resources as needed during development:
   - Tool registration with `server.registerTool`
   - Complete working examples
   - Quality checklist
+
+### Deployment Guide (Load During Phase 3/4)
+- [☁️ FastMCP Cloud](./reference/fastmcp_cloud.md) - One-click deployment guide:
+  - Project structure requirements
+  - Environment variables configuration
+  - Authentication options
+  - Continuous deployment from GitHub
+  - Connecting from Claude Desktop/Code
 
 ### Evaluation Guide (Load During Phase 4)
 - [✅ Evaluation Guide](./reference/evaluation.md) - Complete evaluation creation guide with:

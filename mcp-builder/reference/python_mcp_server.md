@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document provides Python-specific best practices and examples for implementing MCP servers using the MCP Python SDK. It covers server setup, tool registration patterns, input validation with Pydantic, error handling, and complete working examples.
+This document provides Python-specific best practices and examples for implementing MCP servers using **FastMCP 2.0**. Covers server setup, tool registration, input validation, error handling, and deployment to FastMCP Cloud.
+
+**For FastMCP Cloud deployment, see [fastmcp_cloud.md](./fastmcp_cloud.md)**
 
 ---
 
@@ -10,37 +12,42 @@ This document provides Python-specific best practices and examples for implement
 
 ### Key Imports
 ```python
-from mcp.server.fastmcp import FastMCP
-from pydantic import BaseModel, Field, field_validator, ConfigDict
-from typing import Optional, List, Dict, Any
+from fastmcp import FastMCP, Context
+from typing import Annotated, Optional, List, Dict, Any
+from pydantic import Field
 from enum import Enum
 import httpx
 ```
 
 ### Server Initialization
 ```python
-mcp = FastMCP("service_mcp")
+mcp = FastMCP("service_name")
 ```
 
-### Tool Registration Pattern
+### Tool Registration Pattern (FastMCP 2.0)
 ```python
-@mcp.tool(name="tool_name", annotations={...})
-async def tool_function(params: InputModel) -> str:
-    # Implementation
-    pass
+@mcp.tool
+async def tool_name(
+    param1: Annotated[str, "Description of param"],
+    param2: Annotated[int, Field(description="Number", ge=1, le=100)] = 10
+) -> str:
+    """Tool description becomes the MCP description."""
+    return "result"
 ```
 
 ---
 
-## MCP Python SDK and FastMCP
+## FastMCP 2.0
 
-The official MCP Python SDK provides FastMCP, a high-level framework for building MCP servers. It provides:
-- Automatic description and inputSchema generation from function signatures and docstrings
-- Pydantic model integration for input validation
-- Decorator-based tool registration with `@mcp.tool`
+FastMCP 2.0 is the standard framework for building MCP servers in Python. Key features:
 
-**For complete SDK documentation, use WebFetch to load:**
-`https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/main/README.md`
+- **Automatic schema generation** from function signatures and type hints
+- **Annotated parameters** for descriptions and constraints (no Pydantic models needed)
+- **Context injection** for logging, progress, sampling
+- **Multiple return types** — str, dict, Pydantic models, Image, Audio
+- **FastMCP Cloud** deployment with one click
+
+**Documentation:** https://gofastmcp.com
 
 ## Server Naming Convention
 
@@ -65,57 +72,83 @@ Use snake_case for tool names (e.g., "search_users", "create_project", "get_chan
 - Use "github_create_issue" instead of just "create_issue"
 - Use "asana_list_tasks" instead of just "list_tasks"
 
-### Tool Structure with FastMCP
+### Tool Structure with FastMCP 2.0
 
-Tools are defined using the `@mcp.tool` decorator with Pydantic models for input validation:
+FastMCP 2.0 uses **Annotated types** instead of Pydantic models for simpler tool definitions:
 
 ```python
-from pydantic import BaseModel, Field, ConfigDict
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
+from typing import Annotated, Optional, List
+from pydantic import Field
 
-# Initialize the MCP server
-mcp = FastMCP("example_mcp")
+mcp = FastMCP("example_service")
 
-# Define Pydantic model for input validation
-class ServiceToolInput(BaseModel):
-    '''Input model for service tool operation.'''
-    model_config = ConfigDict(
-        str_strip_whitespace=True,  # Auto-strip whitespace from strings
-        validate_assignment=True,    # Validate on assignment
-        extra='forbid'              # Forbid extra fields
-    )
+@mcp.tool
+async def service_tool_name(
+    param1: Annotated[str, Field(description="First parameter (e.g., 'user123')", min_length=1, max_length=100)],
+    param2: Annotated[Optional[int], Field(description="Optional integer", ge=0, le=1000)] = None,
+    tags: Annotated[Optional[List[str]], Field(description="List of tags", max_length=10)] = None
+) -> str:
+    """Tool description becomes the MCP description.
 
-    param1: str = Field(..., description="First parameter description (e.g., 'user123', 'project-abc')", min_length=1, max_length=100)
-    param2: Optional[int] = Field(default=None, description="Optional integer parameter with constraints", ge=0, le=1000)
-    tags: Optional[List[str]] = Field(default_factory=list, description="List of tags to apply", max_items=10)
+    This tool performs a specific operation on the service.
+    """
+    # Implementation here
+    return "result"
+```
 
+### Simple Parameter Descriptions (v2.11.0+)
+
+For basic descriptions without constraints, use string annotations:
+
+```python
+@mcp.tool
+async def search_users(
+    query: Annotated[str, "Search query for finding users"],
+    limit: Annotated[int, "Maximum results to return"] = 20
+) -> str:
+    """Search for users by name or email."""
+    ...
+```
+
+### Tool Annotations
+
+Add MCP behavior hints:
+
+```python
 @mcp.tool(
-    name="service_tool_name",
     annotations={
-        "title": "Human-Readable Tool Title",
-        "readOnlyHint": True,     # Tool does not modify environment
-        "destructiveHint": False,  # Tool does not perform destructive operations
-        "idempotentHint": True,    # Repeated calls have no additional effect
-        "openWorldHint": False     # Tool does not interact with external entities
+        "title": "Human-Readable Title",
+        "readOnlyHint": True,      # No modifications
+        "destructiveHint": False,   # Not destructive
+        "idempotentHint": True,     # Safe to retry
+        "openWorldHint": True       # Calls external APIs
     }
 )
-async def service_tool_name(params: ServiceToolInput) -> str:
-    '''Tool description automatically becomes the 'description' field.
+async def my_tool(param: str) -> str:
+    ...
+```
 
-    This tool performs a specific operation on the service. It validates all inputs
-    using the ServiceToolInput Pydantic model before processing.
+### Legacy: Pydantic Model Input (still supported)
 
-    Args:
-        params (ServiceToolInput): Validated input parameters containing:
-            - param1 (str): First parameter description
-            - param2 (Optional[int]): Optional parameter with default
-            - tags (Optional[List[str]]): List of tags
+For complex validation, Pydantic models still work:
 
-    Returns:
-        str: JSON-formatted response containing operation results
-    '''
-    # Implementation here
-    pass
+```python
+from pydantic import BaseModel, Field, field_validator
+
+class ServiceToolInput(BaseModel):
+    param1: str = Field(..., description="First parameter", min_length=1)
+    param2: Optional[int] = Field(default=None, ge=0, le=1000)
+
+    @field_validator('param1')
+    @classmethod
+    def validate_param1(cls, v: str) -> str:
+        return v.strip()
+
+@mcp.tool
+async def service_tool(params: ServiceToolInput) -> str:
+    """Tool with Pydantic model input."""
+    return f"Got: {params.param1}"
 ```
 
 ## Pydantic v2 Key Features
@@ -475,54 +508,55 @@ if __name__ == "__main__":
 
 ## Advanced FastMCP Features
 
-### Context Parameter Injection
+### Context Injection (FastMCP 2.0)
 
-FastMCP can automatically inject a `Context` parameter into tools for advanced capabilities like logging, progress reporting, resource reading, and user interaction:
+Add `Context` parameter to access logging, progress, sampling, and resources:
 
 ```python
-from mcp.server.fastmcp import FastMCP, Context
+from fastmcp import FastMCP, Context
 
-mcp = FastMCP("example_mcp")
+mcp = FastMCP("example_service")
 
-@mcp.tool()
+@mcp.tool
 async def advanced_search(query: str, ctx: Context) -> str:
-    '''Advanced tool with context access for logging and progress.'''
+    """Advanced tool with context access."""
 
-    # Report progress for long operations
-    await ctx.report_progress(0.25, "Starting search...")
+    # Logging
+    await ctx.info(f"Searching for: {query}")
+    await ctx.debug("Debug details...")
 
-    # Log information for debugging
-    await ctx.log_info("Processing query", {"query": query, "timestamp": datetime.now()})
+    # Progress reporting
+    await ctx.report_progress(progress=25, total=100)
 
-    # Perform search
     results = await search_api(query)
-    await ctx.report_progress(0.75, "Formatting results...")
-
-    # Access server configuration
-    server_name = ctx.fastmcp.name
+    await ctx.report_progress(progress=75, total=100)
 
     return format_results(results)
 
-@mcp.tool()
-async def interactive_tool(resource_id: str, ctx: Context) -> str:
-    '''Tool that can request additional input from users.'''
+@mcp.tool
+async def tool_with_sampling(data: str, ctx: Context) -> str:
+    """Tool that uses LLM sampling."""
 
-    # Request sensitive information when needed
-    api_key = await ctx.elicit(
-        prompt="Please provide your API key:",
-        input_type="password"
-    )
+    # Request LLM to analyze data
+    response = await ctx.sample(f"Analyze this data: {data}")
+    return response.text
 
-    # Use the provided key
-    return await api_call(resource_id, api_key)
+@mcp.tool
+async def tool_with_resources(uri: str, ctx: Context) -> str:
+    """Tool that reads MCP resources."""
+
+    content_list = await ctx.read_resource(uri)
+    return content_list[0].content
 ```
 
-**Context capabilities:**
-- `ctx.report_progress(progress, message)` - Report progress for long operations
-- `ctx.log_info(message, data)` / `ctx.log_error()` / `ctx.log_debug()` - Logging
-- `ctx.elicit(prompt, input_type)` - Request input from users
-- `ctx.fastmcp.name` - Access server configuration
-- `ctx.read_resource(uri)` - Read MCP resources
+**Context methods:**
+- `await ctx.debug/info/warning/error(message)` — Logging
+- `await ctx.report_progress(progress, total)` — Progress updates
+- `await ctx.sample(prompt, temperature)` — LLM sampling
+- `await ctx.read_resource(uri)` — Read MCP resources
+- `await ctx.elicit(prompt, response_type)` — Request user input
+- `ctx.request_id` — Current request ID
+- `ctx.fastmcp` — Access FastMCP server instance
 
 ### Resource Registration
 
