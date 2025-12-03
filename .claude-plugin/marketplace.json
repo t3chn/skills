@@ -28,6 +28,9 @@
       ],
       "agents": [
         "./python-testing/agents/python-test-writer.md"
+      ],
+      "commands": [
+        "./.claude/commands"
       ]
     }
   ]
