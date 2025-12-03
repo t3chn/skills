@@ -22,7 +22,6 @@
         "./frontend-design",
         "./code-review",
         "./beads-workflow",
-        "./daily-planner",
         "./secrets-guardian",
         "./python-testing",
         "./tasks-auditor"
