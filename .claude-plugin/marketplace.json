@@ -28,7 +28,8 @@
         "./secrets-guardian",
         "./python-testing",
         "./tasks-auditor",
-        "./mvp-launcher"
+        "./mvp-launcher",
+        "./support-docs"
       ],
       "agents": [
         "./python-testing/agents/python-test-writer.md"

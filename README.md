@@ -1,7 +1,7 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-14-blue?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/Skills-15-blue?style=flat-square)](#skills)
 [![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
@@ -32,6 +32,7 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 | **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks, detect-secrets. | ~400 |
 | **[python-testing](./python-testing)** | Pytest best practices, fixtures, async testing, mocking. Includes test-writer agent. | ~800 |
 | **[tasks-auditor](./tasks-auditor)** | End-of-day audit of beads tasks. Health checks, stale tasks, duplicates. | ~100 |
+| **[support-docs](./support-docs)** | Generate SUPPORT.md for AI support bot from project sources. Auto-generates FAQ. | ~150 |
 
 ## Agents
 
@@ -82,7 +83,8 @@ vi-skills/
 ├── beads-workflow/         # Issue tracker workflow
 ├── secrets-guardian/       # Secrets protection
 ├── python-testing/         # Pytest patterns + agent
-└── tasks-auditor/          # Beads health checks
+├── tasks-auditor/          # Beads health checks
+└── support-docs/           # AI support bot docs
 ```
 
 ## Philosophy
