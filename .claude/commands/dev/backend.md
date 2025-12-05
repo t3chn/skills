@@ -15,7 +15,7 @@ ls pyproject.toml setup.py requirements.txt package.json tsconfig.json go.mod Ca
 | `pyproject.toml`, `setup.py`, `requirements.txt` | Python | `vi-skills:backend-python` |
 | `package.json`, `tsconfig.json` | Node.js/TS | `vi-skills:backend-nodejs` |
 | `go.mod` | Go | (TODO: backend-go) |
-| `Cargo.toml` | Rust | (TODO: backend-rust) |
+| `Cargo.toml` | Rust | `vi-skills:backend-rust` |
 
 ## Действие
 
@@ -23,5 +23,6 @@ ls pyproject.toml setup.py requirements.txt package.json tsconfig.json go.mod Ca
 2. **Затем** загружай языковой скилл:
    - Python → `vi-skills:backend-python`
    - Node.js/TypeScript → `vi-skills:backend-nodejs`
+   - Rust → `vi-skills:backend-rust`
 3. Если язык не поддерживается → сообщи что скилл ещё не создан
 4. Если несколько языков → спроси какой использовать
