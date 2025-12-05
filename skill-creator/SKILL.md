@@ -207,8 +207,9 @@ Skill creation involves these steps:
 2. Plan reusable skill contents (scripts, references, assets)
 3. Initialize the skill (run init_skill.py)
 4. Edit the skill (implement resources and write SKILL.md)
-5. Package the skill (run package_skill.py)
-6. Iterate based on real usage
+5. **Register the skill** (marketplace.json, README, commands)
+6. Package the skill (only for standalone distribution)
+7. Iterate based on real usage
 
 Follow these steps in order, skipping only if there is a clear reason why they are not applicable.
 
@@ -317,7 +318,85 @@ Do not include any other fields in YAML frontmatter.
 
 Write instructions for using the skill and its bundled resources.
 
-### Step 5: Packaging a Skill
+### Step 5: Register Skill in Plugin
+
+**CRITICAL**: A skill is NOT usable until registered. Complete this checklist:
+
+#### Registration Checklist
+
+```
+[ ] 1. Add to marketplace.json
+[ ] 2. Update README.md (if exists)
+[ ] 3. Add commands (if needed)
+[ ] 4. Commit and push
+[ ] 5. Run /plugin update (in Claude Code)
+```
+
+#### 5.1 Add to marketplace.json
+
+Add skill path to `.claude-plugin/marketplace.json`:
+
+```json
+{
+  "skills": [
+    "./existing-skill",
+    "./new-skill-name"  // ← Add here
+  ]
+}
+```
+
+#### 5.2 Update README.md
+
+Add skill to the skills table:
+
+```markdown
+| **[new-skill](./new-skill)** | Description here. | ~XXX |
+```
+
+#### 5.3 Add Commands (Optional)
+
+If skill has procedures triggered by user commands, create command files:
+
+```
+.claude/commands/{category}/
+├── action1.md   # "Загрузи скилл `plugin:skill-name` и выполни процедуру **action1**."
+└── action2.md
+```
+
+Command file template:
+```markdown
+# Command Title
+
+Загрузи скилл `{plugin}:{skill-name}` и выполни процедуру **{procedure}**.
+
+Аргументы: $ARGUMENTS
+```
+
+#### 5.4 Add Agents (Optional)
+
+If skill includes subagents, add to marketplace.json:
+
+```json
+{
+  "agents": [
+    "./skill-name/agents/agent-name.md"
+  ]
+}
+```
+
+#### 5.5 Commit and Sync
+
+```bash
+git add -A && git commit -m "Add {skill-name} skill" && git push
+```
+
+Then run `/plugin update` in Claude Code to reload.
+
+---
+
+### Step 6: Packaging a Skill (For Distribution)
+
+**Note**: Skip this step if skill lives in a plugin repository. Packaging is only needed for distributing standalone `.skill` files.
 
 Once development of the skill is complete, it must be packaged into a distributable .skill file that gets shared with the user. The packaging process automatically validates the skill first to ensure it meets all requirements:
 
@@ -344,7 +423,7 @@ The packaging script will:
 
 If validation fails, the script will report the errors and exit without creating a package. Fix any validation errors and run the packaging command again.
 
-### Step 6: Iterate
+### Step 7: Iterate
 
 After testing the skill, users may request improvements. Often this happens right after using the skill, with fresh context of how the skill performed.
 
