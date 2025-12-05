@@ -21,6 +21,7 @@
         "./backend-core",
         "./backend-python",
         "./backend-nodejs",
+        "./backend-rust",
         "./frontend-design",
         "./code-review",
         "./beads-workflow",

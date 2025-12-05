@@ -1,7 +1,7 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-11-blue?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/Skills-14-blue?style=flat-square)](#skills)
 [![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
@@ -18,14 +18,17 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 
 | Skill | Description | Lines |
 |-------|-------------|-------|
-| **[backend-development](./backend-development)** | Node.js/Python/Go/Rust, APIs, security (OWASP), DevOps. Modern tooling: uv, ruff, Vitest. | ~5.5k |
-| **[frontend-design](./frontend-design)** | Distinctive UI with ready design systems, font pairings, CSS animations. Anti-AI-slop. | ~1k |
+| **[backend-core](./backend-core)** | Language-agnostic patterns: API design, auth, security (OWASP), architecture, DevOps. | ~150 |
+| **[backend-python](./backend-python)** | Python backend with FastAPI, SQLAlchemy, modern tooling (uv, ruff). | ~330 |
+| **[backend-nodejs](./backend-nodejs)** | Node.js/TypeScript with NestJS, Drizzle/Prisma, Vitest, ESLint 9. | ~450 |
+| **[backend-rust](./backend-rust)** | Rust backend with Axum, SQLx, teloxide (Telegram). Shuttle/Fly.io deployment. $0 hosting. | ~400 |
+| **[frontend-design](./frontend-design)** | Distinctive UI with ready design systems, font pairings, CSS animations. Anti-AI-slop. | ~140 |
+| **[mcp-builder](./mcp-builder)** | MCP server development with FastMCP (Python) and MCP SDK (TypeScript). | ~250 |
+| **[mvp-launcher](./mvp-launcher)** | Portable MVP workflow: start sprints, manage context, session handoffs. | ~260 |
 | **[code-review](./code-review)** | Verification gates, anti-performative agreement, code-reviewer workflow. | ~460 |
-| **[mcp-builder](./mcp-builder)** | MCP server development with FastMCP (Python) and MCP SDK (TypeScript). | ~2k |
 | **[skill-creator](./skill-creator)** | Guide for creating effective Claude Code skills. | ~360 |
 | **[subagent-creator](./subagent-creator)** | Guide for creating custom subagents. | ~570 |
-| **[beads-workflow](./beads-workflow)** | Session management with beads issue tracker. Auto-init, task lifecycle, sync. | ~300 |
-| **[daily-planner](./daily-planner)** | Daily planning workflow. Fetch ready tasks, prioritize, track progress. | ~150 |
+| **[beads-workflow](./beads-workflow)** | Session management with beads issue tracker. Auto-init, task lifecycle, sync. | ~170 |
 | **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks, detect-secrets. | ~400 |
 | **[python-testing](./python-testing)** | Pytest best practices, fixtures, async testing, mocking. Includes test-writer agent. | ~800 |
 | **[tasks-auditor](./tasks-auditor)** | End-of-day audit of beads tasks. Health checks, stale tasks, duplicates. | ~100 |
@@ -40,10 +43,11 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 ## Highlights
 
 ### Backend Development
-- **Modern tooling enforced**: uv/ruff (Python), Vitest (Node.js)
+- **Modern tooling enforced**: uv/ruff (Python), Vitest (Node.js), Cargo (Rust)
 - Ready templates: Dockerfile, CI/CD, docker-compose
 - Security: OWASP Top 10, Argon2id, parameterized queries
-- Stack-specific: Node.js, Python, Go, Rust
+- Stack-specific skills: Python, Node.js, **Rust** (new!)
+- **$0 Hosting**: Rust + Shuttle.dev/Fly.io for cost-effective MVPs
 
 ### Frontend Design
 - **6 ready design systems** with fonts + colors + spacing
@@ -65,45 +69,20 @@ vi-skills/
 │   └── marketplace.json
 ├── agents/
 │   └── code-reviewer.md
-├── backend-development/
-│   ├── SKILL.md
-│   ├── references/
-│   ├── templates/
-│   └── scripts/
-├── frontend-design/
-│   ├── SKILL.md
-│   └── references/
-├── code-review/
-│   ├── SKILL.md
-│   ├── references/
-│   └── scripts/
-├── mcp-builder/
-│   ├── SKILL.md
-│   ├── reference/
-│   └── scripts/
-├── skill-creator/
-│   ├── SKILL.md
-│   ├── references/
-│   └── scripts/
-├── subagent-creator/
-│   ├── SKILL.md
-│   ├── references/
-│   └── scripts/
-├── beads-workflow/
-│   ├── SKILL.md
-│   └── references/
-├── daily-planner/
-│   └── SKILL.md
-├── secrets-guardian/
-│   ├── SKILL.md
-│   ├── assets/
-│   └── references/
-├── python-testing/
-│   ├── SKILL.md
-│   ├── agents/
-│   └── references/
-└── tasks-auditor/
-    └── SKILL.md
+├── backend-core/           # Language-agnostic patterns
+├── backend-python/         # FastAPI, SQLAlchemy, uv/ruff
+├── backend-nodejs/         # NestJS, Drizzle, Vitest
+├── backend-rust/           # Axum, teloxide, Shuttle/Fly.io
+├── frontend-design/        # Design systems, typography
+├── mcp-builder/            # MCP server development
+├── mvp-launcher/           # MVP workflow management
+├── code-review/            # Verification gates
+├── skill-creator/          # Create skills
+├── subagent-creator/       # Create subagents
+├── beads-workflow/         # Issue tracker workflow
+├── secrets-guardian/       # Secrets protection
+├── python-testing/         # Pytest patterns + agent
+└── tasks-auditor/          # Beads health checks
 ```
 
 ## Philosophy
