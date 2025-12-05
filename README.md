@@ -40,6 +40,14 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 | **[code-reviewer](./agents/code-reviewer.md)** | opus | Review code changes between commits. Returns issues with file:line references. |
 | **[python-test-writer](./python-testing/agents/python-test-writer.md)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
 
+## Hooks
+
+| Hook | Event | Description |
+|------|-------|-------------|
+| **[skill-suggester](./hooks)** | SessionStart | Auto-detect project type and suggest relevant skills |
+
+The hook runs at session start and outputs skill recommendations based on project files (Cargo.toml → backend-rust, package.json → backend-nodejs, etc.).
+
 ## Highlights
 
 ### Backend Development
@@ -67,6 +75,9 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 vi-skills/
 ├── .claude-plugin/
 │   └── marketplace.json
+├── hooks/
+│   ├── hooks.json           # Plugin hook config
+│   └── skill-suggester.sh   # Auto-suggest skills
 ├── agents/
 │   └── code-reviewer.md
 ├── backend-core/           # Language-agnostic patterns
