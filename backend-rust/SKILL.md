@@ -532,39 +532,60 @@ volumes:
   pgdata:
 ```
 
-### Option 3: Docker Compose + Traefik (Direct Control)
+### Option 3: Docker Compose + Caddy (Direct Control)
 
-For those who want minimal overhead, no extra abstraction.
+For those who want minimal overhead, no extra abstraction. Caddy = auto SSL, zero config.
+
+**Caddyfile:**
+
+```
+myapp.example.com {
+    reverse_proxy myapp:3000
+}
+
+api.example.com {
+    reverse_proxy api:8080
+}
+
+# Add more apps as needed
+```
 
 **docker-compose.yml:**
 
 ```yaml
 services:
-  traefik:
-    image: traefik:v3.2
-    command:
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.email=you@example.com"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - letsencrypt:/letsencrypt
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
 
   myapp:
     build: .
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.myapp.rule=Host(`myapp.example.com`)"
-      - "traefik.http.routers.myapp.tls.certresolver=letsencrypt"
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/app
+      - RUST_LOG=info
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: app
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  letsencrypt:
+  caddy_data:
+  caddy_config:
+  pgdata:
 ```
 
 ```bash
