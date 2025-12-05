@@ -1,7 +1,7 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-15-blue?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/Skills-14-blue?style=flat-square)](#skills)
 [![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
@@ -24,7 +24,6 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 | **[backend-rust](./backend-rust)** | Rust backend with Axum, SQLx, teloxide (Telegram). Shuttle/Fly.io deployment. $0 hosting. | ~400 |
 | **[frontend-design](./frontend-design)** | Distinctive UI with ready design systems, font pairings, CSS animations. Anti-AI-slop. | ~140 |
 | **[mcp-builder](./mcp-builder)** | MCP server development with FastMCP (Python) and MCP SDK (TypeScript). | ~250 |
-| **[mvp-launcher](./mvp-launcher)** | Portable MVP workflow: start sprints, manage context, session handoffs. | ~260 |
 | **[code-review](./code-review)** | Verification gates, anti-performative agreement, code-reviewer workflow. | ~460 |
 | **[skill-creator](./skill-creator)** | Guide for creating effective Claude Code skills. | ~360 |
 | **[subagent-creator](./subagent-creator)** | Guide for creating custom subagents. | ~570 |
@@ -76,7 +75,6 @@ vi-skills/
 ├── backend-rust/           # Axum, teloxide, Shuttle/Fly.io
 ├── frontend-design/        # Design systems, typography
 ├── mcp-builder/            # MCP server development
-├── mvp-launcher/           # MVP workflow management
 ├── code-review/            # Verification gates
 ├── skill-creator/          # Create skills
 ├── subagent-creator/       # Create subagents
