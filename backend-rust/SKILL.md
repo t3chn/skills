@@ -2,8 +2,8 @@
 name: backend-rust
 description: |
   Rust backend development with Axum, SQLx, teloxide (Telegram bots).
-  Deployment: Self-hosted VPS + Coolify (multiple apps, €17/mo) or Shuttle.dev (single app, $0).
-  Triggers: "rust backend", "axum", "teloxide", "telegram bot rust", "shuttle", "coolify", "deploy rust"
+  Deployment: Shuttle.dev (single app, $0) or VPS + Docker + Caddy (multiple apps, ~€17/mo).
+  Triggers: "rust backend", "axum", "teloxide", "telegram bot rust", "shuttle", "caddy", "deploy rust"
 ---
 
 # Rust Backend Development
@@ -19,20 +19,20 @@ HOW MANY APPS?
 │
 ├─ Single app, zero config → Shuttle.dev ($0)
 │
-└─ Multiple apps / full control → VPS + Coolify (~€17/mo)
+└─ Multiple apps → VPS + Docker + Caddy (~€17/mo)
     └─ Unlimited apps, DBs, bots on one server
 ```
 
 **Cost comparison:**
 
-| Apps | Shuttle/Fly.io | VPS + Coolify |
-|------|----------------|---------------|
+| Apps | Per-app PaaS | VPS + Caddy |
+|------|--------------|-------------|
 | 1 | $0-5 | €17 |
 | 3 | $15 | €17 |
 | 5 | $25 | €17 |
 | 10 | $50 | €17 |
 
-**Recommendation:** Start with Shuttle for first app. Move to VPS when you have 2+ apps.
+**Recommendation:** Start with Shuttle. Move to VPS + Caddy when you have 2+ apps.
 
 ## Project Setup
 
@@ -473,22 +473,13 @@ async fn main() -> ShuttleAxum {
 cargo shuttle deploy
 ```
 
-### Option 2: VPS + Coolify (Multiple Apps)
+### Option 2: VPS + Docker + Caddy (Multiple Apps)
 
 Best for: 2+ apps, telegram bots, full control, predictable costs.
 
 **VPS Providers (EU):**
 - OVH Kimsufi: €17/mo (4c/8t, 32GB RAM, 2x450GB SSD)
 - Hetzner CX22: €4.5/mo (2 vCPU, 4GB RAM) — lighter workloads
-
-**Setup Coolify:**
-
-```bash
-# On fresh Ubuntu 22.04+ VPS
-curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
-```
-
-Then via web UI: add apps from Git, Coolify handles SSL, domains, deployments.
 
 **Dockerfile (universal):**
 
@@ -506,35 +497,6 @@ COPY --from=builder /app/target/release/myapp /usr/local/bin/
 ENV RUST_LOG=info
 CMD ["myapp"]
 ```
-
-**docker-compose.yml:**
-
-```yaml
-services:
-  app:
-    build: .
-    environment:
-      - DATABASE_URL=postgres://user:pass@db:5432/app
-      - RUST_LOG=info
-    depends_on:
-      - db
-
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: app
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
-```
-
-### Option 3: Docker Compose + Caddy (Direct Control)
-
-For those who want minimal overhead, no extra abstraction. Caddy = auto SSL, zero config.
 
 **Caddyfile:**
 
