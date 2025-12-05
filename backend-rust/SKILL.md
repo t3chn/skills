@@ -1,27 +1,38 @@
 ---
 name: backend-rust
 description: |
-  Rust backend development with Axum, SQLx, teloxide (Telegram bots), Shuttle.dev/Fly.io deployment.
-  Optimized for $0 hosting MVP projects. For general patterns (API design, auth, security) see backend-core.
-  Triggers: "rust backend", "axum", "teloxide", "telegram bot rust", "shuttle", "fly.io rust"
+  Rust backend development with Axum, SQLx, teloxide (Telegram bots).
+  Deployment: Self-hosted VPS + Coolify (multiple apps, €17/mo) or Shuttle.dev (single app, $0).
+  Triggers: "rust backend", "axum", "teloxide", "telegram bot rust", "shuttle", "coolify", "deploy rust"
 ---
 
 # Rust Backend Development
 
-Modern Rust backend with Axum, SQLx, teloxide. Optimized for $0 hosting.
+Modern Rust backend with Axum, SQLx, teloxide. Cost-optimized deployment.
 
 **For general patterns** (API design, auth, security, architecture): use `backend-core`
 
-## Stack Decision
+## Deployment Strategy
 
 ```
-PROJECT TYPE?
+HOW MANY APPS?
 │
-├─ Telegram Bot → teloxide + Fly.io ($0)
-├─ REST API → Axum + Shuttle.dev ($0)
-├─ CLI Tool → clap + crates.io
-└─ Web App Backend → Axum + SQLx + Shuttle.dev
+├─ Single app, zero config → Shuttle.dev ($0)
+│
+└─ Multiple apps / full control → VPS + Coolify (~€17/mo)
+    └─ Unlimited apps, DBs, bots on one server
 ```
+
+**Cost comparison:**
+
+| Apps | Shuttle/Fly.io | VPS + Coolify |
+|------|----------------|---------------|
+| 1 | $0-5 | €17 |
+| 3 | $15 | €17 |
+| 5 | $25 | €17 |
+| 10 | $50 | €17 |
+
+**Recommendation:** Start with Shuttle for first app. Move to VPS when you have 2+ apps.
 
 ## Project Setup
 
@@ -440,7 +451,9 @@ async fn handle_callback(bot: Bot, q: CallbackQuery) -> HandlerResult {
 
 ## Deployment
 
-### Shuttle.dev (API/Web)
+### Option 1: Shuttle.dev (Single App, Zero Config)
+
+Best for: First app, quick prototypes, $0 budget.
 
 ```rust
 // src/main.rs for Shuttle
@@ -457,47 +470,105 @@ async fn main() -> ShuttleAxum {
 ```
 
 ```bash
-# Deploy
 cargo shuttle deploy
 ```
 
-### Fly.io (Telegram Bot)
+### Option 2: VPS + Coolify (Multiple Apps)
 
-**Dockerfile:**
+Best for: 2+ apps, telegram bots, full control, predictable costs.
+
+**VPS Providers (EU):**
+- OVH Kimsufi: €17/mo (4c/8t, 32GB RAM, 2x450GB SSD)
+- Hetzner CX22: €4.5/mo (2 vCPU, 4GB RAM) — lighter workloads
+
+**Setup Coolify:**
+
+```bash
+# On fresh Ubuntu 22.04+ VPS
+curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+```
+
+Then via web UI: add apps from Git, Coolify handles SSL, domains, deployments.
+
+**Dockerfile (universal):**
 
 ```dockerfile
-FROM rust:1.83-slim as builder
+FROM rust:1.83-slim AS builder
 WORKDIR /app
-COPY . .
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo build --release && rm -rf src
+COPY src ./src
 RUN cargo build --release
 
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/release/mybot /usr/local/bin/
-CMD ["mybot"]
+COPY --from=builder /app/target/release/myapp /usr/local/bin/
+ENV RUST_LOG=info
+CMD ["myapp"]
 ```
 
-**fly.toml:**
+**docker-compose.yml:**
 
-```toml
-app = "my-telegram-bot"
-primary_region = "ams"
+```yaml
+services:
+  app:
+    build: .
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/app
+      - RUST_LOG=info
+    depends_on:
+      - db
 
-[build]
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: app
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
-[env]
-  RUST_LOG = "info"
+volumes:
+  pgdata:
+```
 
-[[vm]]
-  memory = "256mb"
-  cpu_kind = "shared"
-  cpus = 1
+### Option 3: Docker Compose + Traefik (Direct Control)
+
+For those who want minimal overhead, no extra abstraction.
+
+**docker-compose.yml:**
+
+```yaml
+services:
+  traefik:
+    image: traefik:v3.2
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.email=you@example.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+
+  myapp:
+    build: .
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.myapp.rule=Host(`myapp.example.com`)"
+      - "traefik.http.routers.myapp.tls.certresolver=letsencrypt"
+
+volumes:
+  letsencrypt:
 ```
 
 ```bash
-fly launch
-fly secrets set TELOXIDE_TOKEN=your_bot_token
-fly deploy
+docker compose up -d
 ```
 
 ## Testing
