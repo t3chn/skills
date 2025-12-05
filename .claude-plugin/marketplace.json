@@ -26,7 +26,8 @@
         "./beads-workflow",
         "./secrets-guardian",
         "./python-testing",
-        "./tasks-auditor"
+        "./tasks-auditor",
+        "./mvp-launcher"
       ],
       "agents": [
         "./python-testing/agents/python-test-writer.md"
