@@ -12,6 +12,15 @@ Modern Rust backend with Axum, SQLx, teloxide. Cost-optimized deployment.
 
 **For general patterns** (API design, auth, security, architecture): use `backend-core`
 
+## Build & Run
+
+**Compile locally by default** — remote servers may be too weak for Rust compilation. Deploy pre-built binaries unless user explicitly requests remote build.
+
+```bash
+cargo build --release            # Build locally
+scp target/release/myapp server: # Deploy binary
+```
+
 ## Deployment Strategy
 
 ```
