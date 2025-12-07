@@ -17,8 +17,14 @@ Modern Rust backend with Axum, SQLx, teloxide. Cost-optimized deployment.
 **Compile locally by default** — remote servers may be too weak for Rust compilation. Deploy pre-built binaries unless user explicitly requests remote build.
 
 ```bash
-cargo build --release            # Build locally
-scp target/release/myapp server: # Deploy binary
+# Same architecture (Linux → Linux)
+cargo build --release
+scp target/release/myapp server:
+
+# Cross-compile (macOS → Linux)
+rustup target add x86_64-unknown-linux-gnu
+cargo build --release --target x86_64-unknown-linux-gnu
+scp target/x86_64-unknown-linux-gnu/release/myapp server:
 ```
 
 ## Deployment Strategy
