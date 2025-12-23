@@ -1,0 +1,9 @@
+{
+  "name": "go-dev",
+  "description": "Modern Go development toolkit with skills for project structure, error handling, testing patterns, Taskfile automation, and AI-assisted code review",
+  "author": {
+    "name": "VI",
+    "email": "vi@local"
+  },
+  "version": "1.0.0"
+}
