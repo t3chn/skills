@@ -7,6 +7,35 @@
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/skill-suggester.sh",
           "description": "Auto-detect project type and suggest relevant vi-skills"
+        },
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-context.sh",
+          "description": "Inject beads task context and serena project awareness"
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "Grep|Read",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/suggest-semantic-tools.sh",
+          "description": "Suggest serena semantic tools when project is active"
+        }
+      ]
+    }
+  ],
+  "Stop": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-persist.sh",
+          "description": "Persist beads task state at session end"
         }
       ]
     }

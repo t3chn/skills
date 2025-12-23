@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "Vi's custom skills collection",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "plugins": [
     {
       "name": "vi-skills",
-      "description": "Collection of custom skills",
+      "description": "Collection of custom skills for reliable agent execution",
       "source": "./",
       "strict": false,
       "hooks": "./hooks/hooks.json",
@@ -29,13 +29,29 @@
         "./secrets-guardian",
         "./python-testing",
         "./tasks-auditor",
-        "./support-docs"
+        "./support-docs",
+        "./serena-navigation",
+        "./reliable-execution",
+        "./go-dev/skills/project-structure",
+        "./go-dev/skills/error-handling",
+        "./go-dev/skills/testing-patterns",
+        "./go-dev/skills/taskfile-automation",
+        "./go-dev/skills/logging-slog",
+        "./go-dev/skills/context-patterns"
       ],
       "agents": [
-        "./python-testing/agents/python-test-writer.md"
+        "./python-testing/agents/python-test-writer.md",
+        "./agents/code-reviewer.md",
+        "./agents/task-tracker.md",
+        "./agents/code-navigator.md",
+        "./agents/session-checkpoint.md",
+        "./go-dev/agents/go-code-reviewer.md",
+        "./go-dev/agents/go-project-init.md",
+        "./go-dev/agents/go-test-generator.md"
       ],
       "commands": [
-        "./.claude/commands"
+        "./commands",
+        "./go-dev/commands"
       ]
     }
   ]

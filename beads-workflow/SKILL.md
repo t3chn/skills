@@ -177,6 +177,50 @@ If task is still in_progress when session ends:
 2. Run `bd sync` to save state
 3. Brief summary of what was done
 
+## Claude Code Integration
+
+### Automatic Context Injection
+
+The `session-context.sh` hook automatically injects beads context at session start:
+
+1. **`bd prime` output** — If a task is in progress, its full context is injected
+2. **Available tasks notification** — If no in-progress task, notifies about ready tasks
+
+This means you don't need to manually call `bd ready` at session start — context is already there.
+
+### Session Persistence
+
+The `session-persist.sh` Stop hook runs `bd sync` when session ends, ensuring:
+- Task status is saved
+- Progress is not lost on context reset
+- Other team members see updates
+
+### Task Tracker Agent
+
+For complex implementation work, the `task-tracker` agent automates the full lifecycle:
+
+```
+User: "Implement dark mode"
+       │
+       ▼
+task-tracker agent:
+  1. Checks bd ready --json
+  2. Creates task if none exists
+  3. Starts task with bd start
+  4. Creates TodoWrite subtasks
+  5. Completes with bd done
+```
+
+Invoke with: `Task(subagent_type="task-tracker", prompt="Track implementation of dark mode")`
+
+### Quick Commands
+
+Use `/task` command for quick operations:
+- `/task` — Show current task context
+- `/task add "description"` — Create new task
+- `/task done` — Mark current complete
+- `/task block "reason"` — Mark blocked
+
 ## Reference Files
 
 - For detailed session lifecycle: See [references/session-lifecycle.md](references/session-lifecycle.md)
