@@ -1,9 +1,7 @@
 ---
-name: backend-nodejs
-description: |
-  Node.js/TypeScript backend with NestJS, Drizzle/Prisma, modern tooling (Vitest, ESLint 9).
-  For general patterns (API design, auth, security) see backend-core.
-  Triggers: "nodejs backend", "nestjs", "express", "drizzle", "prisma", "vitest"
+name: Node.js Backend
+description: This skill should be used when the user asks about "Node.js backend", "NestJS", "Express", "Drizzle ORM", "Prisma", "Vitest", "TypeScript backend", "pnpm", or needs Node.js-specific backend development guidance (2024-2025 best practices).
+version: 1.0.0
 ---
 
 # Node.js/TypeScript Backend Development
@@ -453,3 +451,9 @@ vi.mock('./user.repository', () => ({
 - Sync database calls -> async with connection pooling
 - `require()` -> `import`
 - `any` type -> proper typing with generics
+
+## Related Skills
+
+- **backend-core** — Language-agnostic patterns (API design, auth, security)
+- **frontend-design** — React/Vue/Svelte UI patterns
+- **secrets-guardian** — Pre-commit security hooks

@@ -1,9 +1,7 @@
 ---
-name: backend-python
-description: |
-  Python backend development with FastAPI, SQLAlchemy, modern tooling (uv, ruff).
-  For general patterns (API design, auth, security) see backend-core.
-  Triggers: "python backend", "fastapi", "sqlalchemy", "uv", "ruff"
+name: Python Backend
+description: This skill should be used when the user asks about "Python backend", "FastAPI", "SQLAlchemy", "uv package manager", "ruff linter", "async Python", "Pydantic", "Python API", or needs Python-specific backend development guidance (2024-2025 best practices).
+version: 1.0.0
 ---
 
 # Python Backend Development
@@ -329,3 +327,9 @@ async def db_session():
 ❌ `bcrypt` → ✅ `argon2-cffi`
 ❌ Python < 3.11 → ✅ Python 3.12+
 ❌ sync SQLAlchemy → ✅ async with asyncpg
+
+## Related Skills
+
+- **backend-core** — Language-agnostic patterns (API design, auth, security)
+- **python-testing** — Pytest patterns, fixtures, mocking
+- **secrets-guardian** — Pre-commit security hooks

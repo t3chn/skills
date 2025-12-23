@@ -6,30 +6,25 @@
   },
   "metadata": {
     "description": "Vi's custom skills collection",
-    "version": "1.2.0"
+    "version": "2.0.0"
   },
   "plugins": [
     {
       "name": "vi-skills",
-      "description": "Collection of custom skills for reliable agent execution",
+      "description": "Custom skills for backend development and reliable agent execution",
       "source": "./",
       "strict": false,
       "hooks": "./hooks/hooks.json",
       "skills": [
-        "./mcp-builder",
-        "./skill-creator",
-        "./subagent-creator",
         "./backend-core",
         "./backend-python",
         "./backend-nodejs",
         "./backend-rust",
-        "./frontend-design",
-        "./code-review",
+        "./mcp-builder",
+        "./python-testing",
         "./beads-workflow",
         "./secrets-guardian",
-        "./python-testing",
         "./tasks-auditor",
-        "./support-docs",
         "./serena-navigation",
         "./reliable-execution",
         "./go-dev/skills/project-structure",
@@ -40,11 +35,10 @@
         "./go-dev/skills/context-patterns"
       ],
       "agents": [
-        "./python-testing/agents/python-test-writer.md",
-        "./agents/code-reviewer.md",
         "./agents/task-tracker.md",
         "./agents/code-navigator.md",
         "./agents/session-checkpoint.md",
+        "./python-testing/agents/python-test-writer.md",
         "./go-dev/agents/go-code-reviewer.md",
         "./go-dev/agents/go-project-init.md",
         "./go-dev/agents/go-test-generator.md"

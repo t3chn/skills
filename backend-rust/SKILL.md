@@ -1,9 +1,7 @@
 ---
-name: backend-rust
-description: |
-  Rust backend development with Axum, SQLx, teloxide (Telegram bots).
-  Deployment: Shuttle.dev (single app, $0) or VPS + Docker + Caddy (multiple apps, ~€17/mo).
-  Triggers: "rust backend", "axum", "teloxide", "telegram bot rust", "shuttle", "caddy", "deploy rust"
+name: Rust Backend
+description: This skill should be used when the user asks about "Rust backend", "Axum", "SQLx", "teloxide", "Telegram bot Rust", "Shuttle.dev", "Caddy reverse proxy", "deploy Rust", or needs Rust-specific backend development guidance (2024-2025 best practices).
+version: 1.0.0
 ---
 
 # Rust Backend Development
@@ -605,3 +603,8 @@ mod tests {
 - Raw SQL strings → `sqlx::query_as!` for type safety
 - `println!` → `tracing::info!`
 - `.env` in git → use secrets management
+
+## Related Skills
+
+- **backend-core** — Language-agnostic patterns (API design, auth, security)
+- **secrets-guardian** — Pre-commit security hooks

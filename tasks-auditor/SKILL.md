@@ -1,8 +1,7 @@
 ---
-name: tasks-auditor
-description: |
-  End-of-day audit of beads tasks across multiple projects.
-  Triggers: "аудит задач", "проверь задачи", "audit tasks", "ревизия задач", "end of day review"
+name: Tasks Auditor
+description: This skill should be used when the user asks about "audit tasks", "beads audit", "task review", "end of day review", "check tasks health", or needs to audit beads tasks across projects.
+version: 1.0.0
 ---
 
 # Tasks Auditor

@@ -1,10 +1,7 @@
 ---
-name: secrets-guardian
-description: |
-  Protect repositories from accidental secret commits. Essential when working with AI agents.
-  Use when: setting up new project, adding pre-commit hooks, scanning for secrets, fixing leaked credentials.
-  Triggers: "настрой защиту секретов", "setup secrets", "check secrets", "scan secrets", "проверь секреты", "pre-commit", "gitleaks".
-  PROACTIVELY suggest when creating new projects or when .pre-commit-config.yaml is missing.
+name: Secrets Guardian
+description: This skill should be used when the user asks about "secrets protection", "pre-commit hooks", "gitleaks", "scan secrets", "secret detection", "credential leaks", or needs to set up repository protection from accidental secret commits.
+version: 1.0.0
 ---
 
 # Secrets Guardian

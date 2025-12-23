@@ -1,8 +1,7 @@
 ---
-name: python-testing
-description: |
-  Python testing best practices with pytest. Covers unit, integration, async tests, mocking, fixtures.
-  Triggers: "напиши тесты", "write tests", "add tests", "test coverage", "pytest"
+name: Python Testing
+description: This skill should be used when the user asks about "pytest", "Python tests", "write tests", "test fixtures", "mocking", "async tests", "parametrize", "test coverage", or needs guidance on Python testing best practices.
+version: 1.0.0
 ---
 
 # Python Testing
