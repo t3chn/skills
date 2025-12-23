@@ -1,0 +1,9 @@
+{
+  "name": "node-dev",
+  "description": "Modern Node.js/TypeScript development toolkit with NestJS patterns, Drizzle ORM, Vitest testing, and ESLint 9 flat config",
+  "author": {
+    "name": "VI",
+    "email": "vi@local"
+  },
+  "version": "1.0.0"
+}

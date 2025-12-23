@@ -1,10 +1,7 @@
 ---
-name: beads-workflow
-description: |
-  Proactive workflow for projects using beads issue tracker.
-  ACTIVATE AUTOMATICALLY when session starts in directory with .beads/.
-  Use when: starting work session, selecting tasks, completing tasks, creating subtasks.
-  Triggers: "какие задачи", "что делать", "готово", "done", "следующая задача", "создай задачу", "tasks", "next task", "pick task", "обнови задачи", "refresh", "sync".
+name: Beads Workflow
+description: This skill should be used when the user asks about "beads", "task management", "bd command", "issue tracker", "какие задачи", "что делать", "готово", "done", "следующая задача", "создай задачу", "tasks", "next task", "pick task", or needs guidance on beads-based project task management. ACTIVATE AUTOMATICALLY when session starts in directory with .beads/.
+version: 1.0.0
 ---
 
 # Beads Workflow

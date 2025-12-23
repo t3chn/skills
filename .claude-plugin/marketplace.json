@@ -5,8 +5,8 @@
     "email": "netmin@pm.me"
   },
   "metadata": {
-    "description": "Vi's custom skills collection",
-    "version": "2.0.0"
+    "description": "Vi's custom skills collection with hybrid architecture",
+    "version": "3.0.0"
   },
   "plugins": [
     {
@@ -17,16 +17,22 @@
       "hooks": "./hooks/hooks.json",
       "skills": [
         "./backend-core",
-        "./backend-python",
-        "./backend-nodejs",
-        "./backend-rust",
-        "./mcp-builder",
-        "./python-testing",
         "./beads-workflow",
         "./secrets-guardian",
-        "./tasks-auditor",
-        "./serena-navigation",
+        "./mcp-builder",
         "./reliable-execution",
+        "./serena-navigation",
+        "./tasks-auditor",
+        "./python-dev/skills/fastapi-patterns",
+        "./python-dev/skills/testing-pytest",
+        "./python-dev/skills/modern-tooling",
+        "./node-dev/skills/nestjs-patterns",
+        "./node-dev/skills/drizzle-orm",
+        "./node-dev/skills/testing-vitest",
+        "./rust-dev/skills/axum-patterns",
+        "./rust-dev/skills/sqlx",
+        "./rust-dev/skills/teloxide",
+        "./rust-dev/skills/deployment",
         "./go-dev/skills/project-structure",
         "./go-dev/skills/error-handling",
         "./go-dev/skills/testing-patterns",
@@ -38,13 +44,18 @@
         "./agents/task-tracker.md",
         "./agents/code-navigator.md",
         "./agents/session-checkpoint.md",
-        "./python-testing/agents/python-test-writer.md",
-        "./go-dev/agents/go-code-reviewer.md",
-        "./go-dev/agents/go-project-init.md",
-        "./go-dev/agents/go-test-generator.md"
+        "./python-dev/agents/python-test-writer",
+        "./node-dev/agents/node-code-reviewer",
+        "./rust-dev/agents/rust-code-reviewer",
+        "./go-dev/agents/go-code-reviewer",
+        "./go-dev/agents/go-project-init",
+        "./go-dev/agents/go-test-generator"
       ],
       "commands": [
         "./commands",
+        "./python-dev/commands",
+        "./node-dev/commands",
+        "./rust-dev/commands",
         "./go-dev/commands"
       ]
     }

@@ -1,0 +1,9 @@
+{
+  "name": "python-dev",
+  "description": "Modern Python development toolkit with FastAPI patterns, pytest testing, async SQLAlchemy, and modern tooling (uv, ruff)",
+  "author": {
+    "name": "VI",
+    "email": "vi@local"
+  },
+  "version": "1.0.0"
+}

@@ -11,13 +11,13 @@ Modern Python testing with pytest ecosystem.
 ## Tooling
 
 **ALWAYS use:**
-- `pytest` — test runner
-- `pytest-cov` — coverage
-- `pytest-asyncio` — async tests
-- `pytest-mock` — mocking (wraps unittest.mock)
-- `hypothesis` — property-based testing (when appropriate)
-- `respx` / `pytest-httpx` — HTTP mocking for httpx
-- `aioresponses` — HTTP mocking for aiohttp
+- `pytest` - test runner
+- `pytest-cov` - coverage
+- `pytest-asyncio` - async tests
+- `pytest-mock` - mocking (wraps unittest.mock)
+- `hypothesis` - property-based testing (when appropriate)
+- `respx` / `pytest-httpx` - HTTP mocking for httpx
+- `aioresponses` - HTTP mocking for aiohttp
 
 **NEVER use:**
 - `unittest` style (use pytest native)
@@ -351,19 +351,7 @@ pytest --cov=src --cov-fail-under=80
 - Write tests that depend on execution order
 - Mock everything (some integration is good)
 
-## References
+## Related Skills
 
-- [Pytest Fixtures](./references/fixtures.md)
-- [Async Testing](./references/async-testing.md)
-- [Mocking Patterns](./references/mocking.md)
-
-## Agent
-
-Use the **python-test-writer** agent for generating comprehensive tests:
-
-```
-Task: python-test-writer
-Prompt: Write tests for src/mypackage/service.py
-```
-
-See [agents/python-test-writer.md](./agents/python-test-writer.md)
+- **fastapi-patterns** - FastAPI testing specifics
+- **modern-tooling** - pytest configuration in pyproject.toml

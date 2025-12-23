@@ -1,87 +1,14 @@
 ---
-name: Python Backend
-description: This skill should be used when the user asks about "Python backend", "FastAPI", "SQLAlchemy", "uv package manager", "ruff linter", "async Python", "Pydantic", "Python API", or needs Python-specific backend development guidance (2024-2025 best practices).
+name: FastAPI Patterns
+description: This skill should be used when the user asks about "FastAPI", "Python API", "async endpoints", "Pydantic schemas", "dependency injection", "SQLAlchemy async", or needs guidance on FastAPI application architecture and patterns.
 version: 1.0.0
 ---
 
-# Python Backend Development
+# FastAPI Patterns
 
-Modern Python backend with FastAPI, SQLAlchemy, uv, ruff.
+Production-ready FastAPI with async SQLAlchemy, Pydantic v2, and modern patterns.
 
-**For general patterns** (API design, auth, security, architecture): use `backend-core`
-
-## Modern Tooling (2025)
-
-### Package Manager: uv (NOT pip/poetry)
-
-```bash
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Create project
-uv init myproject && cd myproject
-
-# Add dependencies
-uv add fastapi uvicorn pydantic sqlalchemy
-
-# Add dev dependencies
-uv add --dev pytest ruff mypy pytest-asyncio
-
-# Run
-uv run python -m myapp
-uv run pytest
-```
-
-### pyproject.toml
-
-```toml
-[project]
-name = "myapp"
-version = "0.1.0"
-requires-python = ">=3.12"
-dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.32.0",
-    "pydantic>=2.10.0",
-    "sqlalchemy>=2.0.36",
-    "httpx>=0.27.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.3.0",
-    "pytest-asyncio>=0.24.0",
-    "ruff>=0.8.0",
-    "mypy>=1.13.0",
-]
-
-[tool.ruff]
-target-version = "py312"
-line-length = 100
-
-[tool.ruff.lint]
-select = ["E", "W", "F", "I", "B", "C4", "UP", "ARG", "SIM", "S", "ASYNC"]
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = ["tests"]
-
-[tool.mypy]
-python_version = "3.12"
-strict = true
-```
-
-### Linting: ruff (NOT flake8/black)
-
-```bash
-ruff check .          # Lint
-ruff check --fix .    # Lint + fix
-ruff format .         # Format
-```
-
-## FastAPI Patterns
-
-### Project Structure
+## Project Structure
 
 ```
 src/
@@ -103,7 +30,7 @@ tests/
 ├── test_users.py
 ```
 
-### App Setup
+## App Setup
 
 ```python
 from contextlib import asynccontextmanager
@@ -124,7 +51,7 @@ app = FastAPI(
 )
 ```
 
-### Router Pattern
+## Router Pattern
 
 ```python
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -143,7 +70,7 @@ async def get_user(
     return user
 ```
 
-### Dependency Injection
+## Dependency Injection
 
 ```python
 from functools import lru_cache
@@ -164,7 +91,7 @@ async def get_user_service(
     return UserService(db)
 ```
 
-### Pydantic Schemas
+## Pydantic Schemas
 
 ```python
 from pydantic import BaseModel, Field, ConfigDict
@@ -181,9 +108,9 @@ class UserResponse(UserBase):
     model_config = ConfigDict(from_attributes=True)
 ```
 
-## SQLAlchemy 2.0 Patterns
+## SQLAlchemy 2.0 Async
 
-### Async Setup
+### Setup
 
 ```python
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -281,9 +208,7 @@ def create_access_token(data: dict, expires_delta: timedelta) -> str:
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 ```
 
-## Testing
-
-### Async Testing with pytest
+## Testing FastAPI
 
 ```python
 import pytest
@@ -319,17 +244,7 @@ async def db_session():
         await conn.run_sync(Base.metadata.drop_all)
 ```
 
-## Anti-patterns
-
-❌ `pip install` without lockfile → ✅ `uv add`
-❌ `requirements.txt` → ✅ `pyproject.toml`
-❌ `flake8 + black + isort` → ✅ `ruff`
-❌ `bcrypt` → ✅ `argon2-cffi`
-❌ Python < 3.11 → ✅ Python 3.12+
-❌ sync SQLAlchemy → ✅ async with asyncpg
-
 ## Related Skills
 
-- **backend-core** — Language-agnostic patterns (API design, auth, security)
-- **python-testing** — Pytest patterns, fixtures, mocking
-- **secrets-guardian** — Pre-commit security hooks
+- **testing-pytest** - Comprehensive pytest patterns
+- **modern-tooling** - uv, ruff, pyproject.toml configuration

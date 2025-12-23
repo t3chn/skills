@@ -1,0 +1,7 @@
+# Local project configs
+.beads/
+.serena/
+
+# Generated files
+@AGENTS.md
+AGENTS.md

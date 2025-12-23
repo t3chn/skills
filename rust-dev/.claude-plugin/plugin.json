@@ -1,0 +1,9 @@
+{
+  "name": "rust-dev",
+  "description": "Modern Rust backend development toolkit with Axum web framework, SQLx database, teloxide Telegram bots, and deployment patterns",
+  "author": {
+    "name": "VI",
+    "email": "vi@local"
+  },
+  "version": "1.0.0"
+}
