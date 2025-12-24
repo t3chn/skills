@@ -77,16 +77,16 @@
       "description": "Test-Driven Development enforcement with Red-Green-Refactor workflow validation",
       "source": "./tdd-enforcer",
       "strict": true,
-      "hooks": "./tdd-enforcer/hooks/hooks.json",
+      "hooks": "./hooks/hooks.json",
       "skills": [
-        "./tdd-enforcer/skills/tdd-workflow"
+        "./skills/tdd-workflow"
       ],
       "agents": [
-        "./tdd-enforcer/agents/tdd-coach/AGENT.md",
-        "./tdd-enforcer/agents/test-analyzer/AGENT.md"
+        "./agents/tdd-coach/AGENT.md",
+        "./agents/test-analyzer/AGENT.md"
       ],
       "commands": [
-        "./tdd-enforcer/commands"
+        "./commands"
       ]
     }
   ]
