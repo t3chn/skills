@@ -76,7 +76,7 @@
       "name": "tdd-enforcer",
       "description": "Test-Driven Development enforcement with Red-Green-Refactor workflow validation",
       "source": "./tdd-enforcer",
-      "strict": false,
+      "strict": true,
       "hooks": "./tdd-enforcer/hooks/hooks.json",
       "skills": [
         "./tdd-enforcer/skills/tdd-workflow"
