@@ -1,5 +1,11 @@
 # vi-skills Plugin Collection
 
+## 🚨 Date Rule
+
+**Before writing any date:** `date +%Y-%m-%d`
+
+---
+
 ## Quick Start (New Session)
 
 1. `bd prime` — текущая задача
