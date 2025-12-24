@@ -32,25 +32,50 @@ from unified_memory import UnifiedMemory, MemoryResult, HAS_OPENAI, OPENAI_API_K
 # Configuration
 CACHE_PREFIX = "exec_cache:"
 GUIDANCE_PREFIX = "guidance:"
-SIMILARITY_THRESHOLD = 0.85  # High threshold for execution cache
+SIMILARITY_THRESHOLD = 0.75  # Balanced threshold for execution cache (was 0.85)
 GUIDANCE_THRESHOLD = 0.75  # Lower threshold for guidance (more fuzzy matching)
 EMBEDDING_DIM = 1536  # text-embedding-3-small dimension
 EMBEDDING_MAX_CHARS = 8000  # Safe limit for embedding input
+RATE_LIMIT_CALLS = 50  # Max embedding calls per minute
+RATE_LIMIT_WINDOW = 60  # Window in seconds
 
 # Shared embedding cache to avoid duplicate API calls
 _embedding_cache: dict[str, list[float]] = {}
 
+# Rate limiting state
+_rate_limit_calls: list[float] = []  # Timestamps of recent calls
+
+
+def _check_rate_limit() -> bool:
+    """Check if we're within rate limits. Returns True if OK to proceed."""
+    import time
+
+    now = time.time()
+    cutoff = now - RATE_LIMIT_WINDOW
+
+    # Remove old entries
+    global _rate_limit_calls
+    _rate_limit_calls = [t for t in _rate_limit_calls if t > cutoff]
+
+    # Check limit
+    if len(_rate_limit_calls) >= RATE_LIMIT_CALLS:
+        return False
+
+    # Record this call
+    _rate_limit_calls.append(now)
+    return True
+
 
 def get_embedding(text: str, use_cache: bool = True) -> list[float]:
     """
-    Generate embedding using OpenAI with caching.
+    Generate embedding using OpenAI with caching and rate limiting.
 
     Args:
         text: Text to embed (truncated to EMBEDDING_MAX_CHARS)
         use_cache: Whether to use in-memory cache
 
     Returns:
-        Embedding vector (EMBEDDING_DIM floats)
+        Embedding vector (EMBEDDING_DIM floats), or zeros if rate limited
     """
     if not HAS_OPENAI or not OPENAI_API_KEY:
         return [0.0] * EMBEDDING_DIM
@@ -59,9 +84,14 @@ def get_embedding(text: str, use_cache: bool = True) -> list[float]:
     text_truncated = text[:EMBEDDING_MAX_CHARS]
     cache_key = hashlib.md5(text_truncated.encode()).hexdigest()
 
-    # Check cache
+    # Check cache first (no rate limit for cache hits)
     if use_cache and cache_key in _embedding_cache:
         return _embedding_cache[cache_key]
+
+    # Rate limiting check
+    if not _check_rate_limit():
+        print(f"Warning: Rate limit exceeded ({RATE_LIMIT_CALLS}/{RATE_LIMIT_WINDOW}s)")
+        return [0.0] * EMBEDDING_DIM
 
     # Generate embedding
     import openai
