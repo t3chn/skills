@@ -1,0 +1,29 @@
+{
+  "description": "TDD enforcement hooks for Red-Green-Refactor workflow validation",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/stop_tdd_check.py",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/session_start.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "tdd-enforcer",
+  "description": "Test-Driven Development enforcement with Red-Green-Refactor workflow validation across Go, TypeScript, Python, and Rust",
+  "author": {
+    "name": "VI",
+    "email": "vi@local"
+  },
+  "version": "1.0.0"
+}

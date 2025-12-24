@@ -58,7 +58,8 @@
         "./go-dev/agents/go-test-generator",
         "./ts-dev/agents/ts-code-reviewer",
         "./ts-dev/agents/ts-project-init",
-        "./ts-dev/agents/ts-test-generator"
+        "./ts-dev/agents/ts-test-generator",
+        "./rust-dev/agents/rust-test-generator"
       ],
       "commands": [
         "./commands",
@@ -67,6 +68,23 @@
         "./rust-dev/commands",
         "./go-dev/commands",
         "./ts-dev/commands"
+      ]
+    },
+    {
+      "name": "tdd-enforcer",
+      "description": "Test-Driven Development enforcement with Red-Green-Refactor workflow validation",
+      "source": "./tdd-enforcer",
+      "strict": false,
+      "hooks": "./tdd-enforcer/hooks/hooks.json",
+      "skills": [
+        "./tdd-enforcer/skills/tdd-workflow"
+      ],
+      "agents": [
+        "./tdd-enforcer/agents/tdd-coach",
+        "./tdd-enforcer/agents/test-analyzer"
+      ],
+      "commands": [
+        "./tdd-enforcer/commands"
       ]
     }
   ]
