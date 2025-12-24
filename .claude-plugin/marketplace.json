@@ -55,12 +55,12 @@
         "./agents/task-tracker.md",
         "./agents/code-navigator.md",
         "./agents/session-checkpoint.md",
-        "./python-dev/agents/python-test-writer",
-        "./go-dev/agents/go-project-init",
-        "./go-dev/agents/go-test-generator",
-        "./ts-dev/agents/ts-project-init",
-        "./ts-dev/agents/ts-test-generator",
-        "./rust-dev/agents/rust-test-generator"
+        "./python-dev/agents/python-test-writer/AGENT.md",
+        "./go-dev/agents/go-project-init/AGENT.md",
+        "./go-dev/agents/go-test-generator/AGENT.md",
+        "./ts-dev/agents/ts-project-init/AGENT.md",
+        "./ts-dev/agents/ts-test-generator/AGENT.md",
+        "./rust-dev/agents/rust-test-generator/AGENT.md"
       ],
       "commands": [
         "./commands",
@@ -81,8 +81,8 @@
         "./tdd-enforcer/skills/tdd-workflow"
       ],
       "agents": [
-        "./tdd-enforcer/agents/tdd-coach",
-        "./tdd-enforcer/agents/test-analyzer"
+        "./tdd-enforcer/agents/tdd-coach/AGENT.md",
+        "./tdd-enforcer/agents/test-analyzer/AGENT.md"
       ],
       "commands": [
         "./tdd-enforcer/commands"
