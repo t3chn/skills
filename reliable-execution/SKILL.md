@@ -49,7 +49,7 @@ Before starting significant work:
 # Check beads
 bd show 2>/dev/null || echo "No beads task"
 ```
-→ If no task, create one: `bd add "Task description"`
+→ If no task, create one: `bd create --title "Task description"`
 
 ### 2. Context Loaded?
 - SessionStart hook injected `bd prime`?
@@ -157,7 +157,7 @@ Follow "Next Steps" from checkpoint.
 
 ### 4. Update Task Status
 ```bash
-bd start <task-id>  # Resume beads task
+bd update <task-id> --status in_progress  # Resume beads task
 ```
 
 ## Tool Integration
@@ -180,7 +180,7 @@ bd start <task-id>  # Resume beads task
 
 | Anti-Pattern | Better Approach |
 |--------------|-----------------|
-| No task tracking | Start with `bd add` or `/task add` |
+| No task tracking | Start with `bd create` or `/task add` |
 | Discoveries in conversation only | Use `write_memory()` |
 | No progress visibility | Use `TodoWrite` |
 | Waiting until end to save | Checkpoint after each major step |
@@ -192,8 +192,8 @@ bd start <task-id>  # Resume beads task
 User: "Implement user authentication"
 
 1. Create task:
-   bd add "Implement user authentication"
-   bd start <id>
+   bd create --title "Implement user authentication" -t feature -p 1
+   bd update <id> --status in_progress
 
 2. Plan with TodoWrite:
    - Research existing auth patterns
@@ -212,7 +212,8 @@ User: "Implement user authentication"
    - Complete tests → checkpoint + commit
 
 5. Finish:
-   bd done
+   bd close <id> --reason "Implemented with tests"
+   bd sync
    Final checkpoint with summary
 ```
 

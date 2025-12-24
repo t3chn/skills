@@ -99,7 +99,7 @@ mcp__serena__write_memory(
 
 ### 3. Link to Beads (if applicable)
 ```bash
-bd note "Checkpoint saved: checkpoint-<timestamp>.md"
+bd comments add <task-id> "Checkpoint saved: checkpoint-<timestamp>.md"
 ```
 
 ### 4. Confirm to User
