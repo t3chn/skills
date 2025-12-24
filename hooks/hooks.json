@@ -6,6 +6,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/flow-check.sh",
+            "description": "Check production flow compliance"
+          },
+          {
+            "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/skill-suggester.sh",
             "description": "Auto-detect project type and suggest relevant vi-skills"
           },

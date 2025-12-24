@@ -24,6 +24,7 @@
         "./serena-navigation",
         "./tasks-auditor",
         "./context-engineering",
+        "./production-flow",
         "./python-dev/skills/fastapi-patterns",
         "./python-dev/skills/testing-pytest",
         "./python-dev/skills/modern-tooling",
