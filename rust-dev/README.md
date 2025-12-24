@@ -6,6 +6,7 @@ Modern Rust backend development toolkit with Axum web framework, SQLx database, 
 
 | Skill | Description |
 |-------|-------------|
+| [rust-conventions](./skills/rust-conventions/SKILL.md) | Code review context — ownership, error handling, async |
 | [axum-patterns](./skills/axum-patterns/SKILL.md) | Axum web framework, handlers, extractors, middleware |
 | [sqlx](./skills/sqlx/SKILL.md) | Type-safe SQL with compile-time checking |
 | [teloxide](./skills/teloxide/SKILL.md) | Telegram bot framework |
@@ -15,7 +16,9 @@ Modern Rust backend development toolkit with Axum web framework, SQLx database, 
 
 | Agent | Description |
 |-------|-------------|
-| [rust-code-reviewer](./agents/rust-code-reviewer/AGENT.md) | Reviews Rust code for idiomatic patterns and issues |
+| [rust-test-generator](./agents/rust-test-generator/AGENT.md) | Generates Rust tests with proper patterns |
+
+> **Code Review:** Use official `feature-dev:code-reviewer` with `rust-conventions` skill for context.
 
 ## Commands
 

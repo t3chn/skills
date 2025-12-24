@@ -6,15 +6,14 @@ Modern Node.js/TypeScript development toolkit with NestJS patterns, Drizzle ORM,
 
 | Skill | Description |
 |-------|-------------|
+| [node-conventions](./skills/node-conventions/SKILL.md) | Code review context — ES modules, async patterns |
 | [nestjs-patterns](./skills/nestjs-patterns/SKILL.md) | NestJS application architecture, modules, DI, guards |
 | [drizzle-orm](./skills/drizzle-orm/SKILL.md) | Type-safe SQL with Drizzle ORM |
 | [testing-vitest](./skills/testing-vitest/SKILL.md) | Modern testing with Vitest |
 
 ## Agents
 
-| Agent | Description |
-|-------|-------------|
-| [node-code-reviewer](./agents/node-code-reviewer/AGENT.md) | Reviews Node.js/TypeScript code for best practices |
+> **Code Review:** Use official `feature-dev:code-reviewer` with `node-conventions` skill for context.
 
 ## Commands
 

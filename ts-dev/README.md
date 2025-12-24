@@ -16,6 +16,7 @@ This plugin provides skills, agents, and commands for TypeScript development wit
 
 | Skill | Description |
 |-------|-------------|
+| `ts-conventions` | Code review context — type safety, error handling, async |
 | `project-structure` | Monorepo patterns, tsconfig bases, barrel exports |
 | `modern-tooling` | pnpm, Biome, tsup, Vite configuration |
 | `type-patterns` | Strict mode, utility types, generics, type guards |
@@ -27,16 +28,17 @@ This plugin provides skills, agents, and commands for TypeScript development wit
 
 | Agent | Description | Color |
 |-------|-------------|-------|
-| `ts-code-reviewer` | Review code for type safety and patterns | Blue |
 | `ts-project-init` | Scaffold new TypeScript projects | Green |
 | `ts-test-generator` | Generate Vitest tests | Cyan |
+
+> **Code Review:** Use official `feature-dev:code-reviewer` with `ts-conventions` skill for context.
 
 ## Commands
 
 | Command | Usage | Description |
 |---------|-------|-------------|
 | `/ts-init` | `/ts-init myproject api` | Initialize TypeScript project |
-| `/ts-review` | `/ts-review src/ types` | Review code for issues |
+| `/ts-review` | `/ts-review src/ types` | Review code using official code-reviewer + ts-conventions |
 | `/ts-test` | `/ts-test src/service.ts` | Generate tests for file |
 
 ## Hooks

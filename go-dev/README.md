@@ -10,6 +10,7 @@ Auto-triggered based on conversation context:
 
 | Skill | Triggers On |
 |-------|-------------|
+| **Go Conventions** | Code review context — error handling, naming, testing patterns |
 | **Project Structure** | "Go project layout", "internal/ vs pkg/", "organize Go packages", "clean architecture Go" |
 | **Error Handling** | "Go error handling", "errors.Is", "error wrapping", "sentinel errors", "fmt.Errorf %w" |
 | **Testing Patterns** | "Go testing", "table-driven tests", "testify", "mocks in Go", "require vs assert" |
@@ -21,9 +22,10 @@ Auto-triggered based on conversation context:
 
 | Agent | Purpose | Color |
 |-------|---------|-------|
-| **go-code-reviewer** | Review Go code for best practices, security, error handling | Red |
 | **go-project-init** | Scaffold new Go projects with proper structure | Green |
 | **go-test-generator** | Generate table-driven tests for existing code | Cyan |
+
+> **Code Review:** Use official `feature-dev:code-reviewer` with `go-conventions` skill for context.
 
 Each agent includes:
 - Comprehensive system prompts (800-1500 words)
@@ -36,7 +38,7 @@ Each agent includes:
 | Command | Description |
 |---------|-------------|
 | `/go-init <name> [type]` | Create new Go project (cli/http/library) |
-| `/go-review [path] [focus]` | Review code (all/errors/tests/structure/security) |
+| `/go-review [path] [focus]` | Review code using official code-reviewer + go-conventions |
 | `/go-test <file> [style]` | Generate tests (table/testify/benchmark) |
 
 All commands include:
@@ -87,20 +89,16 @@ This plugin is auto-discovered from `~/.claude/plugins/local/go-dev/`.
 /go-init api-server http
 ```
 
-### Review error handling in a directory
-```
-/go-review ./internal/service errors
-```
-
 ### Generate tests for a file
 ```
 /go-test ./internal/user/service.go testify
 ```
 
-### Using agents directly
+### Code review
 ```
-Use the go-code-reviewer agent to check my changes before commit
+Use feature-dev:code-reviewer to review my Go code
 ```
+The `go-conventions` skill provides Go-specific context automatically.
 
 ## Best Practices Enforced
 
@@ -148,8 +146,6 @@ go-dev/
 ├── .claude-plugin/
 │   └── plugin.json
 ├── agents/
-│   ├── go-code-reviewer/
-│   │   └── AGENT.md
 │   ├── go-project-init/
 │   │   └── AGENT.md
 │   └── go-test-generator/
@@ -161,6 +157,8 @@ go-dev/
 ├── hooks/
 │   └── go-lint-check.md
 ├── skills/
+│   ├── go-conventions/        # NEW: Context for code-reviewer
+│   │   └── SKILL.md
 │   ├── context-patterns/
 │   │   └── SKILL.md
 │   ├── error-handling/

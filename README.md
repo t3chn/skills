@@ -37,8 +37,9 @@ Production-ready skills and agents for Claude Code. Optimized for practical use,
 
 | Agent | Model | Description |
 |-------|-------|-------------|
-| **[code-reviewer](./agents/code-reviewer.md)** | opus | Review code changes between commits. Returns issues with file:line references. |
-| **[python-test-writer](./python-testing/agents/python-test-writer.md)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
+| **[python-test-writer](./python-dev/agents/python-test-writer)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
+
+> **Code Review:** Use official `feature-dev:code-reviewer` agent with language-specific convention skills (`go-conventions`, `ts-conventions`, etc.) for context.
 
 ## Hooks
 

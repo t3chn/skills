@@ -1,78 +1,41 @@
 ---
-description: Review TypeScript code for type safety, patterns, and best practices
-allowed-tools: Bash(git:*), Bash(pnpm:*), Bash(biome:*), Read, Glob, Grep
-argument-hint: [path] [types|tests|performance|security|all]
+description: Review TypeScript code using official code-reviewer with TS conventions
+allowed-tools: Task, Glob, Grep, Read
+argument-hint: [path] [focus:all|types|tests|security]
 ---
 
-# Review TypeScript Code
+# TypeScript Code Review
+
+Review TypeScript code at `$1` (default: current changes) with focus on `$2` (default: all).
 
 ## Context
 
-- Current directory: !`pwd`
-- Git status: !`git status --short 2>/dev/null | head -10 || echo "Not a git repo"`
-- Changed files: !`git diff --name-only 2>/dev/null | head -15 || echo "No changes"`
-- TypeScript config: !`test -f tsconfig.json && echo "tsconfig.json found" || echo "No tsconfig.json"`
-- Biome config: !`test -f biome.json && echo "biome.json found" || echo "No biome.json"`
+- Changed TS files: !`git diff --name-only HEAD 2>/dev/null | grep -E '\.(ts|tsx)$' | head -10 || echo "no changes"`
+- tsconfig.json: !`test -f tsconfig.json && echo "found" || echo "not found"`
 
 ## Task
 
-Review TypeScript code with focus on:
-- **Path:** $1 (default: current unstaged changes from `git diff`)
-- **Focus area:** $2 (default: all)
+Use the `feature-dev:code-reviewer` agent to review TypeScript code.
+
+The `ts-conventions` skill provides TypeScript-specific context:
+- Type safety (no `any`, use `unknown`, type guards)
+- Error handling (Result pattern, custom error classes)
+- Async patterns (no floating promises, Promise.all)
+- Zod validation at boundaries
+- Modern patterns (discriminated unions, branded types)
 
 ### Focus Areas
-- `types` — Type safety, strict mode compliance, type guards
-- `tests` — Test coverage, testing patterns, mocking
-- `performance` — Bundle size, memory, async patterns
-- `security` — XSS, injection, secrets, validation
-- `all` — Comprehensive review of all areas
 
-## Requirements
+| Focus | What to Check |
+|-------|---------------|
+| `all` | Complete review |
+| `types` | Type safety, strict mode, generics |
+| `tests` | Vitest patterns, mocking, coverage |
+| `security` | XSS, injection, secrets, validation |
 
-1. **Gather information**
-   ```bash
-   git diff --name-only              # Files changed
-   git diff HEAD                     # Actual changes
-   cat tsconfig.json | head -30      # TypeScript settings
-   ```
+### Output Format
 
-2. **Check project rules**
-   - Look for CLAUDE.md in project root
-   - Review tsconfig.json strict settings
-   - Check biome.json rules
-
-3. **Review for:**
-   - Type safety violations (`any`, assertions, non-null)
-   - Modern TypeScript patterns
-   - Error handling
-   - Async code issues
-   - Security vulnerabilities
-   - Performance problems
-
-4. **Confidence scoring**
-   - Only report issues with confidence >= 80
-   - Avoid false positives from linters
-   - Skip pre-existing issues
-
-## Output Format
-
-```
-## TypeScript Code Review: [scope]
-
-### [CRITICAL|WARNING] file.ts:line — Issue
-**Confidence:** X/100
-**Category:** [Type Safety|Security|Bug|Performance]
-
-**Issue:** Description
-**Fix:** Code suggestion
-```
-
-## Summary
-
-Provide:
-- Overall score (1-10)
-- Critical issues count
-- Positive patterns found
-- Prioritized recommendations
-
-Use the `ts-code-reviewer` agent for comprehensive review.
+Report issues with:
+- File:line references
+- Confidence score (only report ≥80)
+- Specific fix suggestions

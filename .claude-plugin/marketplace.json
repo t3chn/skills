@@ -44,19 +44,20 @@
         "./ts-dev/skills/type-patterns",
         "./ts-dev/skills/testing-patterns",
         "./ts-dev/skills/api-patterns",
-        "./ts-dev/skills/database-patterns"
+        "./ts-dev/skills/database-patterns",
+        "./go-dev/skills/go-conventions",
+        "./ts-dev/skills/ts-conventions",
+        "./rust-dev/skills/rust-conventions",
+        "./python-dev/skills/python-conventions",
+        "./node-dev/skills/node-conventions"
       ],
       "agents": [
         "./agents/task-tracker.md",
         "./agents/code-navigator.md",
         "./agents/session-checkpoint.md",
         "./python-dev/agents/python-test-writer",
-        "./node-dev/agents/node-code-reviewer",
-        "./rust-dev/agents/rust-code-reviewer",
-        "./go-dev/agents/go-code-reviewer",
         "./go-dev/agents/go-project-init",
         "./go-dev/agents/go-test-generator",
-        "./ts-dev/agents/ts-code-reviewer",
         "./ts-dev/agents/ts-project-init",
         "./ts-dev/agents/ts-test-generator",
         "./rust-dev/agents/rust-test-generator"
