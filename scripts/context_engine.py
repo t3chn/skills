@@ -33,7 +33,7 @@ from unified_memory import UnifiedMemory, MemoryResult, HAS_OPENAI, OPENAI_API_K
 CACHE_PREFIX = "exec_cache:"
 GUIDANCE_PREFIX = "guidance:"
 SIMILARITY_THRESHOLD = 0.75  # Balanced threshold for execution cache (was 0.85)
-GUIDANCE_THRESHOLD = 0.75  # Lower threshold for guidance (more fuzzy matching)
+GUIDANCE_THRESHOLD = 0.60  # Lower threshold for guidance (fuzzy error matching)
 EMBEDDING_DIM = 1536  # text-embedding-3-small dimension
 EMBEDDING_MAX_CHARS = 8000  # Safe limit for embedding input
 RATE_LIMIT_CALLS = 50  # Max embedding calls per minute
