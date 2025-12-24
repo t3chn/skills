@@ -1,0 +1,9 @@
+{
+  "name": "ts-dev",
+  "description": "Modern TypeScript development toolkit with type patterns, Biome linting, Vitest testing, Hono/tRPC APIs, and Drizzle ORM (2025 best practices)",
+  "author": {
+    "name": "VI",
+    "email": "vi@local"
+  },
+  "version": "1.0.0"
+}

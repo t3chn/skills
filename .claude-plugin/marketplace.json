@@ -38,7 +38,13 @@
         "./go-dev/skills/testing-patterns",
         "./go-dev/skills/taskfile-automation",
         "./go-dev/skills/logging-slog",
-        "./go-dev/skills/context-patterns"
+        "./go-dev/skills/context-patterns",
+        "./ts-dev/skills/project-structure",
+        "./ts-dev/skills/modern-tooling",
+        "./ts-dev/skills/type-patterns",
+        "./ts-dev/skills/testing-patterns",
+        "./ts-dev/skills/api-patterns",
+        "./ts-dev/skills/database-patterns"
       ],
       "agents": [
         "./agents/task-tracker.md",
@@ -49,14 +55,18 @@
         "./rust-dev/agents/rust-code-reviewer",
         "./go-dev/agents/go-code-reviewer",
         "./go-dev/agents/go-project-init",
-        "./go-dev/agents/go-test-generator"
+        "./go-dev/agents/go-test-generator",
+        "./ts-dev/agents/ts-code-reviewer",
+        "./ts-dev/agents/ts-project-init",
+        "./ts-dev/agents/ts-test-generator"
       ],
       "commands": [
         "./commands",
         "./python-dev/commands",
         "./node-dev/commands",
         "./rust-dev/commands",
-        "./go-dev/commands"
+        "./go-dev/commands",
+        "./ts-dev/commands"
       ]
     }
   ]
