@@ -13,29 +13,30 @@ from typing import List, Optional, Set
 
 # Test file patterns per language
 TEST_FILE_PATTERNS = {
-    'go': re.compile(r'_test\.go$'),
-    'typescript': re.compile(r'\.(test|spec)\.(ts|tsx|js|jsx)$'),
-    'python': re.compile(r'(^test_.*\.py$|.*_test\.py$)'),
-    'rust': re.compile(r'(_test\.rs$|/tests/.*\.rs$)'),
+    "go": re.compile(r"_test\.go$"),
+    "typescript": re.compile(r"\.(test|spec)\.(ts|tsx|js|jsx)$"),
+    "python": re.compile(r"(^test_.*\.py$|.*_test\.py$)"),
+    "rust": re.compile(r"(_test\.rs$|/tests/.*\.rs$)"),
 }
 
 # Test command patterns
 TEST_COMMAND_PATTERNS = [
-    re.compile(r'\bgo\s+test\b'),
-    re.compile(r'\bcargo\s+test\b'),
-    re.compile(r'\bnpm\s+(run\s+)?test\b'),
-    re.compile(r'\bpnpm\s+(run\s+)?test\b'),
-    re.compile(r'\bvitest\b'),
-    re.compile(r'\bjest\b'),
-    re.compile(r'\bpytest\b'),
-    re.compile(r'\bpython\s+-m\s+pytest\b'),
-    re.compile(r'\bpython\s+-m\s+unittest\b'),
+    re.compile(r"\bgo\s+test\b"),
+    re.compile(r"\bcargo\s+test\b"),
+    re.compile(r"\bnpm\s+(run\s+)?test\b"),
+    re.compile(r"\bpnpm\s+(run\s+)?test\b"),
+    re.compile(r"\bvitest\b"),
+    re.compile(r"\bjest\b"),
+    re.compile(r"\bpytest\b"),
+    re.compile(r"\bpython\s+-m\s+pytest\b"),
+    re.compile(r"\bpython\s+-m\s+unittest\b"),
 ]
 
 
 @dataclass
 class TDDAnalysisResult:
     """Result of TDD compliance analysis."""
+
     code_modified: bool
     test_files_modified: bool
     tests_executed: bool
@@ -56,7 +57,7 @@ def is_test_file(file_path: str) -> bool:
             return True
 
     # Also check common test directories
-    if '/test/' in file_path or '/tests/' in file_path or '/__tests__/' in file_path:
+    if "/test/" in file_path or "/tests/" in file_path or "/__tests__/" in file_path:
         return True
 
     return False
@@ -91,19 +92,18 @@ def analyze_transcript(transcript_content: str) -> TDDAnalysisResult:
     # Pattern: tool="Write" or tool="Edit" with file_path
     write_pattern = re.compile(
         r'(?:Write|Edit|MultiEdit).*?(?:file_path|filePath)["\']?\s*[:=]\s*["\']([^"\']+)["\']',
-        re.IGNORECASE | re.DOTALL
+        re.IGNORECASE | re.DOTALL,
     )
 
     # Also look for simpler patterns like: Writing to file: /path/to/file
     simple_write_pattern = re.compile(
         r'(?:Writing|Editing|Modified|Created).*?(?:file|to):\s*["\']?([^\s"\']+\.[a-z]+)',
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     # Look for Bash commands
     bash_pattern = re.compile(
-        r'Bash.*?command["\']?\s*[:=]\s*["\']([^"\']+)["\']',
-        re.IGNORECASE | re.DOTALL
+        r'Bash.*?command["\']?\s*[:=]\s*["\']([^"\']+)["\']', re.IGNORECASE | re.DOTALL
     )
 
     # Extract file modifications
@@ -169,7 +169,7 @@ def analyze_transcript(transcript_content: str) -> TDDAnalysisResult:
 def read_transcript(transcript_path: str) -> Optional[str]:
     """Read transcript file content."""
     try:
-        with open(transcript_path, 'r', encoding='utf-8') as f:
+        with open(transcript_path, "r", encoding="utf-8") as f:
             return f.read()
     except (IOError, OSError):
         return None

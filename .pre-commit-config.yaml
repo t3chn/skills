@@ -3,7 +3,7 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.6
     hooks:
-      - id: ruff-check
+      - id: ruff
         args: ['--fix']
         types_or: [python, pyi]
       - id: ruff-format
@@ -16,7 +16,7 @@ repos:
         name: Biome lint & format
         entry: bash -c 'if command -v npx &> /dev/null && ([ -f biome.json ] || ls */biome.json 2>/dev/null); then npx @biomejs/biome check --write . || true; fi'
         language: system
-        types_or: [ts, tsx, js, jsx]
+        types_or: [ts, tsx, javascript, jsx]
         pass_filenames: false
 
   # Go (golangci-lint)
