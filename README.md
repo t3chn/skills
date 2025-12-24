@@ -1,108 +1,140 @@
 # vi-skills
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet?style=flat-square&logo=anthropic)](https://claude.ai)
-[![Skills](https://img.shields.io/badge/Skills-14-blue?style=flat-square)](#skills)
-[![Agents](https://img.shields.io/badge/Agents-2-green?style=flat-square)](#agents)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE.txt)
 
-Production-ready skills and agents for Claude Code. Optimized for practical use, not theory.
+Production-ready skills, agents, and hooks for Claude Code. Focused on reliable execution and persistent workflows.
 
 ## Installation
 
 ```bash
 # Via Claude Code CLI
-/plugin add https://github.com/t3chn/skills
+/plugin add https://github.com/anthropics/claude-code-plugins/tree/main/vi-skills
 ```
 
 ## Skills
 
-| Skill | Description | Lines |
-|-------|-------------|-------|
-| **[backend-core](./backend-core)** | Language-agnostic patterns: API design, auth, security (OWASP), architecture, DevOps. | ~150 |
-| **[backend-python](./backend-python)** | Python backend with FastAPI, SQLAlchemy, modern tooling (uv, ruff). | ~330 |
-| **[backend-nodejs](./backend-nodejs)** | Node.js/TypeScript with NestJS, Drizzle/Prisma, Vitest, ESLint 9. | ~450 |
-| **[backend-rust](./backend-rust)** | Rust backend with Axum, SQLx, teloxide (Telegram). Shuttle/Fly.io deployment. $0 hosting. | ~400 |
-| **[frontend-design](./frontend-design)** | Distinctive UI with ready design systems, font pairings, CSS animations. Anti-AI-slop. | ~140 |
-| **[mcp-builder](./mcp-builder)** | MCP server development with FastMCP (Python) and MCP SDK (TypeScript). | ~250 |
-| **[code-review](./code-review)** | Verification gates, anti-performative agreement, code-reviewer workflow. | ~460 |
-| **[skill-creator](./skill-creator)** | Guide for creating effective Claude Code skills. | ~360 |
-| **[subagent-creator](./subagent-creator)** | Guide for creating custom subagents. | ~570 |
-| **[beads-workflow](./beads-workflow)** | Session management with beads issue tracker. Auto-init, task lifecycle, sync. | ~170 |
-| **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks, detect-secrets. | ~400 |
-| **[python-testing](./python-testing)** | Pytest best practices, fixtures, async testing, mocking. Includes test-writer agent. | ~800 |
-| **[tasks-auditor](./tasks-auditor)** | End-of-day audit of beads tasks. Health checks, stale tasks, duplicates. | ~100 |
-| **[support-docs](./support-docs)** | Generate SUPPORT.md for AI support bot from project sources. Auto-generates FAQ. | ~150 |
+### Core Workflow
+
+| Skill | Description |
+|-------|-------------|
+| **[production-flow](./production-flow)** | Unified development flow: pre-commit → beads → TDD → code-review → commit |
+| **[beads-workflow](./beads-workflow)** | Task management with beads CLI (v0.35.0+). Molecules, wisps, dependencies |
+| **[reliable-execution](./reliable-execution)** | Patterns for persistent agent work. Checkpoints, handoffs, recovery |
+| **[context-engineering](./context-engineering)** | Optimize AI context usage. Budget management, structured prompts |
+
+### Code Intelligence
+
+| Skill | Description |
+|-------|-------------|
+| **[serena-navigation](./serena-navigation)** | Semantic code exploration with serena MCP. Symbols, references, memories |
+| **[unified-context](./unified-context)** | Unified Memory API for Redis + Serena hybrid storage |
+| **[redis-memory](./redis-memory)** | Redis vector storage for semantic search |
+| **[redis-learning](./redis-learning)** | AI-assisted learning from code patterns and errors |
+
+### Development Patterns
+
+| Skill | Description |
+|-------|-------------|
+| **[backend-core](./backend-core)** | Language-agnostic patterns: API design, auth, security (OWASP) |
+| **[mcp-builder](./mcp-builder)** | MCP server development with FastMCP (Python) and MCP SDK (TypeScript) |
+| **[secrets-guardian](./secrets-guardian)** | Protect repos from secret leaks. Pre-commit hooks, gitleaks |
+| **[tasks-auditor](./tasks-auditor)** | End-of-day audit of beads tasks. Health checks, stale detection |
+
+## Language-Specific Development
+
+| Directory | Description |
+|-----------|-------------|
+| **[python-dev](./python-dev)** | Python patterns, pytest, FastAPI |
+| **[go-dev](./go-dev)** | Go patterns, testing, project structure |
+| **[ts-dev](./ts-dev)** | TypeScript patterns, Vitest |
+| **[node-dev](./node-dev)** | Node.js patterns, testing |
+| **[rust-dev](./rust-dev)** | Rust patterns, testing |
+| **[tdd-enforcer](./tdd-enforcer)** | Red-Green-Refactor enforcement |
 
 ## Agents
 
-| Agent | Model | Description |
-|-------|-------|-------------|
-| **[python-test-writer](./python-dev/agents/python-test-writer)** | opus | Generate comprehensive pytest tests with fixtures and mocking. |
+| Agent | Description |
+|-------|-------------|
+| **[task-tracker](./agents/task-tracker.md)** | Manages beads task lifecycle |
+| **[session-checkpoint](./agents/session-checkpoint.md)** | Creates recovery checkpoints |
+| **[code-navigator](./agents/code-navigator.md)** | Explores code with serena |
 
-> **Code Review:** Use official `feature-dev:code-reviewer` agent with language-specific convention skills (`go-conventions`, `ts-conventions`, etc.) for context.
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/task` | Quick beads task management |
+| `/checkpoint` | Save session progress |
+| `/flow` | Production flow quick reference |
 
 ## Hooks
 
 | Hook | Event | Description |
 |------|-------|-------------|
-| **[skill-suggester](./hooks)** | SessionStart | Auto-detect project type and suggest relevant skills |
-
-The hook runs at session start and outputs skill recommendations based on project files (Cargo.toml → backend-rust, package.json → backend-nodejs, etc.).
-
-## Highlights
-
-### Backend Development
-- **Modern tooling enforced**: uv/ruff (Python), Vitest (Node.js), Cargo (Rust)
-- Ready templates: Dockerfile, CI/CD, docker-compose
-- Security: OWASP Top 10, Argon2id, parameterized queries
-- Stack-specific skills: Python, Node.js, **Rust** (new!)
-- **$0 Hosting**: Rust + Shuttle.dev/Fly.io for cost-effective MVPs
-
-### Frontend Design
-- **6 ready design systems** with fonts + colors + spacing
-- Curated Google Fonts pairings
-- CSS animations (copy-paste ready)
-- Modern CSS: container queries, :has(), oklch()
-
-### Code Review
-- **Verification gates**: No claims without evidence
-- Anti-performative agreement (no "You're absolutely right!")
-- Stack-specific verification commands
-- Git SHA automation script
+| session-context | SessionStart | Inject beads context |
+| session-persist | Stop | Sync beads on exit |
+| skill-suggester | SessionStart | Auto-suggest relevant skills |
+| redis-context | SessionStart | Load Redis semantic context |
+| redis-learn | Stop | Learn from session patterns |
 
 ## Structure
 
 ```
 vi-skills/
-├── .claude-plugin/
-│   └── marketplace.json
-├── hooks/
-│   ├── hooks.json           # Plugin hook config
-│   └── skill-suggester.sh   # Auto-suggest skills
-├── agents/
-│   └── code-reviewer.md
-├── backend-core/           # Language-agnostic patterns
-├── backend-python/         # FastAPI, SQLAlchemy, uv/ruff
-├── backend-nodejs/         # NestJS, Drizzle, Vitest
-├── backend-rust/           # Axum, teloxide, Shuttle/Fly.io
-├── frontend-design/        # Design systems, typography
-├── mcp-builder/            # MCP server development
-├── code-review/            # Verification gates
-├── skill-creator/          # Create skills
-├── subagent-creator/       # Create subagents
-├── beads-workflow/         # Issue tracker workflow
-├── secrets-guardian/       # Secrets protection
-├── python-testing/         # Pytest patterns + agent
-├── tasks-auditor/          # Beads health checks
-└── support-docs/           # AI support bot docs
+├── .claude-plugin/        # Plugin marketplace config
+├── agents/                # Subagent definitions
+├── commands/              # Slash commands
+├── hooks/                 # Event hooks
+├── scripts/               # Utility scripts (Redis, etc.)
+├── tests/                 # Test suite
+│
+├── production-flow/       # Core workflow skill
+├── beads-workflow/        # Task management
+├── reliable-execution/    # Persistence patterns
+├── context-engineering/   # Context optimization
+│
+├── serena-navigation/     # Code intelligence
+├── unified-context/       # Hybrid memory
+├── redis-memory/          # Vector storage
+├── redis-learning/        # Pattern learning
+│
+├── backend-core/          # API patterns
+├── mcp-builder/           # MCP development
+├── secrets-guardian/      # Security
+├── tasks-auditor/         # Task health
+│
+├── python-dev/            # Python tooling
+├── go-dev/                # Go tooling
+├── ts-dev/                # TypeScript tooling
+├── node-dev/              # Node.js tooling
+├── rust-dev/              # Rust tooling
+└── tdd-enforcer/          # TDD enforcement
 ```
+
+## Key Features
+
+### Reliable Execution
+- **Checkpoints**: Save progress to serena memories
+- **Handoffs**: Seamless session transitions
+- **Recovery**: Resume from any checkpoint
+
+### Beads Integration (v0.35.0+)
+- **Molecules**: Reusable workflow templates
+- **Wisps**: Ephemeral local workflows
+- **Dependencies**: Block/wait relationships
+
+### Redis Context Engine
+- **Semantic search**: Find relevant context by meaning
+- **Execution cache**: Remember command results
+- **Guidance cache**: Learn from error resolutions
 
 ## Philosophy
 
-1. **Practical over theoretical** — Copy-paste code, not explanations
-2. **Modern tooling** — uv, ruff, Vitest, not pip/flake8/Jest
-3. **Lean content** — No bloat, no basic CS theory
-4. **Ready resources** — Design systems, templates, scripts
+1. **Reliable over fast** — Work survives context resets
+2. **Persistent state** — Beads + serena + git layers
+3. **Practical patterns** — Copy-paste ready, not theory
+4. **Modern tooling** — uv, ruff, Vitest, beads v0.35.0
 
 ## License
 
