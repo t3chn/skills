@@ -34,6 +34,49 @@ CACHE_PREFIX = "exec_cache:"
 GUIDANCE_PREFIX = "guidance:"
 SIMILARITY_THRESHOLD = 0.85  # High threshold for execution cache
 GUIDANCE_THRESHOLD = 0.75  # Lower threshold for guidance (more fuzzy matching)
+EMBEDDING_DIM = 1536  # text-embedding-3-small dimension
+EMBEDDING_MAX_CHARS = 8000  # Safe limit for embedding input
+
+# Shared embedding cache to avoid duplicate API calls
+_embedding_cache: dict[str, list[float]] = {}
+
+
+def get_embedding(text: str, use_cache: bool = True) -> list[float]:
+    """
+    Generate embedding using OpenAI with caching.
+
+    Args:
+        text: Text to embed (truncated to EMBEDDING_MAX_CHARS)
+        use_cache: Whether to use in-memory cache
+
+    Returns:
+        Embedding vector (EMBEDDING_DIM floats)
+    """
+    if not HAS_OPENAI or not OPENAI_API_KEY:
+        return [0.0] * EMBEDDING_DIM
+
+    # Truncate and hash for cache key
+    text_truncated = text[:EMBEDDING_MAX_CHARS]
+    cache_key = hashlib.md5(text_truncated.encode()).hexdigest()
+
+    # Check cache
+    if use_cache and cache_key in _embedding_cache:
+        return _embedding_cache[cache_key]
+
+    # Generate embedding
+    import openai
+
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
+    response = client.embeddings.create(
+        model="text-embedding-3-small", input=text_truncated
+    )
+    embedding = response.data[0].embedding
+
+    # Cache result
+    if use_cache:
+        _embedding_cache[cache_key] = embedding
+
+    return embedding
 
 
 @dataclass
@@ -119,7 +162,7 @@ class ExecutionCache:
             # Semantic search in Redis
             from redis.commands.search.query import Query
 
-            embedding = self._get_embedding(query)
+            embedding = get_embedding(query)
             query_vector = struct.pack(f"{len(embedding)}f", *embedding)
 
             q = (
@@ -178,7 +221,7 @@ class ExecutionCache:
 
         try:
             doc_id = f"{CACHE_PREFIX}{query_hash}"
-            embedding = self._get_embedding(query)
+            embedding = get_embedding(query)
 
             self._redis.hset(
                 doc_id,
@@ -191,19 +234,6 @@ class ExecutionCache:
         except Exception as e:
             print(f"ExecutionCache.put error: {e}")
             return False
-
-    def _get_embedding(self, text: str) -> list[float]:
-        """Generate embedding using OpenAI."""
-        if not HAS_OPENAI or not OPENAI_API_KEY:
-            return [0.0] * 1536
-
-        import openai
-
-        client = openai.OpenAI(api_key=OPENAI_API_KEY)
-        response = client.embeddings.create(
-            model="text-embedding-3-small", input=text[:8000]
-        )
-        return response.data[0].embedding
 
 
 class GuidanceCache:
@@ -262,7 +292,7 @@ class GuidanceCache:
         try:
             from redis.commands.search.query import Query
 
-            embedding = self._get_embedding(error)
+            embedding = get_embedding(error)
             query_vector = struct.pack(f"{len(embedding)}f", *embedding)
 
             # Build query with optional domain filter
@@ -334,7 +364,7 @@ class GuidanceCache:
             if existing:
                 entry["success_count"] = int(existing) + 1
 
-            embedding = self._get_embedding(error)
+            embedding = get_embedding(error)
             self._redis.hset(
                 doc_id,
                 mapping={
@@ -346,19 +376,6 @@ class GuidanceCache:
         except Exception as e:
             print(f"GuidanceCache.put error: {e}")
             return False
-
-    def _get_embedding(self, text: str) -> list[float]:
-        """Generate embedding using OpenAI."""
-        if not HAS_OPENAI or not OPENAI_API_KEY:
-            return [0.0] * 1536
-
-        import openai
-
-        client = openai.OpenAI(api_key=OPENAI_API_KEY)
-        response = client.embeddings.create(
-            model="text-embedding-3-small", input=text[:8000]
-        )
-        return response.data[0].embedding
 
 
 class ContextEngine:

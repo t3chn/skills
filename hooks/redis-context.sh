@@ -44,6 +44,15 @@ MODE=$(echo "$STATUS" | grep "mode" | cut -d: -f2 | tr -d ' ')
 MEMORIES=$(echo "$STATUS" | grep "memories_count" | cut -d: -f2 | tr -d ' ')
 
 # =============================================================================
+# ENSURE INDEXES EXIST (auto-recovery after Redis restart)
+# =============================================================================
+
+if [ "$REDIS_AVAILABLE" = "True" ]; then
+  # Silently ensure indexes exist (creates if missing)
+  source "$VENV/bin/activate" && python3 "$CONTEXT_ENGINE" init >/dev/null 2>&1 || true
+fi
+
+# =============================================================================
 # BUILD OUTPUT
 # =============================================================================
 
