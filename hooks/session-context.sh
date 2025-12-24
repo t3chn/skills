@@ -28,7 +28,7 @@ if command -v bd &> /dev/null; then
     if [ -n "$BD_READY" ] && [ "$BD_READY" != "[]" ] && [ "$BD_READY" != "null" ]; then
       output="${output}## 📋 Beads Tasks Available"$'\n'
       output="${output}"$'\n'
-      output="${output}Run \`bd ready\` to see available work items, or \`bd start <id>\` to begin a task."$'\n'
+      output="${output}Run \`bd ready\` to see available work items, or \`bd update <id> --status in_progress\` to begin a task."$'\n'
       output="${output}"$'\n'
     fi
   fi
