@@ -221,3 +221,43 @@ This agent supports context engineering patterns:
 - Enables context recovery without re-reading files
 - Maintains task continuity across sessions
 - Allows aggressive context cleanup knowing state is saved
+
+## Redis Integration (Enhanced Hybrid)
+
+Checkpoints are stored using Enhanced Hybrid Architecture:
+- **Write**: Serena file (source of truth) → Redis index (semantic search)
+- **Search**: Redis semantic search → Serena fallback if Redis down
+
+### Semantic Search Benefits
+With Redis, you can find checkpoints semantically:
+- "What was I working on for authentication?" → finds auth-related checkpoints
+- "Show debugging sessions" → finds debug checkpoints
+- "Recent React work" → finds frontend checkpoints by context
+
+### Using UnifiedMemory API
+```python
+from unified_memory import UnifiedMemory
+
+memory = UnifiedMemory()
+
+# Write checkpoint (indexed to Redis automatically)
+memory.write(
+    "checkpoint-2024-12-24-1430.md",
+    checkpoint_content,
+    {"topics": ["auth", "refactoring"]}
+)
+
+# Semantic search for related checkpoints
+results = memory.search("authentication issues", limit=5)
+for r in results:
+    print(f"[{r.score:.2f}] {r.title}")
+```
+
+### Redis Status Check
+```bash
+# Verify Redis is running
+docker exec redis-ai-memory redis-cli ping
+
+# Check index status
+python3 scripts/verify-index.py
+```

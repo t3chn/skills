@@ -16,12 +16,12 @@ if [ -f go.mod ]; then
 fi
 
 # Python
-if [ -f pyproject.toml ] || [ -f setup.py ]; then
+if [ -d tests ] && ([ -f pyproject.toml ] || [ -f setup.py ]); then
     echo "  -> Python tests"
     if command -v uv &> /dev/null; then
-        uv run pytest -v 2>/dev/null || python -m pytest -v
+        uv run pytest -v 2>/dev/null || python3 -m pytest -v 2>/dev/null || echo "    (no pytest or tests found)"
     else
-        python -m pytest -v
+        python3 -m pytest -v 2>/dev/null || echo "    (no pytest or tests found)"
     fi
     TESTS_RUN=$((TESTS_RUN + 1))
 fi

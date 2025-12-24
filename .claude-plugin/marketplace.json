@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Vi's custom skills collection with hybrid architecture",
-    "version": "3.1.0"
+    "version": "3.3.0"
   },
   "plugins": [
     {
@@ -25,6 +25,9 @@
         "./tasks-auditor",
         "./context-engineering",
         "./production-flow",
+        "./redis-memory",
+        "./redis-learning",
+        "./unified-context",
         "./python-dev/skills/fastapi-patterns",
         "./python-dev/skills/testing-pytest",
         "./python-dev/skills/modern-tooling",

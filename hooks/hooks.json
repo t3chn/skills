@@ -18,6 +18,11 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-context.sh",
             "description": "Inject beads task context and serena project awareness"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/redis-context.sh",
+            "description": "Load Redis context engine status and cached context"
           }
         ]
       }
@@ -42,6 +47,11 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-persist.sh",
             "description": "Persist beads task state at session end"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/redis-learn.sh stop",
+            "description": "Sync Redis context cache at session end"
           }
         ]
       }
