@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Vi's custom skills collection with hybrid architecture",
-    "version": "3.0.0"
+    "version": "3.1.0"
   },
   "plugins": [
     {
@@ -23,6 +23,7 @@
         "./reliable-execution",
         "./serena-navigation",
         "./tasks-auditor",
+        "./context-engineering",
         "./python-dev/skills/fastapi-patterns",
         "./python-dev/skills/testing-pytest",
         "./python-dev/skills/modern-tooling",

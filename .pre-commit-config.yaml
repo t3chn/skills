@@ -9,6 +9,17 @@ repos:
       - id: ruff-format
         types_or: [python, pyi]
 
+  # Python type checking (mypy)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.14.1
+    hooks:
+      - id: mypy
+        args: ['--ignore-missing-imports', '--no-error-summary']
+        additional_dependencies: []
+        types: [python]
+        # Only run on staged Python files with type hints
+        exclude: '^(tests/|scripts/)'
+
   # TypeScript/JavaScript (biome) - local hook
   - repo: local
     hooks:
@@ -17,6 +28,13 @@ repos:
         entry: bash -c 'if command -v npx &> /dev/null && ([ -f biome.json ] || ls */biome.json 2>/dev/null); then npx @biomejs/biome check --write . || true; fi'
         language: system
         types_or: [ts, tsx, javascript, jsx]
+        pass_filenames: false
+
+      - id: tsc-check
+        name: TypeScript type check
+        entry: bash -c 'if [ -f tsconfig.json ]; then npx tsc --noEmit 2>/dev/null || true; fi'
+        language: system
+        types_or: [ts, tsx]
         pass_filenames: false
 
   # Go (golangci-lint)
@@ -50,6 +68,25 @@ repos:
     hooks:
       - id: gitleaks
         stages: [pre-commit, pre-push]
+
+  # SAST - Security scanning
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.2
+    hooks:
+      - id: bandit
+        args: ['-c', 'pyproject.toml', '-q']
+        additional_dependencies: ['bandit[toml]']
+        types: [python]
+        exclude: '^tests/'
+
+  # NOTE: Semgrep runs in CI only (GitHub Actions)
+  # Local semgrep has Python 3.14 compatibility issues
+  # - repo: https://github.com/returntocorp/semgrep
+  #   rev: v1.102.0
+  #   hooks:
+  #     - id: semgrep
+  #       args: ['--config', 'auto', '--error', '--quiet']
+  #       stages: [pre-push]
 
   # Conventional commits
   - repo: https://github.com/compilerla/conventional-pre-commit

@@ -1,6 +1,6 @@
 ---
 name: session-checkpoint
-description: Use this agent to save session progress to serena memory. Trigger when user says "save progress", "checkpoint", "save state", after completing significant implementation, before risky operations, or during long-running sessions. Creates recoverable checkpoints that persist across context resets.
+description: Use this agent to save session progress to serena memory. Trigger when user says "save progress", "checkpoint", "save state", after completing significant implementation, before risky operations, or during long-running sessions. Creates recoverable checkpoints that persist across context resets. Auto-trigger recommended every 10-15 significant tool calls or after major milestones.
 model: haiku
 tools:
   - mcp__plugin_serena_serena__write_memory
@@ -9,6 +9,7 @@ tools:
   - mcp__plugin_serena_serena__edit_memory
   - Bash
   - TodoWrite
+  - Read
 color: "#9C27B0"
 ---
 
@@ -56,11 +57,36 @@ To continue from this checkpoint:
 3. Continue with <next step>
 ```
 
+## Auto-Checkpoint Triggers
+
+The parent agent should invoke you when:
+
+| Trigger | When |
+|---------|------|
+| Tool call count | After ~10-15 significant operations |
+| Major milestone | After completing a TodoWrite item |
+| Pre-risk operation | Before refactoring, migrations |
+| Context fullness | When responses get shorter |
+| Time-based | Long sessions (>30 min active work) |
+| User request | "save progress", "checkpoint" |
+
 ## Your Workflow
 
-### 1. Gather Context
-- Check for active beads task: `bd show 2>/dev/null`
-- Review TodoWrite state
+### 1. Gather Context (Comprehensive)
+```bash
+# Beads task
+bd show 2>/dev/null || echo "No active task"
+
+# Git state
+git status --short 2>/dev/null | head -20
+
+# Recent commits (for context)
+git log --oneline -3 2>/dev/null
+```
+
+- Check for active beads task
+- Capture git status (uncommitted changes)
+- Review TodoWrite state (will be passed in context)
 - Identify key files involved
 
 ### 2. Create Checkpoint
@@ -166,3 +192,32 @@ mcp__serena__read_memory(memory_file_name="checkpoint-<id>.md")
 - SessionStart hook mentions available memories
 - Pairs with beads task tracking
 - Memories persist in `.serena/memories/`
+
+## Structured Memory Organization
+
+Checkpoints follow naming convention:
+```
+checkpoint-YYYY-MM-DD-HHMM.md     # Regular checkpoint
+pre-refactor-<area>-YYYY-MM-DD.md # Pre-risk checkpoint
+debug-<issue>-YYYY-MM-DD.md       # Debug checkpoint
+handoff-YYYY-MM-DD-HHMM.md        # End-of-session handoff
+```
+
+### Memory Cleanup
+
+Old checkpoints can be cleaned up:
+```bash
+# List all checkpoint memories
+ls .serena/memories/checkpoint-* 2>/dev/null
+
+# Keep only last 5
+ls -t .serena/memories/checkpoint-* | tail -n +6 | xargs rm -f
+```
+
+## Context Engineering Integration
+
+This agent supports context engineering patterns:
+- Compresses verbose conversation into structured memory
+- Enables context recovery without re-reading files
+- Maintains task continuity across sessions
+- Allows aggressive context cleanup knowing state is saved
