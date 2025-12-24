@@ -31,6 +31,22 @@ if [ ! -d "$VENV" ]; then
   exit 0
 fi
 
+# =============================================================================
+# ENSURE REDIS IS RUNNING (auto-start if Docker available)
+# =============================================================================
+
+DOCKER_COMPOSE_FILE="$PROJECT_ROOT/docker/docker-compose.yml"
+
+if command -v docker &> /dev/null && [ -f "$DOCKER_COMPOSE_FILE" ]; then
+  # Check if Redis container is running
+  if ! docker ps --format '{{.Names}}' 2>/dev/null | grep -q "redis-ai-memory"; then
+    # Try to start Redis (silent, non-blocking)
+    docker compose -f "$DOCKER_COMPOSE_FILE" up -d 2>/dev/null &
+    # Give it a moment to start
+    sleep 1
+  fi
+fi
+
 # Get status from context engine
 STATUS=$(source "$VENV/bin/activate" && python3 "$CONTEXT_ENGINE" status 2>/dev/null || true)
 

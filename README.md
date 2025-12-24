@@ -75,7 +75,7 @@ Production-ready skills, agents, and hooks for Claude Code. Focused on reliable 
 | session-context | SessionStart | Inject date, beads context, memory suggestions |
 | flow-check | SessionStart | Check production flow compliance |
 | skill-suggester | SessionStart | Auto-suggest relevant skills |
-| redis-context | SessionStart | Load Redis semantic context |
+| redis-context | SessionStart | Auto-start Redis, load semantic context |
 | suggest-semantic-tools | PreToolUse | Suggest serena tools for Grep/Read |
 | session-persist | Stop | Sync beads on exit |
 | redis-learn | Stop | Learn from session patterns |

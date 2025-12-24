@@ -85,7 +85,7 @@ The engine integrates with vi-skills hooks:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| SessionStart | `redis-context.sh` | Display status, load cached context |
+| SessionStart | `redis-context.sh` | Auto-start Redis, display status, load context |
 | Stop | `redis-learn.sh stop` | Sync local cache to Redis |
 
 ## Graceful Degradation
