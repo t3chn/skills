@@ -5,3 +5,23 @@
 # Generated files
 @AGENTS.md
 AGENTS.md
+
+# Git worktrees for parallel development
+.trees/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# Rust
+target/
+
+# IDE
+.idea/
+.vscode/
+*.swp

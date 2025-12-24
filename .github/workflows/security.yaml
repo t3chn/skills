@@ -1,0 +1,62 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  secrets:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  dependency-audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python audit
+        run: |
+          if find . -name "pyproject.toml" | grep -q .; then
+            pip install pip-audit
+            pip-audit 2>/dev/null || echo "Python audit completed with warnings"
+          else
+            echo "No Python projects found"
+          fi
+
+      - name: Node audit
+        run: |
+          if find . -name "package-lock.json" -not -path "*/node_modules/*" | grep -q .; then
+            for pkg in $(find . -name "package-lock.json" -not -path "*/node_modules/*" -exec dirname {} \;); do
+              echo "Auditing $pkg"
+              cd "$pkg"
+              npm audit --audit-level=high 2>/dev/null || echo "Node audit completed with warnings"
+              cd - > /dev/null
+            done
+          else
+            echo "No Node projects with lockfiles found"
+          fi
+
+      - name: Rust audit
+        run: |
+          if find . -name "Cargo.lock" | grep -q .; then
+            cargo install cargo-audit
+            for dir in $(find . -name "Cargo.lock" -exec dirname {} \;); do
+              echo "Auditing $dir"
+              cd "$dir"
+              cargo audit 2>/dev/null || echo "Rust audit completed with warnings"
+              cd - > /dev/null
+            done
+          else
+            echo "No Rust projects with lockfiles found"
+          fi

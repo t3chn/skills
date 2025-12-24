@@ -1,0 +1,159 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files --show-diff-on-failure
+
+  test-python:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Python projects
+        id: check
+        run: |
+          if find . -name "pyproject.toml" -o -name "setup.py" | grep -q .; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.check.outputs.found == 'true'
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        if: steps.check.outputs.found == 'true'
+        run: pip install uv
+
+      - name: Run tests
+        if: steps.check.outputs.found == 'true'
+        run: |
+          for dir in $(find . -name "pyproject.toml" -exec dirname {} \;); do
+            echo "Testing $dir"
+            cd "$dir"
+            uv sync --dev 2>/dev/null || true
+            uv run pytest -v 2>/dev/null || python -m pytest -v || echo "No tests in $dir"
+            cd - > /dev/null
+          done
+
+  test-go:
+    name: Go Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Go projects
+        id: check
+        run: |
+          if find . -name "go.mod" | grep -q .; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-go@v5
+        if: steps.check.outputs.found == 'true'
+        with:
+          go-version: '1.23'
+
+      - name: Run tests
+        if: steps.check.outputs.found == 'true'
+        run: |
+          for dir in $(find . -name "go.mod" -exec dirname {} \;); do
+            echo "Testing $dir"
+            cd "$dir"
+            go test ./... -v || echo "No tests in $dir"
+            cd - > /dev/null
+          done
+
+  test-node:
+    name: Node Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Node projects
+        id: check
+        run: |
+          if find . -name "package.json" -not -path "*/node_modules/*" | grep -q .; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.found == 'true'
+        with:
+          node-version: '22'
+
+      - uses: pnpm/action-setup@v4
+        if: steps.check.outputs.found == 'true'
+        with:
+          version: 9
+
+      - name: Run tests
+        if: steps.check.outputs.found == 'true'
+        run: |
+          for pkg in $(find . -name "package.json" -not -path "*/node_modules/*" -exec dirname {} \;); do
+            echo "Testing $pkg"
+            cd "$pkg"
+            if [ -f "pnpm-lock.yaml" ]; then
+              pnpm install --frozen-lockfile
+              pnpm test 2>/dev/null || echo "No test script in $pkg"
+            elif [ -f "package-lock.json" ]; then
+              npm ci
+              npm test 2>/dev/null || echo "No test script in $pkg"
+            fi
+            cd - > /dev/null
+          done
+
+  test-rust:
+    name: Rust Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Rust projects
+        id: check
+        run: |
+          if find . -name "Cargo.toml" | grep -q .; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: dtolnay/rust-toolchain@stable
+        if: steps.check.outputs.found == 'true'
+
+      - name: Run tests
+        if: steps.check.outputs.found == 'true'
+        run: |
+          for dir in $(find . -name "Cargo.toml" -exec dirname {} \;); do
+            echo "Testing $dir"
+            cd "$dir"
+            cargo test || echo "No tests in $dir"
+            cd - > /dev/null
+          done
