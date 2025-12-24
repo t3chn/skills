@@ -20,7 +20,7 @@ PRODUCTION FLOW
    └─ Clone → check CLAUDE.md → bd init → read context
 
 3. FEATURE
-   └─ bd add → /feature-dev → TDD → /code-review → /commit
+   └─ bd create → /feature-dev → TDD → /code-review → /commit
 
 4. HOTFIX
    └─ branch → TDD fix → /code-review → merge
@@ -28,14 +28,24 @@ PRODUCTION FLOW
 5. RELEASE
    └─ main clean → tests pass → tag → deploy
 
+6. MOLECULE (repeated workflow)
+   └─ bd mol spawn <proto> → execute steps → bd close --continue
+
 Commands:
-  /task add "..."   - Create task
-  /task done        - Complete task
+  /task add "..."   - bd create --title "..."
+  /task done        - bd close <id>
   /checkpoint       - Save progress
   /commit           - Conventional commit
   /code-review      - Review changes
   /tdd "..."        - Start TDD
   /feature-dev      - Plan feature
+
+Molecules:
+  bd mol catalog    - List available protos
+  bd mol spawn      - Create molecule from proto
+  bd mol current    - Show current step
+  bd close --continue - Complete step, auto-advance
+  bd wisp create    - Ephemeral molecule (no git sync)
 
 Enforcement:
   pre-commit    - Style, types, security

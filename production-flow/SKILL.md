@@ -114,8 +114,8 @@ EOF
 bd init
 
 # Add initial task
-bd add "Initial project setup"
-bd start 1
+bd create --title "Initial project setup" -t task -p 1
+bd update <id> --status in_progress
 ```
 
 ### Step 1.5: Initialize Serena (if using)
@@ -180,8 +180,8 @@ cat CLAUDE.md
 
 ```bash
 # Add to beads
-bd add "Implement user authentication"
-bd start <id>
+bd create --title "Implement user authentication" -t feature -p 1
+bd update <id> --status in_progress
 
 # Or use /task command
 /task add "Implement user authentication"
@@ -222,8 +222,8 @@ REFACTOR PHASE:
 # After significant progress
 /checkpoint
 
-# Or manually
-bd note "Completed auth service, starting endpoints"
+# Or manually add comment
+bd comments add <id> "Completed auth service, starting endpoints"
 ```
 
 ### Step 3.5: Review Before Commit
@@ -352,18 +352,41 @@ git push --tags
 
 ## Quick Commands Reference
 
-| Command | Purpose |
-|---------|---------|
-| `/task add "..."` | Create beads task |
-| `/task start <id>` | Start working on task |
-| `/task done` | Complete current task |
-| `/checkpoint` | Save session progress |
-| `/commit` | Create conventional commit |
-| `/code-review` | Review current changes |
-| `/tdd "feature"` | Start TDD workflow |
-| `/feature-dev` | Plan feature development |
-| `/go-init` | Initialize Go project |
-| `/ts-init` | Initialize TypeScript project |
+| Command | Purpose | Beads equivalent |
+|---------|---------|------------------|
+| `/task add "..."` | Create beads task | `bd create --title "..."` |
+| `/task done` | Complete current task | `bd close <id>` |
+| `/task defer` | Put on ice | `bd defer <id>` |
+| `/checkpoint` | Save session progress | - |
+| `/commit` | Create conventional commit | - |
+| `/code-review` | Review current changes | - |
+| `/tdd "feature"` | Start TDD workflow | - |
+| `/feature-dev` | Plan feature development | - |
+| `/go-init` | Initialize Go project | - |
+| `/ts-init` | Initialize TypeScript project | - |
+
+## Molecules for Repeated Workflows (v0.33+)
+
+For repeatable work patterns (feature dev, release, hotfix), use **molecules**:
+
+```bash
+# List available templates (protos)
+bd mol catalog
+
+# Spawn a feature molecule
+bd mol spawn feature-template --var name="dark-mode"
+
+# Execute steps with auto-advance
+bd close <step-id> --continue
+
+# Or use ephemeral wisp (not synced to git)
+bd wisp create feature-template
+```
+
+### Chemistry Metaphor
+- **Proto** (solid) — Reusable template
+- **Mol** (liquid) — Real tracked issues
+- **Wisp** (vapor) — Ephemeral, local only
 
 ---
 

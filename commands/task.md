@@ -19,35 +19,48 @@ Quick interface to beads task tracker.
 ### No arguments: Show current context
 Display current task with full details:
 ```bash
-bd show
+bd list --status in_progress
+bd show <id>
 ```
 
 ### `add <description>`: Create new task
 ```bash
-bd add "$*"
+bd create --title "$*" --type task
 ```
-Then offer to start it immediately.
+Then offer to start it immediately with `bd update <id> --status in_progress`.
 
 ### `done`: Complete current task
 ```bash
-bd done
+bd close <id> --reason "completed"
 ```
 Show success confirmation and offer next task from ready list.
 
-### `block <reason>`: Mark task blocked
+### `defer <reason>`: Put task on ice
 ```bash
-bd block "$*"
+bd defer <id>
+bd comments add <id> "Reason: $*"
 ```
-Explain what's blocking and offer next task.
+Explain why deferred and offer next task.
 
 ### `show [id]`: Show task details
 ```bash
-bd show $1
+bd show <id>
 ```
 
 ### `list`: List all tasks
 ```bash
 bd list
+bd ready  # Show only ready to work
+```
+
+### `mol <proto>`: Spawn molecule from proto
+```bash
+bd mol spawn <proto> --var key=value
+```
+
+### `wisp <proto>`: Spawn ephemeral wisp
+```bash
+bd wisp create <proto>
 ```
 
 ## Error Handling

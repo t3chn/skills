@@ -86,8 +86,7 @@ Use TodoWrite to break down the task into subtasks.
 - Use TodoWrite for subtask tracking within the beads task
 - When discovering subtasks that should be tracked separately:
   ```bash
-  bd create "Subtask title" -t task -p 1
-  bd dep add <new-id> <parent-id> --type parent-child
+  bd create --title "Subtask title" -t task -p 1 --parent <parent-id>
   ```
 
 ## Task Completion
@@ -127,17 +126,20 @@ Available skills for labeling:
 
 ```bash
 # With skill recommendation
-bd create "Implement user auth API" -t task -p 1 -l "skill:backend-rust"
+bd create --title "Implement user auth API" -t task -p 1 -l "skill:backend-rust"
 
 # Without skill (general task)
-bd create "Write documentation" -t task -p 2
+bd create --title "Write documentation" -t task -p 2
+
+# Quick capture (returns only ID)
+bd q "Fix login bug"
 ```
 
-Priority: 0=critical, 1=high, 2=medium, 3=low
+Priority: 0=critical (P0), 1=high (P1), 2=medium (P2), 3=low (P3), 4=backlog (P4)
 
 For subtasks, link to parent:
 ```bash
-bd dep add <child-id> <parent-id> --type parent-child
+bd create --title "Subtask" --parent <parent-id>
 ```
 
 ## Refresh Tasks
@@ -202,10 +204,10 @@ User: "Implement dark mode"
        ▼
 task-tracker agent:
   1. Checks bd ready --json
-  2. Creates task if none exists
-  3. Starts task with bd start
+  2. Creates task if none exists (bd create)
+  3. Starts task with bd update --status in_progress
   4. Creates TodoWrite subtasks
-  5. Completes with bd done
+  5. Completes with bd close
 ```
 
 Invoke with: `Task(subagent_type="task-tracker", prompt="Track implementation of dark mode")`
@@ -214,9 +216,50 @@ Invoke with: `Task(subagent_type="task-tracker", prompt="Track implementation of
 
 Use `/task` command for quick operations:
 - `/task` — Show current task context
-- `/task add "description"` — Create new task
-- `/task done` — Mark current complete
-- `/task block "reason"` — Mark blocked
+- `/task add "description"` — Create new task (bd create)
+- `/task done` — Mark current complete (bd close)
+- `/task defer "reason"` — Put on ice (bd defer)
+
+## Molecules & Wisps (v0.33+)
+
+### Molecules — Reusable Work Templates
+
+For repeated workflows, create a **proto** (template) and spawn **molecules**:
+
+```bash
+# List available protos
+bd mol catalog
+
+# Spawn a molecule from proto
+bd mol spawn <proto-id> --var feature="dark mode"
+
+# Execute steps with auto-advance
+bd close <step-id> --continue
+
+# Show current position
+bd mol current
+```
+
+### Wisps — Ephemeral Molecules
+
+Wisps live in `.beads-wisp/` (gitignored) — perfect for operational loops:
+
+```bash
+# Create wisp (not synced to git)
+bd wisp create <proto-id>
+
+# When done, either:
+bd mol squash <id>  # Create digest, delete wisp
+bd mol burn <id>    # Delete with no trace
+```
+
+### Chemistry Metaphor
+
+```
+Proto (solid)  →  Mol (liquid)  →  Wisp (vapor)
+template          real issues      ephemeral
+reusable          tracked          local only
+```
 
 ## Reference Files
 
