@@ -64,6 +64,39 @@ if [ -d ".serena" ] || [ -f ".serena/project.yml" ]; then
 fi
 
 # =============================================================================
+# MEMORY SUGGESTIONS FOR CONTEXT RECOVERY
+# =============================================================================
+
+if [ -d ".serena/memories" ]; then
+  KEY_MEMORIES=""
+
+  # Check for recent checkpoint (most important)
+  RECENT_CHECKPOINT=$(ls -t .serena/memories/checkpoint-*.md 2>/dev/null | head -1)
+  if [ -n "$RECENT_CHECKPOINT" ]; then
+    CHECKPOINT_NAME=$(basename "$RECENT_CHECKPOINT")
+    KEY_MEMORIES="${KEY_MEMORIES}- \`read_memory('$CHECKPOINT_NAME')\` — **Recent checkpoint**"$'\n'
+  fi
+
+  # Check for handoff
+  RECENT_HANDOFF=$(ls -t .serena/memories/handoff-*.md 2>/dev/null | head -1)
+  if [ -n "$RECENT_HANDOFF" ]; then
+    HANDOFF_NAME=$(basename "$RECENT_HANDOFF")
+    KEY_MEMORIES="${KEY_MEMORIES}- \`read_memory('$HANDOFF_NAME')\` — **Session handoff**"$'\n'
+  fi
+
+  # Check for project overview
+  if [ -f ".serena/memories/overview-skills.md" ]; then
+    KEY_MEMORIES="${KEY_MEMORIES}- \`read_memory('overview-skills.md')\` — Project overview"$'\n'
+  fi
+
+  # Output suggestions if any found
+  if [ -n "$KEY_MEMORIES" ]; then
+    output="${output}### Quick Context Recovery"$'\n'
+    output="${output}${KEY_MEMORIES}"$'\n'
+  fi
+fi
+
+# =============================================================================
 # OUTPUT
 # =============================================================================
 
