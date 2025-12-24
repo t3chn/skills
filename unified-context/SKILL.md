@@ -6,7 +6,7 @@ Redis-based semantic context management for AI agents.
 
 The Unified Context Engine enhances AI agent capabilities through:
 - **Long-term Memory**: Serena files with Redis vector search
-- **Execution Cache**: Query→Result caching with semantic matching (0.85 threshold)
+- **Execution Cache**: Query→Result caching with semantic matching (0.75 threshold)
 - **Guidance Cache**: Error→Fix pattern learning
 
 ## Architecture
@@ -94,7 +94,7 @@ The engine integrates with vi-skills hooks:
 ┌─────────────────────────────────────────────────────────────┐
 │ FULL MODE: Redis + Embeddings                               │
 │ • Semantic search with vector similarity                    │
-│ • 0.85+ threshold for cache hits                            │
+│ • 0.75+ threshold for cache hits                            │
 ├─────────────────────────────────────────────────────────────┤
 │ DEGRADED: No OPENAI_API_KEY                                 │
 │ • Zero vectors (no semantic matching)                       │
@@ -117,8 +117,8 @@ Environment variables:
 
 | Cache Type | Threshold | Description |
 |------------|-----------|-------------|
-| Execution | 0.85 | High confidence for reusing results |
-| Guidance | 0.75 | Fuzzy matching for similar errors |
+| Execution | 0.75 | Balanced threshold for reusing results |
+| Guidance | 0.60 | Fuzzy matching for similar errors |
 | Memory | 0.15 | Broad search for relevant memories |
 
 ## Redis Indexes
@@ -174,6 +174,6 @@ python3 scripts/verify-index.py
 ```
 
 ### Cache not hitting
-- Check similarity threshold (0.85 for exec_cache)
+- Check similarity threshold (0.75 for exec_cache)
 - Verify query is similar enough semantically
 - Use `context_engine.py context "query"` to test

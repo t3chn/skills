@@ -72,11 +72,27 @@ Production-ready skills, agents, and hooks for Claude Code. Focused on reliable 
 
 | Hook | Event | Description |
 |------|-------|-------------|
-| session-context | SessionStart | Inject beads context |
-| session-persist | Stop | Sync beads on exit |
+| session-context | SessionStart | Inject date, beads context, memory suggestions |
+| flow-check | SessionStart | Check production flow compliance |
 | skill-suggester | SessionStart | Auto-suggest relevant skills |
 | redis-context | SessionStart | Load Redis semantic context |
+| suggest-semantic-tools | PreToolUse | Suggest serena tools for Grep/Read |
+| session-persist | Stop | Sync beads on exit |
 | redis-learn | Stop | Learn from session patterns |
+
+## Session Features
+
+### Date Injection
+Every session starts with `**Today:** YYYY-MM-DD` to prevent AI year confusion.
+
+### Memory Suggestions
+Hook auto-suggests relevant memories at session start:
+- Recent checkpoints (`checkpoint-*.md`)
+- Session handoffs (`handoff-*.md`)
+- Project overview (`overview-skills.md`)
+
+### Flow Compliance
+Checks for: CLAUDE.md, pre-commit hooks, beads setup, tests directory.
 
 ## Structure
 

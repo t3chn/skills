@@ -66,7 +66,7 @@ Stores learnings from failures:
 ### 1. Check Execution Cache
 
 ```python
-def check_execution_cache(query: str, threshold: float = 0.85):
+def check_execution_cache(query: str, threshold: float = 0.75):
     """Find semantically similar successful executions."""
     embedding = get_embedding(query)
 

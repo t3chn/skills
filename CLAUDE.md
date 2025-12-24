@@ -67,3 +67,12 @@ bd sync
 git add -A && git commit -m "..."
 git push
 ```
+
+## Documentation Rule
+
+**When adding new features, update:**
+1. README.md — if user-facing feature
+2. Relevant SKILL.md — technical details
+3. Memory — if frequently referenced (`read_memory('doc-checklist.md')`)
+
+**Trigger:** hooks/, scripts/, agents/, commands/ changes
