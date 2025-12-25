@@ -39,7 +39,7 @@ if [ ! -d ".beads" ]; then
 fi
 
 # 4. Tests directory
-if [ ! -d "tests" ] && [ ! -d "test" ] && [ ! -d "*_test.go" ] 2>/dev/null; then
+if [ ! -d "tests" ] && [ ! -d "test" ] && [ ! -d "__tests__" ] 2>/dev/null; then
   # Check for Go test files or Rust tests
   if ! find . -maxdepth 3 -name "*_test.go" -o -name "*_test.rs" 2>/dev/null | head -1 | grep -q .; then
     if [ ! -d "src" ] || ! grep -r "#\[test\]" src/ 2>/dev/null | head -1 | grep -q .; then

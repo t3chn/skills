@@ -15,14 +15,22 @@
 set -e
 
 # =============================================================================
-# COLORS
+# COLORS (disable if not TTY)
 # =============================================================================
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+if [ -t 1 ]; then
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  YELLOW='\033[1;33m'
+  BLUE='\033[0;34m'
+  NC='\033[0m'
+else
+  RED=''
+  GREEN=''
+  YELLOW=''
+  BLUE=''
+  NC=''
+fi
 
 # =============================================================================
 # PARSE ARGUMENTS
@@ -86,14 +94,20 @@ fi
 # STEP 1: BEADS (Task Tracking)
 # =============================================================================
 
-echo -e "${BLUE}[1/4] Setting up beads (task tracking)...${NC}"
+echo -e "${BLUE}[1/5] Setting up beads (task tracking)...${NC}"
 
 if [ -d ".beads" ]; then
   echo -e "${GREEN}  ✓ .beads/ already exists${NC}"
 else
   if command -v bd &> /dev/null; then
-    bd init
-    echo -e "${GREEN}  ✓ beads initialized${NC}"
+    # Suppress verbose output, show only errors
+    if bd init 2>&1 | grep -q "initialized successfully"; then
+      echo -e "${GREEN}  ✓ beads initialized${NC}"
+      # Run doctor --fix silently to resolve common issues
+      bd doctor --fix >/dev/null 2>&1 || true
+    else
+      echo -e "${YELLOW}  ⚠ beads init had issues, run 'bd doctor' to check${NC}"
+    fi
   else
     echo -e "${YELLOW}  ⚠ beads CLI not found. Install: cargo install beads${NC}"
     echo -e "${YELLOW}    Skipping beads setup${NC}"
@@ -105,7 +119,7 @@ fi
 # =============================================================================
 
 if [ "$MINIMAL" = false ]; then
-  echo -e "${BLUE}[2/4] Setting up serena (code memory)...${NC}"
+  echo -e "${BLUE}[2/5] Setting up serena (code memory)...${NC}"
 
   mkdir -p .serena/memories
 
@@ -145,14 +159,14 @@ EOF
     echo -e "${GREEN}  ✓ overview.md already exists${NC}"
   fi
 else
-  echo -e "${YELLOW}[2/4] Skipping serena (--minimal mode)${NC}"
+  echo -e "${YELLOW}[2/5] Skipping serena (--minimal mode)${NC}"
 fi
 
 # =============================================================================
 # STEP 3: CLAUDE.md (AI Quick Reference)
 # =============================================================================
 
-echo -e "${BLUE}[3/4] Creating CLAUDE.md...${NC}"
+echo -e "${BLUE}[3/5] Creating CLAUDE.md...${NC}"
 
 if [ ! -f "CLAUDE.md" ]; then
   # Detect language/framework
@@ -220,7 +234,7 @@ fi
 # =============================================================================
 
 if [ "$MINIMAL" = false ] && [ "$SKIP_PRECOMMIT" = false ]; then
-  echo -e "${BLUE}[4/4] Setting up pre-commit hooks...${NC}"
+  echo -e "${BLUE}[4/5] Setting up pre-commit hooks...${NC}"
 
   if [ ! -f ".pre-commit-config.yaml" ]; then
     cat > .pre-commit-config.yaml << 'EOF'
@@ -248,7 +262,7 @@ EOF
 
     # Install pre-commit if available
     if command -v pre-commit &> /dev/null; then
-      pre-commit install --install-hooks -t pre-commit -t commit-msg 2>/dev/null || true
+      pre-commit install --install-hooks -t pre-commit -t commit-msg >/dev/null 2>&1 || true
       echo -e "${GREEN}  ✓ pre-commit hooks installed${NC}"
     else
       echo -e "${YELLOW}  ⚠ pre-commit not found. Install: pip install pre-commit${NC}"
@@ -258,7 +272,39 @@ EOF
     echo -e "${GREEN}  ✓ .pre-commit-config.yaml already exists${NC}"
   fi
 else
-  echo -e "${YELLOW}[4/4] Skipping pre-commit${NC}"
+  echo -e "${YELLOW}[4/5] Skipping pre-commit${NC}"
+fi
+
+# =============================================================================
+# STEP 5: TESTS DIRECTORY (TDD compliance)
+# =============================================================================
+
+if [ "$MINIMAL" = false ]; then
+  echo -e "${BLUE}[5/5] Checking tests directory...${NC}"
+
+  if [ -d "tests" ] || [ -d "test" ] || [ -d "__tests__" ]; then
+    echo -e "${GREEN}  ✓ Tests directory exists${NC}"
+  else
+    # Create appropriate tests dir based on stack
+    if [ -f "package.json" ]; then
+      mkdir -p __tests__
+      echo -e "${GREEN}  ✓ Created __tests__/ (Jest/Vitest convention)${NC}"
+    elif [ -f "pyproject.toml" ] || [ -f "requirements.txt" ]; then
+      mkdir -p tests
+      touch tests/__init__.py
+      echo -e "${GREEN}  ✓ Created tests/ with __init__.py${NC}"
+    elif [ -f "go.mod" ]; then
+      echo -e "${YELLOW}  ℹ Go uses *_test.go files (no separate dir needed)${NC}"
+    elif [ -f "Cargo.toml" ]; then
+      mkdir -p tests
+      echo -e "${GREEN}  ✓ Created tests/ for integration tests${NC}"
+    else
+      mkdir -p tests
+      echo -e "${GREEN}  ✓ Created tests/${NC}"
+    fi
+  fi
+else
+  echo -e "${YELLOW}[5/5] Skipping tests directory (--minimal mode)${NC}"
 fi
 
 # =============================================================================
@@ -269,9 +315,7 @@ echo ""
 echo -e "${GREEN}✅ Project initialized!${NC}"
 echo ""
 echo "Next steps:"
-echo "  1. Review and customize CLAUDE.md"
-echo "  2. Update .serena/memories/overview.md with project details"
-echo "  3. Create first task: bd create --title \"...\" --type task"
-echo "  4. Commit setup: git add -A && git commit -m \"chore: init production workflow\""
-echo "  5. Sync beads: bd sync"
+echo "  1. Customize CLAUDE.md and .serena/memories/overview.md"
+echo "  2. Commit: git add -A && git commit -m \"chore: init production workflow\""
+echo "  3. Create task: bd create --title \"...\" --type task"
 echo ""
