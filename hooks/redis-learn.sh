@@ -105,6 +105,14 @@ posttool_hook() {
 # =============================================================================
 
 stop_hook() {
+  # Check stop_hook_active to prevent infinite loops
+  if [ -n "$TOOL_CONTEXT" ]; then
+    STOP_ACTIVE=$(echo "$TOOL_CONTEXT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('stop_hook_active', False))" 2>/dev/null || echo "False")
+    if [ "$STOP_ACTIVE" = "True" ]; then
+      exit 0
+    fi
+  fi
+
   # Sync any pending learnings to Redis
   source "$VENV/bin/activate" 2>/dev/null || true
 
