@@ -5,8 +5,11 @@
 set -e
 
 warnings=""
+missing_count=0
+
 add_warning() {
   warnings="${warnings}⚠️ $1"$'\n'
+  missing_count=$((missing_count + 1))
 }
 
 # =============================================================================
@@ -58,8 +61,15 @@ echo ""
 echo "**Missing components detected:**"
 echo ""
 echo "$warnings"
-echo ""
-echo "Run \`/flow\` for setup guide."
-echo ""
+
+# Suggest init-project if multiple components missing
+if [ "$missing_count" -ge 2 ]; then
+  echo "---"
+  echo "**Quick fix:** Run \`/init-project\` to set up everything at once."
+  echo ""
+else
+  echo "Run \`/flow\` for setup guide."
+  echo ""
+fi
 
 exit 0

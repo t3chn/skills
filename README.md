@@ -64,6 +64,7 @@ Production-ready skills, agents, and hooks for Claude Code. Focused on reliable 
 
 | Command | Description |
 |---------|-------------|
+| `/init-project` | Initialize project (beads + serena + CLAUDE.md + pre-commit) |
 | `/task` | Quick beads task management |
 | `/checkpoint` | Save session progress |
 | `/flow` | Production flow quick reference |
@@ -73,7 +74,7 @@ Production-ready skills, agents, and hooks for Claude Code. Focused on reliable 
 | Hook | Event | Description |
 |------|-------|-------------|
 | session-context | SessionStart | Inject date, beads context, memory suggestions |
-| flow-check | SessionStart | Check production flow compliance |
+| flow-check | SessionStart | Check production flow, suggest `/init-project` if needed |
 | skill-suggester | SessionStart | Auto-suggest relevant skills |
 | redis-context | SessionStart | Auto-start Redis, load semantic context |
 | suggest-semantic-tools | PreToolUse | Suggest serena tools for Grep/Read |
