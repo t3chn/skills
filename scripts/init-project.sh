@@ -200,10 +200,7 @@ if [ ! -f "CLAUDE.md" ]; then
   cat > CLAUDE.md << EOF
 # ${PROJECT_NAME}
 
-## Quick Start (New Session)
-1. \`bd prime\` — текущая задача
-2. \`bd ready\` — доступные задачи
-3. \`read_memory('overview.md')\` — обзор проекта
+> **New session?** Run: \`bd prime\` · \`bd ready\` · \`read_memory('overview.md')\`
 
 ## Key Commands
 | Command | Purpose |
