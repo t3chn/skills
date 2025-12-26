@@ -119,3 +119,30 @@ When session closes (logout, clear, exit):
 4. **Exit 2** — stderr becomes blocking error
 5. **Set timeouts** — for slow operations (Docker, network)
 6. **Graceful degradation** — exit silently if deps missing
+
+## Plain Text vs JSON Output
+
+**Use plain text** (current approach) when:
+- Injecting context for Claude to see
+- Simple informational output
+- Easier to read and debug
+
+**Use JSON output** when you need:
+- `systemMessage` — show warning to user (not Claude)
+- `suppressOutput` — hide stdout from verbose mode
+- `permissionDecision` — block/allow/modify tool (PreToolUse)
+- `updatedInput` — modify tool parameters
+
+JSON format example:
+```json
+{
+  "systemMessage": "Warning shown to user",
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "additionalContext": "Context for Claude",
+    "permissionDecision": "allow"
+  }
+}
+```
+
+For vi-skills hooks, plain text is optimal — we want Claude to see suggestions.

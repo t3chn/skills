@@ -36,14 +36,22 @@ fi
 # =============================================================================
 
 DOCKER_COMPOSE_FILE="$PROJECT_ROOT/docker/docker-compose.yml"
+REDIS_STARTED=false
 
 if command -v docker &> /dev/null && [ -f "$DOCKER_COMPOSE_FILE" ]; then
   # Check if Redis container is running
   if ! docker ps --format '{{.Names}}' 2>/dev/null | grep -q "redis-ai-memory"; then
-    # Try to start Redis (silent, non-blocking)
-    docker compose -f "$DOCKER_COMPOSE_FILE" up -d 2>/dev/null &
-    # Give it a moment to start
-    sleep 1
+    # Start Redis synchronously (hook has 120s timeout)
+    if docker compose -f "$DOCKER_COMPOSE_FILE" up -d 2>/dev/null; then
+      REDIS_STARTED=true
+      # Wait for Redis to be ready (max 10 seconds)
+      for i in {1..10}; do
+        if docker exec redis-ai-memory redis-cli ping 2>/dev/null | grep -q "PONG"; then
+          break
+        fi
+        sleep 1
+      done
+    fi
   fi
 fi
 
