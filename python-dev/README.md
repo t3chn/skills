@@ -6,6 +6,7 @@ Modern Python development toolkit with FastAPI patterns, pytest testing, async S
 
 | Skill | Description |
 |-------|-------------|
+| [essential-libs](./skills/essential-libs/SKILL.md) | **Battle-tested libraries** — decimal, validation, HTTP, config, testing, logging |
 | [fastapi-patterns](./skills/fastapi-patterns/SKILL.md) | FastAPI application architecture, DI, Pydantic, SQLAlchemy async |
 | [testing-pytest](./skills/testing-pytest/SKILL.md) | Pytest patterns, fixtures, mocking, async testing |
 | [modern-tooling](./skills/modern-tooling/SKILL.md) | uv, ruff, pyproject.toml configuration |
