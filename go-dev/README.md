@@ -10,6 +10,7 @@ Auto-triggered based on conversation context:
 
 | Skill | Triggers On |
 |-------|-------------|
+| **Essential Libraries** | "Go decimal", "shopspring", "validation library", "testify vs", "resty", "koanf", "uuid", "argon2", "paseto", "errgroup" |
 | **Go Conventions** | Code review context — error handling, naming, testing patterns |
 | **Project Structure** | "Go project layout", "internal/ vs pkg/", "organize Go packages", "clean architecture Go" |
 | **Error Handling** | "Go error handling", "errors.Is", "error wrapping", "sentinel errors", "fmt.Errorf %w" |
@@ -100,6 +101,24 @@ Use feature-dev:code-reviewer to review my Go code
 ```
 The `go-conventions` skill provides Go-specific context automatically.
 
+## Essential Libraries
+
+The `essential-libs` skill provides battle-tested library recommendations:
+
+| Category | Recommended | Why |
+|----------|-------------|-----|
+| **Decimal/Money** | `shopspring/decimal` | Never use float64 for money! |
+| **Validation** | `go-playground/validator` | Struct tags, simple |
+| **Testing** | `testify` + `mockery` | Assertions + auto-mocks |
+| **HTTP Client** | `go-resty/resty` | Retry, timeout, fluent API |
+| **Config** | `knadh/koanf` | Modern, small binary (not viper) |
+| **UUID** | `google/uuid` or `gofrs/uuid` | v4/v7 support |
+| **Hashing** | `argon2` | Password hashing (winner of PHC) |
+| **Tokens** | `paseto` | Safer than JWT |
+| **Concurrency** | `errgroup` + `semaphore` | Structured concurrency |
+| **Cache** | `ristretto` | High-performance in-memory |
+| **DI** | `google/wire` | Compile-time, zero overhead |
+
 ## Best Practices Enforced
 
 ### Project Structure
@@ -157,7 +176,9 @@ go-dev/
 ├── hooks/
 │   └── go-lint-check.md
 ├── skills/
-│   ├── go-conventions/        # NEW: Context for code-reviewer
+│   ├── essential-libs/        # NEW: Battle-tested libraries
+│   │   └── SKILL.md
+│   ├── go-conventions/        # Context for code-reviewer
 │   │   └── SKILL.md
 │   ├── context-patterns/
 │   │   └── SKILL.md
