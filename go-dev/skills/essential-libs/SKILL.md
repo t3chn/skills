@@ -213,18 +213,29 @@ k.Unmarshal("", &cfg)
 - Modular dependencies
 - Cleaner abstractions
 
-### kelseyhightower/envconfig — Env-Only (Simple)
+### caarlos0/env — Env-Only (Modern)
 ```go
-import "github.com/kelseyhightower/envconfig"
+import "github.com/caarlos0/env/v11"
 
 type Config struct {
-    Port     int    `envconfig:"PORT" default:"8080"`
-    Database string `envconfig:"DATABASE_URL" required:"true"`
+    Port     int      `env:"PORT" envDefault:"8080"`
+    Database string   `env:"DATABASE_URL,required"`
+    Debug    bool     `env:"DEBUG" envDefault:"false"`
+    Hosts    []string `env:"HOSTS" envSeparator:":"`
 }
 
 var cfg Config
-envconfig.Process("", &cfg)
+err := env.Parse(&cfg)
+
+// Or with generics (Go 1.18+)
+cfg, err := env.ParseAs[Config]()
 ```
+
+**Key features**:
+- Zero dependencies, modern API
+- Generics support (`ParseAs[T]()`)
+- Rich tag options: `,required`, `,notEmpty`, `,expand`, `,file`
+- File content: `env:"SECRET,file"` reads content from file path
 
 ---
 
@@ -586,7 +597,7 @@ import "gorm.io/gorm"
 | **Validation** | `go-playground/validator` | `ozzo-validation` (complex) |
 | **Testing** | `testify` + `mockery` | `go.uber.org/mock` |
 | **HTTP Client** | `go-resty/resty` | stdlib `net/http` |
-| **Config** | `knadh/koanf` | `kelseyhightower/envconfig` |
+| **Config** | `knadh/koanf` | `caarlos0/env` |
 | **UUID** | `google/uuid` | `gofrs/uuid` (v7) |
 | **Hashing** | `argon2` | `bcrypt` (simpler) |
 | **Tokens** | `paseto` | `golang-jwt` (if required) |
