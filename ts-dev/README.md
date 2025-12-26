@@ -16,6 +16,7 @@ This plugin provides skills, agents, and commands for TypeScript development wit
 
 | Skill | Description |
 |-------|-------------|
+| `essential-libs` | **Battle-tested libraries** — decimal, validation, HTTP, errors, testing, logging |
 | `ts-conventions` | Code review context — type safety, error handling, async |
 | `project-structure` | Monorepo patterns, tsconfig bases, barrel exports |
 | `modern-tooling` | pnpm, Biome, tsup, Vite configuration |
