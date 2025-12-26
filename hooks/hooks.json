@@ -2,7 +2,6 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
@@ -22,7 +21,8 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/redis-context.sh",
-            "description": "Load Redis context engine status and cached context"
+            "timeout": 120,
+            "description": "Load Redis context engine status (may start Docker)"
           }
         ]
       }
@@ -39,19 +39,35 @@
         ]
       }
     ],
-    "Stop": [
+    "PreCompact": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-persist.sh",
-            "description": "Persist beads task state at session end"
-          },
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/precompact-context.sh",
+            "description": "Save task context before compaction"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/redis-learn.sh stop",
-            "description": "Sync Redis context cache at session end"
+            "description": "Sync Redis context cache"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-end.sh",
+            "description": "Final sync of beads and Redis state"
           }
         ]
       }
