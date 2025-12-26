@@ -6,6 +6,7 @@ Modern Rust backend development toolkit with Axum web framework, SQLx database, 
 
 | Skill | Description |
 |-------|-------------|
+| [essential-libs](./skills/essential-libs/SKILL.md) | **Battle-tested crates** — decimal, errors, validation, HTTP, config, testing |
 | [rust-conventions](./skills/rust-conventions/SKILL.md) | Code review context — ownership, error handling, async |
 | [axum-patterns](./skills/axum-patterns/SKILL.md) | Axum web framework, handlers, extractors, middleware |
 | [sqlx](./skills/sqlx/SKILL.md) | Type-safe SQL with compile-time checking |
