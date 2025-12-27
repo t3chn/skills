@@ -607,28 +607,6 @@ import "github.com/rs/zerolog"
 
 ## 🗃️ Database
 
-### pgx — PostgreSQL Driver (Recommended)
-```go
-import "github.com/jackc/pgx/v5"
-
-conn, _ := pgx.Connect(ctx, os.Getenv("DATABASE_URL"))
-rows, _ := conn.Query(ctx, "SELECT * FROM users WHERE id = $1", id)
-```
-
-### sqlc — Type-Safe SQL (Recommended)
-```sql
--- query.sql
--- name: GetUser :one
-SELECT * FROM users WHERE id = $1;
-
--- name: ListUsers :many
-SELECT * FROM users ORDER BY created_at;
-```
-
-```bash
-sqlc generate  # Generates type-safe Go code
-```
-
 ### uptrace/bun — SQL-First ORM (Recommended)
 ```go
 import (
@@ -651,27 +629,66 @@ type User struct {
 
 // CRUD
 db.NewInsert().Model(&user).Exec(ctx)
-db.NewSelect().Model(&user).Where("id = ?", id).Scan(ctx)
+db.NewSelect().Column("id", "name", "email").Model(&user).Where("id = ?", id).Scan(ctx)
 db.NewUpdate().Model(&user).Set("name = ?", name).Where("id = ?", id).Exec(ctx)
 db.NewDelete().Model(&user).Where("id = ?", id).Exec(ctx)
 
-// Raw SQL when needed
-db.QueryContext(ctx, "SELECT * FROM users WHERE age > ?", 18)
+// Dynamic queries (where bun shines)
+q := db.NewSelect().Model(&users)
+if filter.Name != "" {
+    q = q.Where("name ILIKE ?", "%"+filter.Name+"%")
+}
+if filter.MinAge > 0 {
+    q = q.Where("age >= ?", filter.MinAge)
+}
+q.Order("created_at DESC").Limit(20).Scan(ctx)
+
+// Explicit relations
+db.NewSelect().Model(&user).
+    Relation("Orders", func(q *bun.SelectQuery) *bun.SelectQuery {
+        return q.Where("status = ?", "completed")
+    }).Scan(ctx)
 ```
 
-**Why bun over GORM**:
-- SQL-first: you control the queries
-- Lighter: built on `database/sql`, minimal overhead
-- Better for complex queries: CTEs, subqueries, window functions
-- Explicit relationships via struct tags
+**Why bun as PRIMARY**:
+- SQL-first: you control the queries, no magic
+- Covers 100% scenarios: CRUD, dynamic filters, complex queries
+- Uniform across all project sizes (MVP → high-load)
+- Built on `database/sql`, minimal overhead
 
-### GORM — ORM (Use Carefully)
+**Discipline rules**:
+- Always explicit `Column()` — no SELECT *
+- Always `Relation()` for joins — explicit, not magic
+- Use `db.Debug()` in dev — see actual SQL
+- Migrations separately (golang-migrate, atlas)
+
+### pgx — PostgreSQL Driver
 ```go
-import "gorm.io/gorm"
+import "github.com/jackc/pgx/v5"
 
-// ⚠️ Prefer bun or sqlc for new projects
-// ⚠️ Disable auto-migrate in production!
-// ⚠️ Always review generated SQL with db.Debug()
+// Use directly for raw performance or with bun
+conn, _ := pgx.Connect(ctx, os.Getenv("DATABASE_URL"))
+rows, _ := conn.Query(ctx, "SELECT * FROM users WHERE id = $1", id)
+```
+
+### sqlc — Type-Safe SQL (Hot Paths)
+```sql
+-- query.sql: Use for performance-critical queries
+-- name: GetUserByID :one
+SELECT id, name, email FROM users WHERE id = $1;
+```
+
+```bash
+sqlc generate  # Zero runtime overhead, compile-time safety
+```
+
+**When to add sqlc**: Hot paths with millions req/sec, complex analytics (CTEs, window functions), latency-critical operations. Works alongside bun.
+
+### GORM — Legacy Only
+```go
+// ⚠️ NOT recommended for new projects
+// ⚠️ Too much magic, unpredictable SQL, N+1 problems
+// Use only for existing GORM codebases
 ```
 
 ---
@@ -695,4 +712,4 @@ import "gorm.io/gorm"
 | **Errors** | stdlib + `multierror` | `cockroachdb/errors` |
 | **DI** | `google/wire` | `uber-go/fx` (large apps) |
 | **Logging** | `log/slog` | `zap`, `zerolog` |
-| **PostgreSQL** | `pgx` + `sqlc` | `bun` (ORM) |
+| **Database** | `bun` (SQL-first ORM) | `sqlc` (hot paths) |
