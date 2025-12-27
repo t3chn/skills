@@ -180,6 +180,56 @@ resp, err := client.R().
 
 ---
 
+## 🛣️ HTTP Router
+
+### go-chi/chi — Lightweight & Idiomatic (Recommended)
+```go
+import (
+    "github.com/go-chi/chi/v5"
+    "github.com/go-chi/chi/v5/middleware"
+)
+
+r := chi.NewRouter()
+
+// Built-in middleware
+r.Use(middleware.Logger)
+r.Use(middleware.Recoverer)
+r.Use(middleware.RequestID)
+
+// Routes
+r.Get("/", handleHome)
+r.Route("/api/users", func(r chi.Router) {
+    r.Get("/", listUsers)
+    r.Post("/", createUser)
+    r.Route("/{id}", func(r chi.Router) {
+        r.Get("/", getUser)
+        r.Put("/", updateUser)
+        r.Delete("/", deleteUser)
+    })
+})
+
+// URL params
+userID := chi.URLParam(r, "id")
+
+http.ListenAndServe(":8080", r)
+```
+
+**Why chi over others**:
+- ~1000 LOC, zero dependencies
+- 100% compatible with `net/http`
+- Context-based middleware chain
+- No magic, explicit routing
+
+**Alternatives**:
+| Router | Style | Use Case |
+|--------|-------|----------|
+| `chi` | Minimal | APIs, microservices |
+| `gin` | Feature-rich | Rapid prototyping |
+| `echo` | Fast | High-performance APIs |
+| stdlib `http.ServeMux` | Zero deps | Simple services (Go 1.22+) |
+
+---
+
 ## ⚙️ Configuration
 
 ### knadh/koanf — Modern Config (Recommended)
@@ -579,10 +629,47 @@ SELECT * FROM users ORDER BY created_at;
 sqlc generate  # Generates type-safe Go code
 ```
 
+### uptrace/bun — SQL-First ORM (Recommended)
+```go
+import (
+    "github.com/uptrace/bun"
+    "github.com/uptrace/bun/dialect/pgdialect"
+    "github.com/uptrace/bun/driver/pgdriver"
+)
+
+// Connect
+sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
+db := bun.NewDB(sqldb, pgdialect.New())
+
+// Model
+type User struct {
+    bun.BaseModel `bun:"table:users"`
+    ID            int64  `bun:",pk,autoincrement"`
+    Name          string `bun:",notnull"`
+    Email         string `bun:",unique"`
+}
+
+// CRUD
+db.NewInsert().Model(&user).Exec(ctx)
+db.NewSelect().Model(&user).Where("id = ?", id).Scan(ctx)
+db.NewUpdate().Model(&user).Set("name = ?", name).Where("id = ?", id).Exec(ctx)
+db.NewDelete().Model(&user).Where("id = ?", id).Exec(ctx)
+
+// Raw SQL when needed
+db.QueryContext(ctx, "SELECT * FROM users WHERE age > ?", 18)
+```
+
+**Why bun over GORM**:
+- SQL-first: you control the queries
+- Lighter: built on `database/sql`, minimal overhead
+- Better for complex queries: CTEs, subqueries, window functions
+- Explicit relationships via struct tags
+
 ### GORM — ORM (Use Carefully)
 ```go
 import "gorm.io/gorm"
 
+// ⚠️ Prefer bun or sqlc for new projects
 // ⚠️ Disable auto-migrate in production!
 // ⚠️ Always review generated SQL with db.Debug()
 ```
@@ -597,6 +684,7 @@ import "gorm.io/gorm"
 | **Validation** | `go-playground/validator` | `ozzo-validation` (complex) |
 | **Testing** | `testify` + `mockery` | `go.uber.org/mock` |
 | **HTTP Client** | `go-resty/resty` | stdlib `net/http` |
+| **HTTP Router** | `go-chi/chi` | `gin`, `echo` |
 | **Config** | `knadh/koanf` | `caarlos0/env` |
 | **UUID** | `google/uuid` | `gofrs/uuid` (v7) |
 | **Hashing** | `argon2` | `bcrypt` (simpler) |
@@ -607,4 +695,4 @@ import "gorm.io/gorm"
 | **Errors** | stdlib + `multierror` | `cockroachdb/errors` |
 | **DI** | `google/wire` | `uber-go/fx` (large apps) |
 | **Logging** | `log/slog` | `zap`, `zerolog` |
-| **PostgreSQL** | `pgx` + `sqlc` | `GORM` (carefully) |
+| **PostgreSQL** | `pgx` + `sqlc` | `bun` (ORM) |
