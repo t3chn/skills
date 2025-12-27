@@ -6,10 +6,13 @@ Hooks for automatic context injection and workflow automation in Claude Code ses
 
 | Event | Hook | Purpose |
 |-------|------|---------|
+| SessionStart | `feature-dev-guard.py` | Reset feature-dev tracking state |
 | SessionStart | `flow-check.sh` | Check production flow compliance |
 | SessionStart | `skill-suggester.sh` | Auto-detect project and suggest skills |
 | SessionStart | `session-context.sh` | Inject beads + serena context |
 | SessionStart | `redis-context.sh` | Load Redis context engine (timeout: 120s) |
+| UserPromptSubmit | `feature-dev-guard.py` | Detect /feature-dev invocation |
+| PreToolUse | `feature-dev-guard.py` | **Block** multi-file without /feature-dev |
 | PreToolUse | `suggest-semantic-tools.sh` | Suggest serena for Grep/Read |
 | PreCompact | `precompact-context.sh` | Save task context before compaction |
 | Stop | `redis-learn.sh stop` | Sync Redis cache after response |

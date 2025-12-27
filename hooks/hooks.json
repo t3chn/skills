@@ -5,6 +5,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/feature-dev-guard.py",
+            "description": "Reset feature-dev tracking state"
+          },
+          {
+            "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/flow-check.sh",
             "description": "Check production flow compliance"
           },
@@ -27,7 +32,28 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/feature-dev-guard.py",
+            "description": "Detect /feature-dev invocation"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/feature-dev-guard.py",
+            "description": "Block multi-file features without /feature-dev workflow"
+          }
+        ]
+      },
       {
         "matcher": "Grep|Read",
         "hooks": [
