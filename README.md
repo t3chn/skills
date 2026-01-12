@@ -38,6 +38,7 @@ Included skills:
 - `vi-code-reviewer` — Review local diffs (`git diff`) with confidence scoring and low false positives.
 - `vi-feature-dev` — Guided 7-phase workflow for implementing new features.
 - `vi-ralph-loop` — Iterate on the same prompt until objective completion criteria are met.
+- `vi-security-guidance` — Security reminders for CI, exec/shell usage, XSS sinks, eval, and unsafe deserialization.
 
 ## Contributing
 
