@@ -33,6 +33,10 @@ Included skills:
 - `vi-frontend-design` — Build distinctive, production-grade frontend UI (avoid generic AI aesthetics).
 - `vi-code-review` — Review GitHub PRs via `gh` with confidence scoring and full-SHA links.
 - `vi-code-simplifier` — Simplify/refactor code for readability while preserving behavior.
+- `vi-code-explorer` — Deeply trace a feature end-to-end to understand codebase flows.
+- `vi-code-architect` — Produce a decisive implementation blueprint that fits existing patterns.
+- `vi-code-reviewer` — Review local diffs (`git diff`) with confidence scoring and low false positives.
+- `vi-feature-dev` — Guided 7-phase workflow for implementing new features.
 
 ## Contributing
 
