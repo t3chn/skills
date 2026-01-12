@@ -15,6 +15,9 @@ This repository serves as a comprehensive documentation of skills, technologies,
 ### Brainstorming
 **`brainstorming/`** - Turn ideas into fully formed designs through collaborative dialogue. Explores user intent, requirements, and design before implementation.
 
+### Beads
+**`beads/`** - Git-backed issue tracker (`bd`) for multi-session work with dependencies and persistent memory across sessions.
+
 ## Structure
 
 Skills are organized by category and include practical examples, best practices, and relevant resources.
