@@ -37,6 +37,7 @@ Included skills:
 - `vi-code-architect` — Produce a decisive implementation blueprint that fits existing patterns.
 - `vi-code-reviewer` — Review local diffs (`git diff`) with confidence scoring and low false positives.
 - `vi-feature-dev` — Guided 7-phase workflow for implementing new features.
+- `vi-ralph-loop` — Iterate on the same prompt until objective completion criteria are met.
 
 ## Contributing
 
