@@ -32,6 +32,7 @@ Included skills:
 - `vi-beads` — Use `bd` (Beads) for persistent multi-session task memory.
 - `vi-frontend-design` — Build distinctive, production-grade frontend UI (avoid generic AI aesthetics).
 - `vi-code-review` — Review GitHub PRs via `gh` with confidence scoring and full-SHA links.
+- `vi-code-simplifier` — Simplify/refactor code for readability while preserving behavior.
 
 ## Contributing
 
