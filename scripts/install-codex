@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+src_dir="$repo_root/codex/skills"
+dest_dir="${HOME}/.codex/skills"
+prefix="vi-"
+
+if [[ ! -d "$src_dir" ]]; then
+  echo "[ERROR] Source directory not found: $src_dir" >&2
+  exit 1
+fi
+
+shopt -s nullglob
+src_skills=( "$src_dir/${prefix}"* )
+if (( ${#src_skills[@]} == 0 )); then
+  echo "[ERROR] No skills found in $src_dir matching ${prefix}*" >&2
+  exit 1
+fi
+
+mkdir -p "$dest_dir"
+
+dest_skills=( "$dest_dir/${prefix}"* )
+if (( ${#dest_skills[@]} )); then
+  echo "[INFO] Removing existing Codex skills: $dest_dir/${prefix}*"
+  rm -rf "${dest_skills[@]}"
+fi
+
+echo "[INFO] Installing skills into: $dest_dir"
+for skill_path in "${src_skills[@]}"; do
+  skill_name="$(basename -- "$skill_path")"
+  if [[ ! -d "$skill_path" ]]; then
+    echo "[WARN] Skipping non-directory: $skill_path" >&2
+    continue
+  fi
+  cp -R "$skill_path" "$dest_dir/$skill_name"
+  echo "  - $skill_name"
+done
+
+echo "[OK] Installed ${#src_skills[@]} skill(s)."

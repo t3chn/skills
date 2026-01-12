@@ -1,5 +1,5 @@
 ---
-name: beads
+name: vi-beads
 description: "Git-backed issue tracker for multi-session work with dependencies and persistent memory across session boundaries. Use when work spans multiple sessions, has blockers/dependencies, or needs context recovery after context loss."
 ---
 

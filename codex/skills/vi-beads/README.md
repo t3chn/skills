@@ -12,11 +12,16 @@ This skill teaches Codex how to use bd effectively for:
 
 ## Installation
 
-Copy the `beads/` directory to your Codex skills location:
+Preferred: install all `vi-*` skills from this repo:
 
 ```bash
-# Install for current user
-cp -r beads ~/.codex/skills/
+./scripts/install-codex
+```
+
+Manual install (this skill only):
+
+```bash
+cp -R codex/skills/vi-beads ~/.codex/skills/
 ```
 
 ## When Codex Uses This Skill
@@ -30,7 +35,7 @@ The skill activates when conversations involve:
 ## File Structure
 
 ```
-beads/
+vi-beads/
 ├── SKILL.md                 # Main skill file (Codex reads this first)
 ├── CLAUDE.md                # Maintenance guide for updating the skill
 ├── README.md                # This file (for humans)
@@ -104,7 +109,7 @@ NEXT: Implement rate limiting"
 
 ## Contributing
 
-This skill is maintained at [github.com/steveyegge/beads](https://github.com/steveyegge/beads) in the `claude-plugin/skills/beads/` directory.
+This skill is maintained in this repo at `codex/skills/vi-beads/`.
 
 Issues and PRs welcome for:
 - Documentation improvements

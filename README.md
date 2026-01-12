@@ -1,26 +1,35 @@
-# Skills
+# Skills (Codex + Claude)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/t3chn/skills/graphs/commit-activity)
 
-A curated collection of professional skills, knowledge, and expertise.
+A curated collection of skills, runbooks, and agent resources for OpenAI Codex and Claude Code.
 
 ## Overview
 
-This repository serves as a comprehensive documentation of skills, technologies, and competencies. It's continuously updated as new skills are acquired and existing ones are refined.
-
-## Skills
-
-### Brainstorming
-**`brainstorming/`** - Turn ideas into fully formed designs through collaborative dialogue. Explores user intent, requirements, and design before implementation.
-
-### Beads
-**`beads/`** - Git-backed issue tracker (`bd`) for multi-session work with dependencies and persistent memory across sessions.
+This repository is organized by platform because Codex and Claude Code have different conventions and packaging formats.
 
 ## Structure
 
-Skills are organized by category and include practical examples, best practices, and relevant resources.
+- **Codex**: `codex/` (Codex-native skills, runbooks, scripts)
+- **Claude Code**: `claude/` (Claude Code plugins)
+- **Shared**: `shared/` (format-agnostic assets only)
+
+## Codex Skills
+
+Codex skills live in `codex/skills/` and are namespaced with the `vi-` prefix.
+
+Install into `~/.codex/skills` (full sync, overwrites `~/.codex/skills/vi-*`):
+
+```bash
+./scripts/install-codex
+```
+
+Included skills:
+
+- `vi-brainstorming` — Turn ideas into validated design docs before implementation.
+- `vi-beads` — Use `bd` (Beads) for persistent multi-session task memory.
 
 ## Contributing
 
