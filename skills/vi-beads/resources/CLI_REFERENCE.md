@@ -276,7 +276,7 @@ bd --actor alice <command>
 ```
 
 **See also:**
-- [TROUBLESHOOTING.md - Sandboxed environments](TROUBLESHOOTING.md#sandboxed-environments-codex-claude-code-etc) for detailed sandbox troubleshooting
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed troubleshooting
 - [DAEMON.md](DAEMON.md) for daemon mode details
 
 ## Advanced Operations

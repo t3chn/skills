@@ -21,7 +21,7 @@ Preferred: install all `vi-*` skills from this repo:
 Manual install (this skill only):
 
 ```bash
-cp -R codex/skills/vi-beads ~/.codex/skills/
+cp -R skills/vi-beads ~/.codex/skills/
 ```
 
 ## When Codex Uses This Skill
@@ -37,7 +37,7 @@ The skill activates when conversations involve:
 ```
 vi-beads/
 ├── SKILL.md                 # Main skill file (Codex reads this first)
-├── CLAUDE.md                # Maintenance guide for updating the skill
+├── MAINTENANCE.md           # Maintenance guide for updating the skill
 ├── README.md                # This file (for humans)
 ├── adr/                     # Architectural Decision Records
 │   └── 0001-bd-prime-as-source-of-truth.md
@@ -109,7 +109,7 @@ NEXT: Implement rate limiting"
 
 ## Contributing
 
-This skill is maintained in this repo at `codex/skills/vi-beads/`.
+This skill is maintained in this repo at `skills/vi-beads/`.
 
 Issues and PRs welcome for:
 - Documentation improvements

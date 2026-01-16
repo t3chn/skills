@@ -14,7 +14,7 @@ Refine code for clarity, consistency, and maintainability while preserving exact
    - Keep outputs, side effects, and edge-case behavior intact.
 
 2. **Follow project standards**
-   - Read and apply any relevant `AGENTS.md` / `CLAUDE.md` instructions for the files you touch.
+   - Read and apply any relevant `AGENTS.md` instructions for the files you touch.
    - Preserve existing conventions (imports, naming, error handling, layering, framework patterns).
 
 3. **Enhance clarity**
@@ -43,4 +43,3 @@ Refine code for clarity, consistency, and maintainability while preserving exact
    - Prefer running the narrowest relevant tests/commands if available.
    - If you can’t run tests, be conservative and explain assumptions.
 5. Summarize only meaningful changes (what improved and why).
-

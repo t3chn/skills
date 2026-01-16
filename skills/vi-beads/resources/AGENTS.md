@@ -9,7 +9,7 @@
 | Scenario | Agent Bead? | Why |
 |----------|-------------|-----|
 | Multi-agent orchestration | Yes | Track state, assign work via slots |
-| Single Claude session | No | Overkill—just use regular beads |
+| Single assistant session | No | Overkill—just use regular beads |
 | Long-running background agents | Yes | Heartbeats enable liveness detection |
 | Role-based agent systems | Yes | Role beads define agent capabilities |
 

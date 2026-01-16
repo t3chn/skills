@@ -1,12 +1,9 @@
 # Build artifacts
 /dist/
+*.skill
 
-# Local Gas Town / beads state
+# Local beads state
 .beads/
-.claude/
-
-# Old structure (preserved in backup/pre-codex-restructure)
-plugins/
 
 # Python
 __pycache__/

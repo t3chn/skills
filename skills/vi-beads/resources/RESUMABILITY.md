@@ -14,7 +14,7 @@
 - Single-session tasks
 - Work with obvious acceptance criteria
 
-**The test:** Would a fresh Claude instance (or you after 2 weeks) struggle to resume this work from the description alone? If yes, add implementation details.
+**The test:** Would a fresh agent instance (or you after 2 weeks) struggle to resume this work from the description alone? If yes, add implementation details.
 
 ## Anatomy of a Resumable Issue
 
@@ -59,7 +59,7 @@ Description: Query Google APIs for capabilities and return as resources
 Acceptance: Resources return capability info
 ```
 
-**Problem:** Future Claude doesn't know:
+**Problem:** Future agent doesn't know:
 - Which API endpoints to call
 - What the responses look like
 - What format to return
@@ -113,7 +113,7 @@ Acceptance Criteria:
 - Queries live API (not static data)
 ```
 
-**Result:** Fresh Claude instance can:
+**Result:** Fresh agent instance can:
 1. See working API query code
 2. Understand response structure
 3. Know desired output format
@@ -204,4 +204,4 @@ Returns dict with 49 entries. Example entries:
 - If resuming will be hard, add implementation guide.
 - If obvious, skip it.
 
-**The principle:** Help your future self (or next Claude) resume without rediscovering everything.
+**The principle:** Help your future self (or next agent) resume without rediscovering everything.

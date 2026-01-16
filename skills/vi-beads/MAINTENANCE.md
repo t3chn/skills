@@ -56,7 +56,7 @@ ADRs in `adr/` document key decisions. These are NOT loaded during skill invocat
 |------|---------|----------------|
 | SKILL.md | Entry point, resource index | New features, version bumps |
 | README.md | Human docs, installation | Structure changes |
-| CLAUDE.md | This file, maintenance guide | Architecture changes |
+| MAINTENANCE.md | This file, maintenance guide | Architecture changes |
 | adr/*.md | Decision records | When making architectural decisions |
 | resources/*.md | Deep-dive guides | New conceptual content |
 

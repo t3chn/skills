@@ -51,8 +51,8 @@ Files restructured:
 
 ## Related
 
-- Claude Code skill progressive disclosure guidelines
-- Similar pattern implemented in other Claude Code skill ecosystems
+- Skill progressive disclosure guidelines
+- Similar pattern implemented in other skill ecosystems
 
 ## Date
 

@@ -1,6 +1,6 @@
 ---
 name: vi-code-review
-description: "Automate GitHub pull request code reviews using `gh`: check eligibility (not closed/draft/trivial/already-reviewed), collect relevant `CLAUDE.md`/`AGENTS.md` guidance, review changes from multiple perspectives, confidence-score issues, and post a concise PR comment with full-SHA code links."
+description: "Automate GitHub pull request code reviews using `gh`: check eligibility (not closed/draft/trivial/already-reviewed), collect relevant `AGENTS.md` guidance, review changes from multiple perspectives, confidence-score issues, and post a concise PR comment with full-SHA code links."
 ---
 
 # GitHub PR Code Review (gh)
@@ -30,12 +30,12 @@ Provide a structured code review for a GitHub pull request using the GitHub CLI 
    - Fetch PR summary + files changed (`gh pr view`)
    - Fetch diff (`gh pr diff`)
    - Collect relevant guidance files:
-     - Root `CLAUDE.md` / `AGENTS.md` (if present)
-     - Any `CLAUDE.md` / `AGENTS.md` in directories containing modified files
+     - Root `AGENTS.md` (if present)
+     - Any `AGENTS.md` in directories containing modified files
      - If none exist, proceed without them
 
 5. Review from multiple perspectives (do separate passes; avoid nitpicks):
-   - **Guidance compliance**: Does the change violate relevant `CLAUDE.md` / `AGENTS.md` instructions?
+   - **Guidance compliance**: Does the change violate relevant `AGENTS.md` instructions?
    - **Shallow bug scan**: Obvious correctness issues visible in the diff (focus on big bugs).
    - **Historical context**: Use `git blame` / history on modified files for relevant pitfalls/regressions.
    - **Related PR context**: Look for prior PRs touching the same files and reuse relevant lessons (optional; only if easy via `gh`).
@@ -84,4 +84,3 @@ No issues found. Checked for bugs and guidance compliance.
 - Do not run builds/typechecks/linters just for review; assume CI will handle it.
 - Ignore pre-existing problems not introduced by the PR.
 - Avoid pedantic formatting/style nits unless explicitly required by a relevant guidance file.
-

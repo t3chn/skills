@@ -351,12 +351,6 @@ bd version
 # Should show: bd version 0.15.0 or higher
 ```
 
-**If using MCP plugin:**
-```bash
-# Update Claude Code beads plugin
-claude plugin update beads
-```
-
 ### Breaking Changes
 
 **v0.15.0:**
@@ -454,17 +448,20 @@ If problems persist:
    - Minimal reproducible example
    - Expected vs actual behavior
 
-### Claude Code Skill Issues
+### Codex Skill Issues
 
-If the **bd-issue-tracking skill** provides incorrect guidance:
+If the `vi-beads` skill provides incorrect guidance:
 
 1. **Check skill version:**
    ```bash
-   ls -la ~/.claude/skills/bd-issue-tracking/
-   head -20 ~/.claude/skills/bd-issue-tracking/SKILL.md
+   ls -la ~/.codex/skills/vi-beads/
+   head -20 ~/.codex/skills/vi-beads/SKILL.md
    ```
 
-2. **Report via Claude Code feedback** or user's GitHub
+2. **Report in this repo** with:
+   - bd version (`bd version`)
+   - installed skill header (above)
+   - minimal repro steps
 
 ---
 

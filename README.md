@@ -1,24 +1,14 @@
-# Skills (Codex + Claude)
+# Codex Skills
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/t3chn/skills/graphs/commit-activity)
-
-A curated collection of skills, runbooks, and agent resources for OpenAI Codex and Claude Code.
-
-## Overview
-
-This repository is organized by platform because Codex and Claude Code have different conventions and packaging formats.
+A curated collection of skills, runbooks, and helper scripts for OpenAI Codex CLI.
 
 ## Structure
 
-- **Codex**: `codex/` (Codex-native skills, runbooks, scripts)
-- **Claude Code**: `claude/` (Claude Code plugins)
-- **Shared**: `shared/` (format-agnostic assets only)
+- `skills/` — Codex skills (`SKILL.md`) namespaced with `vi-`
+- `runbooks/` — human-readable playbooks (not auto-triggered)
+- `scripts/` — repo utilities (installation, helpers)
 
-## Codex Skills
-
-Codex skills live in `codex/skills/` and are namespaced with the `vi-` prefix.
+## Install
 
 Install into `~/.codex/skills` (full sync, overwrites `~/.codex/skills/vi-*`):
 
@@ -46,4 +36,4 @@ Contributions, suggestions, and improvements are welcome! Feel free to open an i
 
 ## License
 
-MIT License - feel free to use this as a template for your own skills documentation.
+MIT

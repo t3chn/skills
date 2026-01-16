@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-src_dir="$repo_root/codex/skills"
+src_dir="$repo_root/skills"
 dest_dir="${HOME}/.codex/skills"
 prefix="vi-"
 

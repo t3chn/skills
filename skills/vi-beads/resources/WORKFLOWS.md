@@ -316,7 +316,7 @@ Resume Workflow:
 
 This workflow enables smooth work resumption by updating beads notes when stopping, then reading them when resuming. Works in conjunction with compaction survival - creates continuity even after conversation history is deleted.
 
-### At Session Start (Claude's responsibility)
+### At Session Start (agent's responsibility)
 
 ```
 Session Start with in_progress issues:
@@ -332,7 +332,7 @@ Session Start with in_progress issues:
 
 **Pattern**: Notes field is the "read me first" guide for resuming work.
 
-### At Session End (Claude prompts user)
+### At Session End (agent prompts user)
 
 When wrapping up work on an issue:
 
@@ -344,7 +344,7 @@ Session End Handoff:
 - [ ] If yes, suggest command:
        bd update <issue-id> --notes "COMPLETED: X. IN PROGRESS: Y. NEXT: Z"
 - [ ] User reviews and confirms
-- [ ] Claude executes the update
+- [ ] Agent executes the update
 - [ ] Notes saved for next session's resumption
 ```
 
@@ -373,7 +373,7 @@ Updated some stuff. Will continue later.
 
 ### Session Handoff Checklist
 
-For Claude at session end:
+For the agent at session end:
 
 ```
 Session End Checklist:
@@ -392,8 +392,8 @@ For user (optional, but helpful):
 
 ```
 User Tips:
-- [ ] When stopping work: Let Claude suggest notes update
-- [ ] When resuming: Let Claude read notes and report context
+- [ ] When stopping work: Let the agent suggest notes update
+- [ ] When resuming: Let the agent read notes and report context
 - [ ] Avoid: Trying to remember context manually (that's what notes are for!)
 - [ ] Trust: Well-written notes will help next session pick up instantly
 ```
@@ -415,7 +415,7 @@ docs/markdown-to-docs-reference.md. No blockers, moving well."
 ```bash
 bd show workspace-mcp-server-2
 # Output includes notes field showing exactly where we left off
-# Claude reports: "Markdown→Docs feature is 80% parsed. We were testing
+# Agent reports: "Markdown→Docs feature is 80% parsed. We were testing
 # edge cases and need to implement batchUpdate next. Want to continue?"
 ```
 
