@@ -21,6 +21,7 @@ Included skills:
 - `vi-brainstorming` — Turn ideas into validated design docs before implementation.
 - `vi-beads` — Use `bd` (Beads) for persistent multi-session task memory.
 - `vi-frontend-design` — Build distinctive, production-grade frontend UI (avoid generic AI aesthetics).
+- `vi-prek` — Set up prek configs/hooks/CI (pre-commit replacement).
 - `vi-code-review` — Review GitHub PRs via `gh` with confidence scoring and full-SHA links.
 - `vi-code-simplifier` — Simplify/refactor code for readability while preserving behavior.
 - `vi-code-explorer` — Deeply trace a feature end-to-end to understand codebase flows.
