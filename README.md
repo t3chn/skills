@@ -6,7 +6,7 @@ A curated collection of skills, runbooks, and helper scripts for OpenAI Codex CL
 
 - `skills/` — Codex skills (`SKILL.md`) namespaced with `vi-`
 - `runbooks/` — human-readable playbooks (not auto-triggered)
-- `scripts/` — repo utilities (installation, helpers)
+- `scripts/` — repo utilities (installation, helpers like `ralph-loop`)
 
 ## Install
 

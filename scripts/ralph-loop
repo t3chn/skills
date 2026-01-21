@@ -1,0 +1,356 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Ralph loop for Codex CLI (fresh context each iteration)
+
+Runs `codex exec` repeatedly with the SAME prompt each time (new process per
+iteration), so the model context does not accumulate. Disk + git history are the
+"memory" between iterations.
+
+Usage:
+  ./scripts/ralph-loop [options] -- <PROMPT...>
+  ./scripts/ralph-loop [options] --prompt-file PROMPT.md
+
+Exit rules:
+  - Always stops when --max-iterations is reached (unless set to 0).
+  - If both a completion promise AND checks are provided, exits only when BOTH
+    are satisfied (to avoid "false promise" exits).
+  - If only one of them is provided, exits when that one is satisfied.
+
+Options:
+  --max-iterations N         Stop after N iterations (0 = unlimited). Default: 20
+  --completion-promise TEXT  Require <promise>TEXT</promise> in the agent's last message.
+  --exit-when CMD            Extra shell check; exits when CMD returns 0. Repeatable.
+  --require-git-clean        Require clean working tree (including untracked files).
+  --require-git-pushed       Require current branch not ahead of upstream (i.e., pushed).
+  --require-tasks-done FILE  Require FILE has no unchecked Markdown checkboxes (- [ ]).
+  --state-dir DIR            Where to store logs/state (default: .git/ralph-loop/run-*)
+  --cd DIR                   Workspace root passed to `codex exec -C` (default: pwd)
+  --codex-arg ARG            Extra arg forwarded to `codex exec`. Repeatable.
+  -h, --help                 Show this help.
+
+Examples:
+  ./scripts/ralph-loop --max-iterations 30 --codex-arg --full-auto -- \\
+    "Fix failing tests; run unit tests; output <promise>DONE</promise> when green."
+
+  ./scripts/ralph-loop --max-iterations 50 --completion-promise DONE \\
+    --require-git-clean --require-git-pushed --require-tasks-done TASKS.md \\
+    --codex-arg --full-auto --prompt-file PROMPT.md
+
+  ./scripts/ralph-loop --max-iterations 20 --exit-when 'npm test' --prompt-file PROMPT.md
+EOF
+}
+
+die() {
+  echo "[ralph-loop] $*" >&2
+  exit 1
+}
+
+require_cmd() {
+  command -v "$1" >/dev/null 2>&1 || die "Missing required command: $1"
+}
+
+trim() {
+  local s="$1"
+  s="${s#"${s%%[![:space:]]*}"}"
+  s="${s%"${s##*[![:space:]]}"}"
+  printf '%s' "$s"
+}
+
+max_iterations=20
+completion_promise=""
+prompt_file=""
+state_dir=""
+workspace_dir="$(pwd)"
+require_git_clean=0
+require_git_pushed=0
+tasks_files=()
+exit_when_cmds=()
+codex_args=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --max-iterations)
+      [[ -n "${2:-}" ]] || die "--max-iterations requires a number"
+      max_iterations="$2"
+      shift 2
+      ;;
+    --completion-promise)
+      [[ -n "${2:-}" ]] || die "--completion-promise requires text"
+      completion_promise="$2"
+      shift 2
+      ;;
+    --prompt-file)
+      [[ -n "${2:-}" ]] || die "--prompt-file requires a path"
+      prompt_file="$2"
+      shift 2
+      ;;
+    --state-dir)
+      [[ -n "${2:-}" ]] || die "--state-dir requires a path"
+      state_dir="$2"
+      shift 2
+      ;;
+    --cd)
+      [[ -n "${2:-}" ]] || die "--cd requires a path"
+      workspace_dir="$2"
+      shift 2
+      ;;
+    --require-git-clean)
+      require_git_clean=1
+      shift
+      ;;
+    --require-git-pushed)
+      require_git_pushed=1
+      shift
+      ;;
+    --require-tasks-done)
+      [[ -n "${2:-}" ]] || die "--require-tasks-done requires a path"
+      tasks_files+=("$2")
+      shift 2
+      ;;
+    --exit-when)
+      [[ -n "${2:-}" ]] || die "--exit-when requires a shell command string"
+      exit_when_cmds+=("$2")
+      shift 2
+      ;;
+    --codex-arg)
+      [[ -n "${2:-}" ]] || die "--codex-arg requires a value"
+      codex_args+=("$2")
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      die "Unknown option: $1 (use --help)"
+      ;;
+  esac
+done
+
+if [[ -n "$prompt_file" ]]; then
+  [[ $# -eq 0 ]] || die "Do not pass a prompt after --prompt-file"
+  [[ -f "$prompt_file" ]] || die "Prompt file not found: $prompt_file"
+else
+  [[ $# -gt 0 ]] || die "Missing prompt (use -- <PROMPT...> or --prompt-file)"
+fi
+
+if ! [[ "$max_iterations" =~ ^[0-9]+$ ]]; then
+  die "--max-iterations must be a non-negative integer (got: $max_iterations)"
+fi
+
+require_cmd codex
+require_cmd perl
+require_cmd bash
+if (( require_git_clean == 1 || require_git_pushed == 1 )); then
+  require_cmd git
+fi
+
+workspace_dir="$(cd "$workspace_dir" && pwd)"
+
+if [[ -z "$state_dir" ]]; then
+  if git -C "$workspace_dir" rev-parse --git-dir >/dev/null 2>&1; then
+    git_dir="$(git -C "$workspace_dir" rev-parse --git-dir)"
+    git_dir="$(cd "$workspace_dir/$git_dir" && pwd)"
+    run_id="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+    state_dir="$git_dir/ralph-loop/run-$run_id"
+  else
+    state_dir="$(mktemp -d "${TMPDIR:-/tmp}/ralph-loop.XXXXXX")"
+  fi
+fi
+
+mkdir -p "$state_dir/logs"
+
+prompt_path="$state_dir/prompt.md"
+if [[ -n "$prompt_file" ]]; then
+  cp "$prompt_file" "$prompt_path"
+else
+  # Reconstruct prompt with spaces exactly as provided after `--`
+  prompt_text="$*"
+  printf '%s\n' "$prompt_text" > "$prompt_path"
+fi
+
+config_path="$state_dir/config.txt"
+{
+  echo "workspace_dir=$workspace_dir"
+  echo "max_iterations=$max_iterations"
+  echo "completion_promise=$completion_promise"
+  echo "require_git_clean=$require_git_clean"
+  echo "require_git_pushed=$require_git_pushed"
+  for f in "${tasks_files[@]}"; do echo "tasks_file=$f"; done
+  for c in "${exit_when_cmds[@]}"; do echo "exit_when=$c"; done
+  for a in "${codex_args[@]}"; do echo "codex_arg=$a"; done
+  echo "started_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+} > "$config_path"
+
+echo "[ralph-loop] workspace: $workspace_dir"
+echo "[ralph-loop] state dir: $state_dir"
+echo "[ralph-loop] prompt: $prompt_path"
+
+has_any_check=0
+if (( require_git_clean == 1 || require_git_pushed == 1 )); then has_any_check=1; fi
+if (( ${#tasks_files[@]} > 0 )); then has_any_check=1; fi
+if (( ${#exit_when_cmds[@]} > 0 )); then has_any_check=1; fi
+
+extract_promise() {
+  local last_message_file="$1"
+  perl -0777 -ne '
+    if (/<promise>(.*?)<\/promise>/s) {
+      my $t = $1;
+      $t =~ s/^\s+|\s+$//g;
+      $t =~ s/\s+/ /g;
+      print $t;
+    }
+  ' "$last_message_file" 2>/dev/null || true
+}
+
+check_git_clean() {
+  local out
+  if ! out="$(git -C "$workspace_dir" status --porcelain=v1 -uall 2>/dev/null)"; then
+    return 1
+  fi
+  [[ -z "$out" ]]
+}
+
+check_git_pushed() {
+  local upstream counts behind ahead
+  if ! upstream="$(git -C "$workspace_dir" rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"; then
+    return 1
+  fi
+  counts="$(git -C "$workspace_dir" rev-list --left-right --count "${upstream}...HEAD" 2>/dev/null || true)"
+  behind="$(echo "$counts" | awk '{print $1}')"
+  ahead="$(echo "$counts" | awk '{print $2}')"
+  [[ "${ahead:-1}" == "0" ]]
+}
+
+check_tasks_file_done() {
+  local file="$1"
+  local path="$file"
+  if [[ ! "$path" = /* ]]; then
+    path="$workspace_dir/$path"
+  fi
+  [[ -f "$path" ]] || return 1
+  # Detect unchecked Markdown boxes like "- [ ]" / "* [ ]" / "+ [ ]"
+  ! grep -Eq '^[[:space:]]*[-*+][[:space:]]*\[[[:space:]]\][[:space:]]+' "$path"
+}
+
+run_checks() {
+  local log_file="$1"
+  local ok=1
+
+  if (( require_git_clean == 1 )); then
+    if check_git_clean; then
+      echo "[ralph-loop] check git-clean: OK" | tee -a "$log_file"
+    else
+      echo "[ralph-loop] check git-clean: FAIL" | tee -a "$log_file"
+      ok=0
+    fi
+  fi
+
+  if (( require_git_pushed == 1 )); then
+    if check_git_pushed; then
+      echo "[ralph-loop] check git-pushed: OK" | tee -a "$log_file"
+    else
+      echo "[ralph-loop] check git-pushed: FAIL (no upstream? not pushed?)" | tee -a "$log_file"
+      ok=0
+    fi
+  fi
+
+  for f in "${tasks_files[@]}"; do
+    if check_tasks_file_done "$f"; then
+      echo "[ralph-loop] check tasks-done ($f): OK" | tee -a "$log_file"
+    else
+      echo "[ralph-loop] check tasks-done ($f): FAIL" | tee -a "$log_file"
+      ok=0
+    fi
+  done
+
+  for cmd in "${exit_when_cmds[@]}"; do
+    local out=""
+    local rc=0
+    if out="$(cd "$workspace_dir" && bash -lc "$cmd" 2>&1)"; then
+      echo "[ralph-loop] check exit-when: OK ($cmd)" | tee -a "$log_file"
+    else
+      rc=$?
+      echo "[ralph-loop] check exit-when: FAIL ($cmd) exit=$rc" | tee -a "$log_file"
+      if [[ -n "$out" ]]; then
+        echo "$out" | sed 's/^/[ralph-loop]   /' | tee -a "$log_file"
+      fi
+      ok=0
+    fi
+  done
+
+  [[ "$ok" == "1" ]]
+}
+
+iteration=1
+while :; do
+  if (( max_iterations > 0 && iteration > max_iterations )); then
+    die "Internal error: iteration exceeded max_iterations"
+  fi
+
+  iter_id="$(printf '%03d' "$iteration")"
+  log_file="$state_dir/logs/iter-${iter_id}.log"
+  last_msg_file="$state_dir/logs/iter-${iter_id}.last.md"
+  echo "[ralph-loop] ────────────────────────────────────────────────" | tee "$log_file"
+  echo "[ralph-loop] iteration $iteration$(if (( max_iterations > 0 )); then echo \"/$max_iterations\"; fi)" | tee -a "$log_file"
+
+  # Each `codex exec` run is a fresh process -> fresh model context.
+  codex_cmd=(codex exec -C "$workspace_dir" --color never --output-last-message "$last_msg_file")
+  if (( ${#codex_args[@]} > 0 )); then
+    codex_cmd+=("${codex_args[@]}")
+  fi
+
+  if ! "${codex_cmd[@]}" - < "$prompt_path" 2>&1 | tee -a "$log_file"; then
+    die "codex exec failed (see $log_file)"
+  fi
+
+  promise_ok=0
+  if [[ -n "$completion_promise" ]]; then
+    extracted="$(extract_promise "$last_msg_file")"
+    extracted="$(trim "$extracted")"
+    if [[ -n "$extracted" && "$extracted" = "$completion_promise" ]]; then
+      promise_ok=1
+      echo "[ralph-loop] completion promise: OK (<promise>$completion_promise</promise>)" | tee -a "$log_file"
+    else
+      echo "[ralph-loop] completion promise: FAIL (got: '${extracted:-<none>}')" | tee -a "$log_file"
+    fi
+  fi
+
+  checks_ok=0
+  if (( has_any_check == 1 )); then
+    if run_checks "$log_file"; then
+      checks_ok=1
+    fi
+  fi
+
+  done=0
+  if [[ -n "$completion_promise" && has_any_check -eq 1 ]]; then
+    # Strong mode: require BOTH promise and checks.
+    if (( promise_ok == 1 && checks_ok == 1 )); then done=1; fi
+  elif [[ -n "$completion_promise" ]]; then
+    if (( promise_ok == 1 )); then done=1; fi
+  elif (( has_any_check == 1 )); then
+    if (( checks_ok == 1 )); then done=1; fi
+  fi
+
+  if (( done == 1 )); then
+    echo "[ralph-loop] ✅ DONE" | tee -a "$log_file"
+    echo "[ralph-loop] last message: $last_msg_file"
+    exit 0
+  fi
+
+  if (( max_iterations > 0 && iteration >= max_iterations )); then
+    echo "[ralph-loop] 🛑 max iterations reached ($max_iterations)" | tee -a "$log_file"
+    echo "[ralph-loop] last message: $last_msg_file"
+    exit 2
+  fi
+
+  iteration=$((iteration + 1))
+done

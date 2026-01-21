@@ -7,6 +7,15 @@ description: "Run an iterative 'Ralph loop' workflow: keep the same prompt and r
 
 Use the Ralph Wiggum technique: iterate on the *same prompt* until the work is genuinely complete. The “self-reference” comes from seeing your previous attempts in the repo (files, diffs, tests), not from feeding your own output back in.
 
+## Core tenet: fresh context = reliability
+
+Ralph works best when **each iteration starts with a fresh model context** and the repo (disk + git) is the only memory.
+
+Two practical ways to do that in Codex CLI:
+
+- **Pure Ralph (recommended)**: run **a new `codex exec` process per iteration** (Bash loop / wrapper script). This guarantees the context window is cleared each cycle.
+- **Interactive fallback**: if you stay in the interactive UI, use `/new` at the start of each iteration (and optionally `/compact` after long runs). `/compact` helps token pressure, but it is not a true reset.
+
 ## Inputs
 
 - **Prompt**: a single, stable task description (don’t rewrite it every iteration).
@@ -42,6 +51,19 @@ For each iteration:
 ## Critical rule (completion promises)
 
 If a completion promise is set, output it **only** when the statement is completely and unequivocally true. Do not output false promises to “exit the loop”.
+
+## Reliable stopping (objective exits)
+
+If you want a *reliable* exit condition (not just “model says DONE”), add **objective gates** that can be checked externally:
+
+- Tests/lint/build green
+- Git working tree clean
+- Branch pushed (not ahead of upstream)
+- “All tasks done” (e.g. a `TASKS.md` checkbox list, or an issue tracker query)
+
+Practical pattern: use a wrapper that only exits when both the **completion promise** and the **objective gates** are satisfied.
+
+If you have `codex-skills` checked out locally, it includes a helper wrapper: `scripts/ralph-loop` (runs fresh `codex exec` each iteration + supports gates like git clean/pushed, tasks file, and custom `--exit-when` commands).
 
 ## When to use
 
