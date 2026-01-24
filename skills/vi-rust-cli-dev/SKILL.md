@@ -57,6 +57,7 @@ Build production-quality Rust CLIs with strong UX, composability, and testabilit
 - `clap` recipes (derive, subcommands, completions, man pages): `references/clap.md`
 - IO + output conventions (stdout vs stderr, JSON, progress): `references/io-output.md`
 - Error handling + exit codes: `references/errors-exitcodes.md`
+- Config files and precedence: `references/config-files.md`
 - Testing patterns (unit + integration): `references/testing.md`
 - Tooling and quality gates: `references/tooling.md`
 - Packaging and release options: `references/packaging-release.md`
