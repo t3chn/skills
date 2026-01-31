@@ -4,11 +4,397 @@
     {
       "id": "gastown",
       "title": "Gastown (Gas Town / gt)",
-      "description": "Use Gas Town (gt) effectively: setup, rigs/crew/polecats, convoys + beads, mail, gt prime; also contribute to github.com/steveyegge/gastown.",
-      "tags": ["gastown", "gt", "gas-town", "beads", "convoy", "multi-agent"],
-      "aliases": ["gas-town"],
+      "description": "Work with Gas Town (gastown) and the `gt` CLI: install/setup a town (`gt install`), manage rigs/crew/polecats, run mayor/deacon/witness/refinery, use convoys + beads (`bd`) + mail, recover context via `gt prime`, and troubleshoot common failures (doctor, sparse-checkout, routing). Also use when contributing to `github.com/steveyegge/gastown` (Go + Cobra subcommands in `internal/cmd`, templates in `templates/`, wrappers like `gt-codex`). Triggers: gastown/Gas Town/gt/convoy/sling/mayor/deacon/witness/prime/beads/bd (и русские: мэр/полкэт/прайм).",
+      "tags": [
+        "gastown",
+        "gt",
+        "gas-town",
+        "beads",
+        "convoy",
+        "multi-agent"
+      ],
+      "aliases": [
+        "gas-town"
+      ],
       "targets": {
-        "codex": { "path": "skills/gastown" }
+        "codex": {
+          "path": "skills/gastown"
+        }
+      }
+    },
+    {
+      "id": "vi-beads",
+      "title": "Beads - Persistent Task Memory for AI Agents",
+      "description": "Git-backed issue tracker for multi-session work with dependencies and persistent memory across session boundaries. Use when work spans multiple sessions, has blockers/dependencies, or needs context recovery after context loss.",
+      "tags": [
+        "vi",
+        "beads",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-beads"
+        }
+      }
+    },
+    {
+      "id": "vi-brainstorming",
+      "title": "Brainstorming Ideas Into Designs",
+      "description": "Use before any creative work (new features, components, functionality, behavior changes). Clarify intent/constraints, compare 2–3 approaches, and produce a small validated design doc before implementation.",
+      "tags": [
+        "vi",
+        "brainstorming",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-brainstorming"
+        }
+      }
+    },
+    {
+      "id": "vi-code-architect",
+      "title": "Code Architect (Implementation Blueprint)",
+      "description": "Design a concrete architecture and implementation blueprint for a new feature that fits an existing codebase (files to change, components, data flow, error handling, tests). Use after codebase exploration when you need a decisive plan to implement.",
+      "tags": [
+        "vi",
+        "code",
+        "architect",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-code-architect"
+        }
+      }
+    },
+    {
+      "id": "vi-code-explorer",
+      "title": "Code Explorer (Deep Codebase Tracing)",
+      "description": "Deeply analyze an existing codebase feature by tracing execution/data flow, mapping architecture layers, and listing the key files and entry points. Use when you need to understand how something works before changing or extending it.",
+      "tags": [
+        "vi",
+        "code",
+        "explorer",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-code-explorer"
+        }
+      }
+    },
+    {
+      "id": "vi-code-review",
+      "title": "GitHub PR Code Review (gh)",
+      "description": "Automate GitHub pull request code reviews using `gh`: check eligibility (not closed/draft/trivial/already-reviewed), collect relevant `AGENTS.md` guidance, review changes from multiple perspectives, confidence-score issues, and post a concise PR comment with full-SHA code links.",
+      "tags": [
+        "vi",
+        "code",
+        "review",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-code-review"
+        }
+      }
+    },
+    {
+      "id": "vi-code-reviewer",
+      "title": "Code Reviewer (High-Confidence Review)",
+      "description": "Review local changes (git diff or specified files) for real bugs, security issues, and guideline violations using confidence scoring; report only high-confidence, high-impact findings. Use when you want a strict, low-false-positive code review.",
+      "tags": [
+        "vi",
+        "code",
+        "reviewer",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-code-reviewer"
+        }
+      }
+    },
+    {
+      "id": "vi-code-simplifier",
+      "title": "Code Simplifier (No-Behavior-Change Refactors)",
+      "description": "Simplify and refine code for clarity, consistency, and maintainability while preserving exact functionality. Use when the user asks to refactor/clean up/simplify code, or after implementing changes to improve readability without changing behavior.",
+      "tags": [
+        "vi",
+        "code",
+        "simplifier",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-code-simplifier"
+        }
+      }
+    },
+    {
+      "id": "vi-codex-cli-docs",
+      "title": "Codex CLI Docs (MCP)",
+      "description": "Authoritative guidance for Codex CLI using OpenAI developer docs via MCP. Use when questions involve Codex CLI installation, upgrades, usage, commands/flags, slash commands, configuration (config.toml, profiles, providers, sandbox), MCP setup, skills, AGENTS.md, non-interactive/CI workflows, or troubleshooting.",
+      "tags": [
+        "vi",
+        "codex",
+        "cli",
+        "docs",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-codex-cli-docs"
+        }
+      }
+    },
+    {
+      "id": "vi-feature-dev",
+      "title": "Feature Development (7-Phase Workflow)",
+      "description": "Guided end-to-end feature development workflow (discovery → codebase exploration → clarifying questions → architecture → implementation → review → summary). Use when implementing a new feature or significant change and you want a structured, question-first approach.",
+      "tags": [
+        "vi",
+        "feature",
+        "dev",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-feature-dev"
+        }
+      }
+    },
+    {
+      "id": "vi-frontend-design",
+      "title": "Frontend Design (High-Aesthetic UI)",
+      "description": "Create distinctive, production-grade frontend interfaces with high design quality. Use when the user asks to build web components, pages, or applications; pick a bold aesthetic direction and implement polished code that avoids generic AI aesthetics.",
+      "tags": [
+        "vi",
+        "frontend",
+        "design",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-frontend-design"
+        }
+      }
+    },
+    {
+      "id": "vi-greptile",
+      "title": "Greptile MCP",
+      "description": "Use the Greptile MCP integration to inspect PRs, reviews, and comments, trigger Greptile reviews, and manage custom context. Use when requests mention Greptile, Greptile MCP, Greptile review comments, or setting the GREPTILE_API_KEY.",
+      "tags": [
+        "vi",
+        "greptile",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-greptile"
+        }
+      }
+    },
+    {
+      "id": "vi-greptile-docs",
+      "title": "Greptile Docs",
+      "description": "Authoritative guidance for Greptile using the official docs. Use when questions involve Greptile setup, code review workflow, MCP v2, integrations, API reference, self-hosting, security, or greptile.json.",
+      "tags": [
+        "vi",
+        "greptile",
+        "docs",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-greptile-docs"
+        }
+      }
+    },
+    {
+      "id": "vi-jj-docs",
+      "title": "Vi JJ Docs",
+      "description": "Accurate, low-token guidance for the Jujutsu (jj) version control system: CLI commands/flags, revsets, bookmarks, conflicts, config, and Git interop. Use when a request mentions Jujutsu, `jj`, revsets, bookmarks, `jj git`, `jj rebase`, `jj undo`, or interpreting `jj` output.",
+      "tags": [
+        "vi",
+        "jj",
+        "docs",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-jj-docs"
+        }
+      }
+    },
+    {
+      "id": "vi-prek",
+      "title": "Prek Setup",
+      "description": "Set up and configure prek (Rust drop-in replacement for pre-commit) in repositories: create/update `.pre-commit-config.yaml`, install/uninstall git hooks (`uvx prek install` / `uvx prek uninstall`), migrate from `pre-commit`, and add minimal CI (e.g., GitHub Actions). Use when a project needs pre-commit-style hooks wired up via prek.",
+      "tags": [
+        "vi",
+        "prek",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-prek"
+        }
+      }
+    },
+    {
+      "id": "vi-project-bootstrap",
+      "title": "Project Bootstrap (Codex Skills)",
+      "description": "Bootstrap a git repo for repo-scoped Codex skills using a central skills repo (git submodule + sparse-checkout) via `skillsctl`: bootstrap, catalog/suggest, install/remove/set, sync/status/doctor. Use when you want deterministic, versioned skills in `.codex/skills/` without copying files.",
+      "tags": [
+        "vi",
+        "project",
+        "bootstrap",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-project-bootstrap"
+        }
+      }
+    },
+    {
+      "id": "vi-ralph-loop",
+      "title": "Ralph Loop (Iterative Development Loop)",
+      "description": "Run an iterative 'Ralph loop' workflow: keep the same prompt and repeatedly refine code (run tests, fix, repeat) until completion criteria are met or max iterations reached. Use when a task benefits from persistent iteration and objective verification.",
+      "tags": [
+        "vi",
+        "ralph",
+        "loop",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-ralph-loop"
+        }
+      }
+    },
+    {
+      "id": "vi-rust-cli-dev",
+      "title": "Vi Rust Cli Dev",
+      "description": "Build and refactor Rust command-line tools: Cargo scaffolding, `clap` argument parsing, stdin/stdout IO, error handling and exit codes, logging/config, integration tests (`assert_cmd`), and packaging/distribution. Use when requests mention Rust CLI apps, `clap`, `assert_cmd`, shell completions, man pages, `cargo install`, or releasing Rust binaries.",
+      "tags": [
+        "vi",
+        "rust",
+        "cli",
+        "dev",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-rust-cli-dev"
+        }
+      }
+    },
+    {
+      "id": "vi-security-guidance",
+      "title": "Security Guidance (Reminders + Checks)",
+      "description": "Security reminders while editing code: workflow injection, command injection, XSS sinks, eval/code execution, and unsafe deserialization. Use when changing CI/workflows, shell/exec code, HTML rendering, auth, or other security-sensitive areas.",
+      "tags": [
+        "vi",
+        "security",
+        "guidance",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-security-guidance"
+        }
+      }
+    },
+    {
+      "id": "vi-sops-dev",
+      "title": "Vi Sops Dev",
+      "description": "Work effectively in the getsops/sops codebase (Go + Rust functional tests): trace CLI behavior (edit/encrypt/decrypt/rotate/updatekeys), debug encryption/decryption + metadata/MAC issues, add or modify key providers (KMS/GCP/Azure/Vault/age/PGP), add file-format stores (YAML/JSON/INI/ENV/binary), update config (.sops.yaml), and run the right test suites. Use when a task mentions SOPS, getsops/sops, sops CLI internals, master keys, keyservice, stores, or functional-tests.",
+      "tags": [
+        "vi",
+        "sops",
+        "dev",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-sops-dev"
+        }
+      }
+    },
+    {
+      "id": "vi-sops-user",
+      "title": "Vi Sops User",
+      "description": "Help a user use Mozilla SOPS (getsops/sops) safely and effectively: encrypt/decrypt/edit secrets files (YAML/JSON/ENV/INI/binary), set up and troubleshoot `.sops.yaml`, choose key backends (age/PGP/AWS KMS/GCP KMS/Azure Key Vault/Vault), rotate keys, use `sops set/unset/extract/exec-env`, and fix common workflow issues. Use when a request mentions SOPS, `sops`, `.sops.yaml`, secret encryption, age recipients/keys, PGP fingerprints, KMS/Key Vault/Vault, or Git diff with SOPS.",
+      "tags": [
+        "vi",
+        "sops",
+        "user",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-sops-user"
+        }
+      }
+    },
+    {
+      "id": "vi-zitadel-admin",
+      "title": "Vi Zitadel Admin",
+      "description": "Reliable self-hosted ZITADEL administration and day-2 operations with configuration-only changes: initial setup (`zitadel init/setup/start`), hardening (TLS, HTTP/2, masterkey, SMTP), upgrades/scaling, backups, observability, and common troubleshooting. Use when working with ZITADEL deployment config (Helm, Docker Compose, Linux service), ZITADEL config/steps YAML, or diagnosing self-hosted ZITADEL runtime issues.",
+      "tags": [
+        "vi",
+        "zitadel",
+        "admin",
+        "codex",
+        "skills"
+      ],
+      "aliases": [],
+      "targets": {
+        "codex": {
+          "path": "skills/vi-zitadel-admin"
+        }
       }
     }
   ]
