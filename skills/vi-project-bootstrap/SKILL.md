@@ -16,26 +16,26 @@ This skill provides a deterministic way to connect a project to a central skills
 Get current repo state (token-optimized / machine output):
 
 ```bash
-python3 ~/.codex/skills/vi-project-bootstrap/scripts/skillsctl.py doctor
+uvx -q --from ~/.codex/skills/vi-project-bootstrap skillsctl doctor
 ```
 
 Bootstrap this repo (creates `.codex/`, adds the submodule, and checks out `catalog/`):
 
 ```bash
-python3 ~/.codex/skills/vi-project-bootstrap/scripts/skillsctl.py bootstrap --stage --yes
+uvx -q --from ~/.codex/skills/vi-project-bootstrap skillsctl bootstrap --stage --yes
 ```
 
 Pick skills (requires bootstrap) and install:
 
 ```bash
-python3 ~/.codex/skills/vi-project-bootstrap/scripts/skillsctl.py suggest "security" --limit 10
-python3 ~/.codex/skills/vi-project-bootstrap/scripts/skillsctl.py install vi-security-guidance --stage --yes
+uvx -q --from ~/.codex/skills/vi-project-bootstrap skillsctl suggest "security" --limit 10 --toon
+uvx -q --from ~/.codex/skills/vi-project-bootstrap skillsctl install vi-security-guidance --stage --yes
 ```
 
 After `git clone`:
 
 ```bash
-python3 ~/.codex/skills/vi-project-bootstrap/scripts/skillsctl.py sync --stage --yes
+uvx -q --from ~/.codex/skills/vi-project-bootstrap skillsctl sync --stage --yes
 ```
 
 ## Agent protocol (recommended UX)

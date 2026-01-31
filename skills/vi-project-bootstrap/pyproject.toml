@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vi-project-bootstrap"
+version = "0.1.0"
+description = "Project bootstrap tools for Codex skills (skillsctl)."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+skillsctl = "vi_project_bootstrap.skillsctl:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
