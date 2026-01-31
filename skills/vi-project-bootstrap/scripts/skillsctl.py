@@ -23,6 +23,7 @@ MANIFEST_REL = Path(".codex/skills.manifest")
 CATALOG_REL = Path("catalog/skills.json")
 
 ID_RE = re.compile(r"^[a-z0-9-]+$")
+SEMVER_RE = re.compile(r"\b(\d+\.\d+\.\d+)\b")
 
 
 class SkillsCtlError(RuntimeError):
@@ -40,6 +41,11 @@ def _dump_toon(value: Any) -> str:
     NOTE: This is JSON, but minified and stable for easy parsing and low token cost.
     """
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def _extract_semver(text: str) -> str | None:
+    m = SEMVER_RE.search(text)
+    return m.group(1) if m else None
 
 
 def _run(
@@ -664,21 +670,19 @@ def cmd_status(args: argparse.Namespace) -> int:
 def cmd_doctor(args: argparse.Namespace) -> int:
     root, is_git_repo = _detect_root()
 
-    git_version = _run(["git", "--version"], check=False).stdout.strip()
-    if not git_version:
-        git_version = None
+    git_version = _extract_semver(_run(["git", "--version"], check=False).stdout.strip() or "")
 
     bd_present = shutil.which("bd") is not None
     bd_version = None
     if bd_present:
         res = _run(["bd", "--version"], check=False)
-        bd_version = res.stdout.strip() or None
+        bd_version = _extract_semver(res.stdout.strip()) or None
 
     uvx_present = shutil.which("uvx") is not None
     uvx_version = None
     if uvx_present:
         res = _run(["uvx", "--version"], check=False)
-        uvx_version = res.stdout.strip() or None
+        uvx_version = _extract_semver(res.stdout.strip()) or None
 
     beads_path = root / ".beads"
     beads_present = beads_path.exists()
