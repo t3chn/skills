@@ -1,0 +1,23 @@
+name: prek
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Validate prek config
+        run: uvx prek validate-config .pre-commit-config.yaml
+
+      - name: Run prek
+        run: uvx prek run --all-files
