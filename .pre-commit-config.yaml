@@ -13,3 +13,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: beads-contract-lint
+        name: Beads contract lint (orx)
+        entry: python3 scripts/beads_contract_lint.py --label orx
+        language: system
+        pass_filenames: false
+        always_run: true
