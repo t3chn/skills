@@ -1,4 +1,0 @@
-interface:
-  display_name: "Modern Todo Demo"
-  short_description: "Modern Todo demo via Coder Tasks"
-  default_prompt: "Use $modern-todo-demo to create a modern single-user Todo app for a demo via 3+ parallel Coder Tasks and return the repo URL."
